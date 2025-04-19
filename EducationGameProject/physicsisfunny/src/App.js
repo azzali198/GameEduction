@@ -5,11 +5,15 @@ import Home from './Components/Home/Home'
 import Forum from './Components/Forum/Forum'
 import PhysicsGame from './Components/Physics/PhysicsGame'
 import ChemistryGame from './Components/Chemistry/ChemistryGame'
+import LoginModal from './Components/Login/LoginModal'
 import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  // Add this near your other useState declarations in App component
+const [isAuthenticated, setIsAuthenticated] = useState(false);
   const NAV_LINKS = [
     { text: 'Home', url: '#' },
     { text: 'Physics', url: '#' },
@@ -30,32 +34,89 @@ const FLEX_1 = 'flex-1';
 const TEXT_CENTER = 'text-center';
 const NAV_CLASS = 'flex items-center justify-between bg-blue-500 p-4'
 const LINK_CLASS = 'text-white hover:text-white/80'
-
+// Add this in the App component
+const handleLogin = (credentials) => {
+  // Here you would normally validate credentials with your backend
+  // For now, we'll just simulate a successful login
+  setIsAuthenticated(true);
+  setIsLoginModalOpen(false);
+};
 
 const Navbar = () => {
   return (
     <nav className={NAV_CLASS}>
       <div className="flex items-center space-x-4">
-        <NavLink href="#" text="Home" onClick={() => setCurrentPage('home')}/>
-        <NavLink href="#" text="Physics" onClick={() => setCurrentPage('physics')} />
-        <NavLink href="#" text="Chemistry" onClick={() => setCurrentPage('chemistry')} />
-        <NavLink href="#" text="Forum" onClick={() => setCurrentPage('forum')} />
+        <NavLink 
+          href="#" 
+          text="Home" 
+          onClick={() => setCurrentPage('home')} 
+          requiresAuth={false}
+        />
+        <NavLink 
+          href="#" 
+          text="Physics" 
+          onClick={() => setCurrentPage('physics')} 
+        />
+        <NavLink 
+          href="#" 
+          text="Chemistry" 
+          onClick={() => setCurrentPage('chemistry')} 
+        />
+        <NavLink 
+          href="#" 
+          text="Forum" 
+          onClick={() => setCurrentPage('forum')} 
+        />
       </div>
       <div className="flex items-center space-x-4">
-        <NavLink href="#" text="Login" />
-        <NavLink href="#" text="Subscribe" />
+        {isAuthenticated ? (
+          <NavLink 
+            href="#" 
+            text="Logout" 
+            requiresAuth={false}
+            onClick={() => setIsAuthenticated(false)} 
+          />
+        ) : (
+          <NavLink 
+            href="#" 
+            text="Login" 
+            requiresAuth={false}
+            onClick={() => setIsLoginModalOpen(true)} 
+          />
+        )}
+        <NavLink 
+          href="#" 
+          text="Subscribe" 
+          requiresAuth={false}
+        />
       </div>
     </nav>
-  )
-}
+  );
+};
 
-const NavLink = ({ href, text, onClick }) => {
+const NavLink = ({ href, text, onClick, requiresAuth = true }) => {
+  const handleClick = (e) => {
+    if (requiresAuth && !isAuthenticated) {
+      e.preventDefault();
+      setIsLoginModalOpen(true);
+      return;
+    }
+    if (onClick) onClick();
+  };
+
   return (
-    <a href={href} className={LINK_CLASS} onClick ={onClick}>
+    <a 
+      href={href} 
+      className={`${LINK_CLASS} ${requiresAuth && !isAuthenticated ? 'opacity-50' : ''}`} 
+      onClick={handleClick}
+    >
       {text}
+      {requiresAuth && !isAuthenticated && (
+        <span className="ml-1 text-xs">🔒</span>
+      )}
     </a>
-  )
-}
+  );
+};
 const Header = () => (
     <div className={PRIMARY_BG_COLOR}>
         <img src={banner} alt="Banner Image" className="w-full" style ={{height:'80px'}} />
@@ -92,6 +153,11 @@ const Footer = () => (
             }
         </main>
         <Footer />
+        <LoginModal 
+        isOpen={isLoginModalOpen} 
+        handleLogin={handleLogin}
+        onClose={() => setIsLoginModalOpen(false)} 
+      />
     </div>
 )};
 
