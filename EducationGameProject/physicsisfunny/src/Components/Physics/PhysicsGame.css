@@ -1,0 +1,23 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.body
+{
+ margin-top: '5px';
+}
+.buttonGame {
+   padding: '0px' ;
+   border :'2px solid  blue';
+
+}
+/* Hover effect 
+.buttonGame:hover {
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+/*  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover 
+}*/
+
+/* Active effect (when the button is clicked) */
+/*.buttonGame:active {
+  transform: scale(0.95); /* Slightly shrink the button when clicked */
+/*}*/
+
+

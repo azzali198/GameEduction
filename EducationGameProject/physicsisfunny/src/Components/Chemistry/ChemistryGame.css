@@ -1,0 +1,84 @@
+#header {
+    width: 99%;
+    height: auto;
+    border: 3px solid rgb(207, 201, 201);
+  }
+  #questionText {
+    vertical-align: middle;
+    height: 200px;
+    text-justify: auto;
+    line-height: normal;
+    text-align: center;
+    border-right: 3px solid rgb(207, 201, 201);
+    border-left: 3px solid rgb(207, 201, 201);
+    border-bottom: 3px solid rgb(207, 201, 201);
+    font-style: italic;
+    font-size: auto;
+    display: flex;
+     justify-content: center; /* Align horizontal */
+    align-items: center; 
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  #imageCol {
+    border-right: 3px solid rgb(207, 201, 201);
+    border-bottom: 3px solid rgb(207, 201, 201);
+    vertical-align: middle;
+    text-align: center;
+    height:100px;
+  }
+  
+  #CounterCol {
+    border-left: 3px solid rgb(207, 201, 201);
+    border-bottom: 3px solid rgb(207, 201, 201);
+    vertical-align: middle;
+    text-align: center;
+    font-style: italic;
+    font-size: auto;
+    height:200px;
+    display: flex;
+    justify-content: center; /* Align horizontal */
+    align-items: center; 
+  }
+  .img {
+    width: 100%;
+    height: auto;
+  }
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  .shape 
+  {
+    height:'100px'
+  }
+  .App-link {
+    color: #61dafb;
+  }
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
