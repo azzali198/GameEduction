@@ -35,6 +35,7 @@ const ChemistryGame = () => {
                 backdrop: `
 rgba(0,0,123,0.4)
 url(`+ congrats + `)
+ center / cover
 no-repeat
 `,
                 timer: 5000
@@ -47,26 +48,31 @@ no-repeat
     const onCompletePeriod = () => { }
     const onTickCounter = () => { }
     const onStopCounter = () => { }
-    return (
-
-
-        <DndProvider backend={HTML5Backend}>
-            <Row >
-
-                <h2><center>{question}</center></h2>
-
+// ...existing code...
+return (
+    <DndProvider backend={HTML5Backend}>
+        <div className="chemistry-game-container">
+            <Row className="mb-2">
+                <div className="question-container">
+                    <h2 className="question-text">
+                        {question}
+                    </h2>
+                </div>
             </Row>
-            <Row >
-                <Shapes className="shape" Data={chemicalData} />
+            <Row className="mb-2">
+                <div className="shapes-container">
+                    <Shapes className="shape" Data={chemicalData} />
+                </div>
             </Row>
-            <Row >
-                <Carousels />
+            <Row className="mb-2">
+                <div className="carousel-container">
+                    <Carousels />
+                </div>
             </Row>
-        </DndProvider>
-
-
-
-    );
+        </div>
+    </DndProvider>
+);
+// ...existing code...
     /* <Row >
      <ElementsTable />
  </Row>*/

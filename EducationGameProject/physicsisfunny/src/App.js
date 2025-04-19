@@ -5,6 +5,7 @@ import Home from './Components/Home/Home'
 import Forum from './Components/Forum/Forum'
 import PhysicsGame from './Components/Physics/PhysicsGame'
 import ChemistryGame from './Components/Chemistry/ChemistryGame'
+import SubscriptionModal from './Components/Subscription/SubscriptionModal'
 import LoginModal from './Components/Login/LoginModal'
 import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
@@ -14,6 +15,14 @@ const App = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   // Add this near your other useState declarations in App component
 const [isAuthenticated, setIsAuthenticated] = useState(false);
+const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+
+const handleSubscribe = (subscriptionData) => {
+  // Handle subscription logic here
+  console.log('Subscription data:', subscriptionData);
+  setIsSubscriptionModalOpen(false);
+};
+
   const NAV_LINKS = [
     { text: 'Home', url: '#' },
     { text: 'Physics', url: '#' },
@@ -96,6 +105,11 @@ const Navbar = () => {
 
 const NavLink = ({ href, text, onClick, requiresAuth = true }) => {
   const handleClick = (e) => {
+    if (text === 'Subscribe') {
+      e.preventDefault();
+      setIsSubscriptionModalOpen(true);
+      return;
+    }
     if (requiresAuth && !isAuthenticated) {
       e.preventDefault();
       setIsLoginModalOpen(true);
@@ -153,12 +167,20 @@ const Footer = () => (
             }
         </main>
         <Footer />
-        <LoginModal 
+
+      {/* ...existing code... */}
+      <LoginModal 
         isOpen={isLoginModalOpen} 
         handleLogin={handleLogin}
         onClose={() => setIsLoginModalOpen(false)} 
       />
+      <SubscriptionModal
+        isOpen={isSubscriptionModalOpen}
+        onClose={() => setIsSubscriptionModalOpen(false)}
+        onSubscribe={handleSubscribe}
+      />
     </div>
+
 )};
 
 export default App;

@@ -3,6 +3,52 @@
     height: auto;
     border: 3px solid rgb(207, 201, 201);
   }
+ 
+.question-text {
+    color: #1e40af;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.chemistry-game-container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f8fafc;
+}
+
+.question-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 0.5rem;  /* Reduced from 2rem */
+}
+
+.shapes-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 0.5rem;  /* Reduced from 2rem */
+}
+
+.carousel-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.shape {
+    transition: transform 0.2s ease-in-out;
+}
+
+.shape:hover {
+    transform: scale(1.05);
+}
   #questionText {
     vertical-align: middle;
     height: 200px;
