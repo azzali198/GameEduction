@@ -2,3 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 @import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Header styles */
+.header {
+  height: 40px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #2563eb, #1d4ed8);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-image {
+  height: 40px; /* Changed from 100px to match header height */
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Footer styles */
+.footer {
+  height: 40px;
+  background: linear-gradient(to right, #2563eb, #1d4ed8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  color: white; /* Added to match navbar text color */
+}
+
+/* Main content styles */
+.main-content {
+  min-height: calc(100vh - 128px); /* 40px header + 48px navbar + 40px footer */
+  background-color: #f8fafc;
+  padding: 1rem;
+  overflow-y: auto; /* Only show scrollbar when content exceeds height */
+}
+
+/* Custom Scrollbar Styles */
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Firefox scrollbar styles */
+.main-content {
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+/* Ensure the root container doesn't overflow */
+#root {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Add height constraint to the app container */
+.flex-col {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Navigation styles */
+.nav-container {
+  height: 48px;
+  background-color: #1e40af;
+  padding: 0 1rem;
+}
+
+/* Navbar link styles */
+.nav-container a {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+  text-decoration: none;  /* Remove underline */
+}
+
+.nav-container a:hover {
+  background-color: #2563eb;
+  color: white;
+  text-decoration: none;  /* Ensure no underline on hover */
+}
+
+/* Style for locked/disabled links */
+.nav-container a.opacity-50:hover {
+  background-color: #1e40af;
+  cursor: not-allowed;
+}
