@@ -19,26 +19,59 @@ const onFinishHandler = (chosen) => {return new Promise(resolve => setTimeout(re
 const onClickButtonHandler = () => {return new Promise(resolve => setTimeout(resolve,1400)).then(() => {setDisplayQuiz(false)})}
 const propositions = ['Albert Einstein', 'Isaac Newton', 'Thoms Edison']
 const rightResponse = 0;
-const buttonGame ={
-  padding: '0px' ,
-  border :'2px solid  blue'
-}
+const buttonGame = {
+  padding: '0px',
+  border: '2px solid blue',
+};
+
 const buttonStyle = {
-  width:'100%',
-  borderRadius:'0px'
-}
+  width: '100%',
+  height: '100%',
+  padding: '0',
+  borderRadius: '0px',
+  overflow: 'hidden', // Prevent image overflow
+  display: 'flex', // Enable flex layout
+  alignItems: 'center',
+  justifyContent: 'center',
+  width:'160px'
+};
+
+const imageStyle = {
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover', // Make image cover the entire space
+  display: 'block' // Remove extra space below image
+};
+
+const renderGameCell = () => (
+  <Col style={buttonGame}>
+    <Button
+      className="game-button"
+      style={buttonStyle}
+      variant="light"
+      onClick={() => setDisplayWheel(true)}
+    >
+      <img 
+        src={image1} 
+        alt="Game cell" 
+        style={imageStyle}
+      />
+    </Button>
+  </Col>
+);
+
 return (<div >
 
 <Container style={{paddingTop:'3px',paddingBottom:'3px'}}>
       <Row>
         <Col style={buttonGame}> <Button style={buttonStyle} variant ='light'  onClick={()=>{setDisplayWheel(true);}}> {<STR />} </Button></Col>
         <Col style={buttonGame}><Button  style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<CD />} </Button></Col>
-        <Col style={buttonGame}><Button  style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button  style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button  style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button  style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button  style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button  style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
+        {renderGameCell()}
+        {renderGameCell()}
+        {renderGameCell()}
+        {renderGameCell()}
+        {renderGameCell()}
+        {renderGameCell()}
       
       </Row>
       <Row>
@@ -50,21 +83,21 @@ return (<div >
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
+       {renderGameCell()}
       </Row>
       <Row>
-      <Col style={buttonGame}><Button  style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
+      {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
     
       </Row>
       <Row>
-      <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
+     {renderGameCell()}
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
@@ -75,58 +108,14 @@ return (<div >
 
       </Row>
       <Row>
-      <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-
-      </Row>
-      <Row>
-
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-      </Row>
-      <Row>
-      <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-
-      </Row>
-      <Row>
-      <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-
-      </Row>
-      <Row>
-      <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
+     {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
 
       </Row>
       <Row>
@@ -138,17 +127,61 @@ return (<div >
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
+       {renderGameCell()}
+      </Row>
+      <Row>
+     {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+
+      </Row>
+      <Row>
+     {renderGameCell()}
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+
+      </Row>
+      <Row>
+     {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+
+      </Row>
+      <Row>
+
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+       {renderGameCell()}
       </Row>
       <Row>
         <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> { <FN style={{width:'100%',height:'100%'}}/>} </Button>  </Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<IMG />} </Button></Col>
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
+       {renderGameCell()}
 
       </Row>
     </Container>

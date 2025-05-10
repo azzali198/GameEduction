@@ -9,7 +9,6 @@ import SubscriptionModal from './Components/Subscription/SubscriptionModal'
 import LoginModal from './Components/Login/LoginModal'
 import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
-
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -109,11 +108,26 @@ const App = () => {
 
   const Header = () => (
     <header className="header">
-        <img 
-            src={banner} 
-            alt="Banner Image" 
-            className="header-image"
-        />
+      <div className="header-container">
+        <h1 className="header-title">
+          <span>P</span>
+          <span>H</span>
+          <span>Y</span>
+          <span>S</span>
+          <span>I</span>
+          <span>C</span>
+          <span>S</span>
+          <span> </span>
+          <span>I</span>
+          <span>S</span>
+          <span> </span>
+          <span>F</span>
+          <span>U</span>
+          <span>N</span>
+          <span>N</span>
+          <span>Y</span>
+        </h1>
+      </div>
     </header>
   );
 

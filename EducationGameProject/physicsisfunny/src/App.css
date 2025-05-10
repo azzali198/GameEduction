@@ -5,22 +5,56 @@
 
 /* Header styles */
 .header {
-  height: 40px;
-  width: 100%;
+  height: 60px;
+  width: 100vw;
   overflow: hidden;
+}
+
+.header-container {
+  width: 100%;
+  height: 100%;
+  background-image: url('../src/images/banner.png');
+  background-size: auto 100%;
+  background-position: left center;
+  background-repeat: repeat-x;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, #2563eb, #1d4ed8);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
-.header-image {
-  height: 40px; /* Changed from 100px to match header height */
-  width: 100%;
-  object-fit: cover;
-  object-position: center;
+.header-title {
+  position: absolute;
+  font-size: 3rem;
+  font-family: 'Product Sans', Arial, sans-serif;
+  text-align: center;
+  z-index: 10;
+  letter-spacing: -1px;
+  padding: 0.5rem 2rem;
+  background-color: rgba(255, 255, 255, 0.5); /* Decreased opacity from 0.7 to 0.5 */
+  border-radius: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 450px;
 }
+
+.header-title span:nth-child(1) { color: #4285f4; } /* Google Blue */
+.header-title span:nth-child(2) { color: #ea4335; } /* Google Red */
+.header-title span:nth-child(3) { color: #fbbc05; } /* Google Yellow */
+.header-title span:nth-child(4) { color: #4285f4; } /* Google Blue */
+.header-title span:nth-child(5) { color: #34a853; } /* Google Green */
+.header-title span:nth-child(6) { color: #ea4335; } /* Google Red */
+.header-title span:nth-child(7) { color: #4285f4; } /* Google Blue */
+.header-title span:nth-child(8) { color: #fbbc05; } /* Google Yellow */
+.header-title span:nth-child(9) { color: #34a853; } /* Google Green */
+.header-title span:nth-child(10) { color: #ea4335; } /* Google Red */
+.header-title span:nth-child(11) { color: #4285f4; } /* Google Blue */
+.header-title span:nth-child(12) { color: #34a853; } /* Google Green */
+.header-title span:nth-child(13) { color: #fbbc05; } /* Google Yellow */
+.header-title span:nth-child(14) { color: #4285f4; } /* Google Blue for N */
+.header-title span:nth-child(15) { color: #4285f4; } /* Google Blue for N */
+.header-title span:nth-child(16) { color: #4285f4; } /* Google Blue for Y */
 
 /* Footer styles */
 .footer {
