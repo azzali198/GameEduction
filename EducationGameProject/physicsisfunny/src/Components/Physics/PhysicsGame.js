@@ -2,6 +2,7 @@ import React,{useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { importAllImages } from '../../utils/imageLoader';
 import image1  from '../../images/formule1.png'
 import {ReactComponent as IMG}  from '../../images/formule1.svg'
 import {ReactComponent as STR}  from '../../images/START.svg'
@@ -23,7 +24,10 @@ const buttonGame = {
   padding: '0px',
   border: '2px solid blue',
 };
-
+// Import all images from BtnImgs directory
+const gameImages = importAllImages(
+  require.context('../../assets/images/BtnImgs', true, /\.(png|jpe?g|svg)$/)
+);
 const buttonStyle = {
   width: '100%',
   height: '100%',
@@ -43,35 +47,34 @@ const imageStyle = {
   display: 'block' // Remove extra space below image
 };
 
-const renderGameCell = () => (
-  <Col style={buttonGame}>
-    <Button
-      className="game-button"
-      style={buttonStyle}
-      variant="light"
-      onClick={() => setDisplayWheel(true)}
-    >
-      <img 
-        src={image1} 
-        alt="Game cell" 
-        style={imageStyle}
-      />
-    </Button>
-  </Col>
-);
-
+  // Update renderGameCell to use dynamic images
+  const renderGameCell = (imagePath) => (
+    <Col className="game-cell" style={buttonGame}>
+      <Button  style={buttonStyle}
+        className="game-button"
+        variant="light"
+        onClick={() => setDisplayWheel(true)}
+      >
+        <img 
+          src={gameImages[imagePath]}
+          alt={`Game cell ${imagePath}`}
+          className="cell-image"
+        />
+      </Button>
+    </Col>
+  );
 return (<div >
 
 <Container style={{paddingTop:'3px',paddingBottom:'3px'}}>
       <Row>
         <Col style={buttonGame}> <Button style={buttonStyle} variant ='light'  onClick={()=>{setDisplayWheel(true);}}> {<STR />} </Button></Col>
-        <Col style={buttonGame}><Button  style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> {<CD />} </Button></Col>
-        {renderGameCell()}
-        {renderGameCell()}
-        {renderGameCell()}
-        {renderGameCell()}
-        {renderGameCell()}
-        {renderGameCell()}
+        {renderGameCell('62.png')}
+        {renderGameCell('1.png')}
+        {renderGameCell('2.png')}
+        {renderGameCell('3.png')}
+        {renderGameCell('4.png')}
+        {renderGameCell('5.png')}
+        {renderGameCell('6.png')}
       
       </Row>
       <Row>
@@ -83,21 +86,21 @@ return (<div >
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
-       {renderGameCell()}
+       {renderGameCell('7.png')}
       </Row>
       <Row>
-      {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
+      {renderGameCell('8.png')}
+       {renderGameCell('9.png')}
+       {renderGameCell('10.png')}
+       {renderGameCell('11.png')}
+       {renderGameCell('12.png')}
+       {renderGameCell('13.png')}
+       {renderGameCell('14.png')}
+       {renderGameCell('15.png')}
     
       </Row>
       <Row>
-     {renderGameCell()}
+     {renderGameCell('16.png')}
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
@@ -108,58 +111,14 @@ return (<div >
 
       </Row>
       <Row>
-     {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-
-      </Row>
-      <Row>
-
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-       {renderGameCell()}
-      </Row>
-      <Row>
-     {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-
-      </Row>
-      <Row>
-     {renderGameCell()}
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-
-      </Row>
-      <Row>
-     {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
+     {renderGameCell('17.png')}
+       {renderGameCell('18.png')}
+       {renderGameCell('19.png')}
+       {renderGameCell('20.png')}
+       {renderGameCell('21.png')}
+       {renderGameCell('22.png')}
+       {renderGameCell('23.png')}
+       {renderGameCell('24.png')}
 
       </Row>
       <Row>
@@ -171,17 +130,61 @@ return (<div >
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
         <Col style={{padding:'0px'}}></Col>
-       {renderGameCell()}
+       {renderGameCell('25.png')}
+      </Row>
+      <Row>
+     {renderGameCell('26.png')}
+       {renderGameCell('27.png')}
+       {renderGameCell('28.png')}
+       {renderGameCell('29.png')}
+       {renderGameCell('30.png')}
+       {renderGameCell('31.png')}
+       {renderGameCell('32.png')}
+       {renderGameCell('33.png')}
+
+      </Row>
+      <Row>
+     {renderGameCell('34.png')}
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+
+      </Row>
+      <Row>
+     {renderGameCell('35.png')}
+       {renderGameCell('36.png')}
+       {renderGameCell('37.png')}
+       {renderGameCell('38.png')}
+       {renderGameCell('39.png')}
+       {renderGameCell('40.png')}
+       {renderGameCell('41.png')}
+       {renderGameCell('42.png')}
+
+      </Row>
+      <Row>
+
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+        <Col style={{padding:'0px'}}></Col>
+       {renderGameCell('43.png')}
       </Row>
       <Row>
         <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> { <FN style={{width:'100%',height:'100%'}}/>} </Button>  </Col>
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
-       {renderGameCell()}
+       {renderGameCell('44.png')}
+       {renderGameCell('45.png')}
+       {renderGameCell('46.png')}
+       {renderGameCell('47.png')}
+       {renderGameCell('48.png')}
+       {renderGameCell('49.png')}
+       {renderGameCell('50.png')}
 
       </Row>
     </Container>
