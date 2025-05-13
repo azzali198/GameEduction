@@ -70,9 +70,12 @@
 
 /* Main content styles */
 .main-content {
-  min-height: calc(100vh - 128px); /* 40px header + 48px navbar + 40px footer */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
   background-color: #f8fafc;
-  padding: 1rem;
+  padding: 4rem 1rem 1rem 1rem; /* Increased top padding to 4rem */
   overflow-y: auto; /* Only show scrollbar when content exceeds height */
 }
 

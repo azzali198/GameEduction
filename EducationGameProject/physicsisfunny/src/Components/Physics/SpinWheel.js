@@ -9,13 +9,15 @@ const SpinningWheel = ({isDisplayed, onFinishing}) => {
     const modalTextStyles = "mb-4 text-blue-600";
     const closeButtonStyles = "bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/80";
     const segments = [
-        "Modern Physics",
-        "Mechanics",
-        "Quantic Physics",
-        "Thermodynamics",
-        "Optic",
-        "Gravity"
+        "⓪ Modern Physics",
+        "① Mechanics",
+        "② Quantic Physics",
+        "③ Thermodynamics",
+        "④ Optic",
+        "⑤ Gravity"
       ]; 
+
+
       const segColors = [ '#EE4040',
         '#F0CF50',
         '#815CD1',
