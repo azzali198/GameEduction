@@ -9,15 +9,89 @@
    border :'2px solid  blue';
 
 }
-/* Hover effect 
-.buttonGame:hover {
-  transform: scale(1.05); /* Slightly enlarge the button on hover */
-/*  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover 
-}*/
 
-/* Active effect (when the button is clicked) */
-/*.buttonGame:active {
-  transform: scale(0.95); /* Slightly shrink the button when clicked */
-/*}*/
+/* Container styles */
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 8px;
+}
+
+/* Row styles */
+.row {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0;
+  border-top: 1px solid #4285f4;
+}
+
+.row:first-child {
+  border-top: none;
+}
+
+/* Cell styles */
+.game-cell,
+.col {
+  aspect-ratio: 2.7;
+  position: relative;
+  border-right: 1px solid #4285f4;
+  padding: 0 !important;
+}
+
+.game-cell:first-child,
+.col:first-child {
+  border-left: 1px solid #4285f4;
+}
+
+/* Empty cell style */
+.col:empty {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Button styles */
+.game-button {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: border-color 0.2s ease;
+}
+
+/* Image and SVG styles */
+.game-button img,
+.game-button svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Hover effect - only border color change */
+.game-cell:hover {
+  border-color: #34a853;
+}
+
+/* Spinning wheel overlay */
+.wheel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3); /* Decreased opacity from 0.5 to 0.3 */
+  z-index: 1000;
+}
 
 

@@ -49,8 +49,8 @@ const imageStyle = {
 
   // Update renderGameCell to use dynamic images
   const renderGameCell = (imagePath) => (
-    <Col className="game-cell" style={buttonGame}>
-      <Button  style={buttonStyle}
+    <Col className="game-cell">
+      <Button
         className="game-button"
         variant="light"
         onClick={() => setDisplayWheel(true)}
@@ -63,11 +63,17 @@ const imageStyle = {
       </Button>
     </Col>
   );
-return (<div >
 
-<Container style={{paddingTop:'3px',paddingBottom:'3px'}}>
+  // Update empty cells
+  const renderEmptyCell = () => (
+    <Col />
+  );
+
+return (
+  <div style={{ position: 'relative' }}>
+    <Container style={{paddingTop:'3px',paddingBottom:'3px'}}>
       <Row>
-        <Col style={buttonGame}> <Button style={buttonStyle} variant ='light'  onClick={()=>{setDisplayWheel(true);}}> {<STR />} </Button></Col>
+        {renderGameCell('65.png')}
         {renderGameCell('62.png')}
         {renderGameCell('1.png')}
         {renderGameCell('2.png')}
@@ -79,13 +85,13 @@ return (<div >
       </Row>
       <Row>
       
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
        {renderGameCell('7.png')}
       </Row>
       <Row>
@@ -101,13 +107,13 @@ return (<div >
       </Row>
       <Row>
      {renderGameCell('16.png')}
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
 
       </Row>
       <Row>
@@ -123,13 +129,13 @@ return (<div >
       </Row>
       <Row>
 
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
        {renderGameCell('25.png')}
       </Row>
       <Row>
@@ -145,13 +151,13 @@ return (<div >
       </Row>
       <Row>
      {renderGameCell('34.png')}
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
 
       </Row>
       <Row>
@@ -167,17 +173,17 @@ return (<div >
       </Row>
       <Row>
 
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
-        <Col style={{padding:'0px'}}></Col>
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
+        {renderEmptyCell()}
        {renderGameCell('43.png')}
       </Row>
       <Row>
-        <Col style={buttonGame}><Button style={buttonStyle} variant ='light' onClick={()=>{setDisplayWheel(true);}}> { <FN style={{width:'100%',height:'100%'}}/>} </Button>  </Col>
+      {renderGameCell('68.png')}
        {renderGameCell('44.png')}
        {renderGameCell('45.png')}
        {renderGameCell('46.png')}
@@ -188,9 +194,25 @@ return (<div >
 
       </Row>
     </Container>
-    {displayWheel &&<SpinningWheel isDisplayed={displayWheel} onFinishing= {onFinishHandler}/>}
-    {displayQuiz && <QuizModal onClickButton ={onClickButtonHandler} items = {propositions} response ={rightResponse}/>}
-</div>)
+    
+    {displayWheel && (
+      <div className="wheel-overlay">
+        <SpinningWheel 
+          isDisplayed={displayWheel} 
+          onFinishing={onFinishHandler}
+        />
+      </div>
+    )}
+    
+    {displayQuiz && (
+      <QuizModal 
+        onClickButton={onClickButtonHandler} 
+        items={propositions} 
+        response={rightResponse}
+      />
+    )}
+  </div>
+)
 
 }
 

@@ -3,10 +3,10 @@ import WheelComponent from 'react-wheel-of-prizes';
 
 
 const SpinningWheel = ({isDisplayed, onFinishing}) => {
-    const modalStyles = "fixed top-20  w-full h-full flex items-center justify-center bg-black bg-opacity-50";
+    const modalStyles = "fixed top-20  w-full h-full flex items-center justify-center";
     const modalContentStyles = "absolute bg-white text-card-foreground p-6 rounded-lg shadow-lg";
-    const modalTitleStyles = "text-2xl font-bold mb-4";
-    const modalTextStyles = "mb-4";
+    const modalTitleStyles = "text-2xl font-bold mb-4 text-blue-600"; // Google Blue color
+    const modalTextStyles = "mb-4 text-blue-600";
     const closeButtonStyles = "bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/80";
     const segments = [
         "Modern Physics",
