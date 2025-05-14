@@ -19,7 +19,7 @@
 /* Container styles */
 .container {
   width: 100%;
-  max-width: 960px;
+  height : 70vh;
   padding: 20px;
   margin: 0 auto;
 }
@@ -61,8 +61,8 @@
 
 /* Hover effects with finger animation */
 .game-cell-active {
-  border-width: 3px;
-  border-color: #34a853;
+  border: 3px solid #34a853;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
   cursor: pointer;
 }
