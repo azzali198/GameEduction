@@ -1,60 +1,56 @@
 import React from "react";
-import { Rectangle, Circle, Ellipse, Line, Polyline, CornerBox, Triangle } from 'react-shapes';
-import LineTo from 'react-lineto';
-//import DataTable, { createTheme } from 'react-data-table-component';
+import { Rectangle } from 'react-shapes';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Containers from './Container.js'
+import Containers from './Container.js';
+import './Shapes.css';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-const Shapes = ({Data}) => {
-
-
- 
-
-
+const Shapes = ({ Data }) => {
     return (
-        <div>
-
-           {Data && <Container >
-                {
-                    Data.map((obj) => {
-                        return (
-
-                            <Row>
-                               {
-                                obj.map((col) => {
-                                    if (col !== null && col !== '') {
-                                        
-                                        if (col === 'LH') {
-                                            return (<Col style={{padding:'0px',margin:'0px'}}><br/> <Rectangle  style={{ verticalAlign: 'middle' ,padding:'0px',margin:'0px'}} width='100%' height={10} fill={{ color: 'gray' }} /></Col>)
-                                        }
-                                        else if (col === 'LV') {
-                                            return (<Col style={{padding:'0px',margin:'0px'}}><center> <Rectangle  style={{padding:'0px',margin:'0px'}} width={10} height={100} fill={{ color: 'gray' }} /></center> </Col>)
-                                        }
-                                        else {
-                                            return (<Col style={{padding:'0px',margin:'0px'}}> <center><Containers style={{padding:'0px',margin:'0px'}} name='' accept={col} /></center> </Col>)
-                                        }
-                                    }
-                                })
-                               }
-
-                            </Row>
-
-
-
-                        );
-                    })
-                }
-            </Container>}
-
-
-
-
-        </div>)
-
-
-}
+        <Container fluid className="shapes-container">
+            {Data.map((row, rowIndex) => (
+                <Row key={`row-${rowIndex}`} className="shape-row">
+                    {row.map((col, colIndex) => {
+                        if (col === 'LH') {
+                            return (
+                                <Col key={`col-${rowIndex}-${colIndex}`} className="shape-cell">
+                                    <Rectangle
+                                        width={window.innerWidth < 768 ? 80 : 120}
+                                        height={10}
+                                        fill={{ color: 'gray' }}
+                                        className="horizontal-line"
+                                    />
+                                </Col>
+                            );
+                        } else if (col === 'LV') {
+                            return (
+                                <Col key={`col-${rowIndex}-${colIndex}`} className="shape-cell">
+                                    <Rectangle
+                                        width={10}
+                                        height={window.innerWidth < 768 ? 60 : 80}
+                                        fill={{ color: 'gray' }}
+                                        className="vertical-line"
+                                    />
+                                </Col>
+                            );
+                        } else if (col) {
+                            return (
+                                <Col key={`col-${rowIndex}-${colIndex}`} className="shape-cell">
+                                    <Containers
+                                        name=""
+                                        accept={col}
+                                        className="element-container"
+                                    />
+                                </Col>
+                            );
+                        }
+                        return <Col key={`col-${rowIndex}-${colIndex}`} className="shape-cell" />;
+                    })}
+                </Row>
+            ))}
+        </Container>
+    );
+};
 
 export default Shapes;

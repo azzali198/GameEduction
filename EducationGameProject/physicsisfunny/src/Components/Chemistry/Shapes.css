@@ -1,0 +1,69 @@
+.shapes-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+}
+
+.shape-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0.25rem;
+    border: none !important;
+}
+
+.shape-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: 0;
+    border: none !important;
+}
+
+.horizontal-line,
+.vertical-line {
+    transition: all 0.3s ease;
+}
+
+.element-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    .shapes-container {
+        gap: 0.25rem;
+    }
+
+    .shape-row {
+        gap: 0.125rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .shapes-container {
+        transform: scale(0.9);
+    }
+}
+
+/* Handle very small screens */
+@media screen and (max-width: 320px) {
+    .shapes-container {
+        transform: scale(0.8);
+    }
+}

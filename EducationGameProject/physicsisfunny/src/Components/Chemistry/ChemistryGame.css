@@ -2,54 +2,192 @@
     width: 99%;
     height: auto;
     border: 3px solid rgb(207, 201, 201);
-  }
- 
-.question-text {
-    color: #1e40af;
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-align: center;
-    line-height: 1.4;
 }
 
+.question-text {
+    color: #1565c0; /* Darker blue text */
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    text-align: center;
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* Container styles without borders */
 .chemistry-game-container {
-  padding: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  background-color: #f8fafc;
+    width: 100%;
+    padding-top: 80px; /* Increased from 60px */
+    margin-top: 2rem; /* Added margin-top */
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: none;
+}
+
+/* Component containers without borders */
+.question-container,
+.shapes-container,
+.carousel-container {
+    width: 100%;
+    border: none !important;
+    margin: 0;
+}
+
+.question-row {
+    margin-bottom: 1rem; /* Reduced from 2rem */
+    position: relative;
+    z-index: 1;
 }
 
 .question-container {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-bottom: 0.5rem;  /* Reduced from 2rem */
+    background-color: #e3f2fd; /* Light blue background */
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem; /* Added margin at the top */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    position: relative;
+    border-left: 4px solid #2196f3; /* Blue accent border */
 }
 
 .shapes-container {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-bottom: 0.5rem;  /* Reduced from 2rem */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    height: 55vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .carousel-container {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Style carousel navigation buttons */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Style carousel indicators */
+.carousel-indicators {
+    margin-bottom: 0;
+    position: relative;
+    bottom: -10px;
+}
+
+.carousel-indicators [data-bs-target] {
+    background-color: #1565c0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 0 4px;
+}
+
+/* Style carousel captions */
+.carousel-caption {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    padding: 0.5rem;
+    bottom: 20px;
+}
+
+.carousel-caption h5 {
+    color: #1565c0;
+    margin: 0;
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-weight: 500;
+}
+
+/* Reset Bootstrap row and column styles */
+.row {
+    --bs-gutter-x: 0 !important;
+    --bs-gutter-y: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col,
+.col-12 {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    flex: 1;
+    min-width: 0;
+}
+
+/* Remove bootstrap default borders */
+.carousel-container .row,
+.carousel-container .col {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+/* Remove any remaining bootstrap gutters */
+[class^="container"] {
+    --bs-gutter-x: 0 !important;
+    --bs-gutter-y: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+/* Remove any Bootstrap grid gutters */
+.row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col {
+    padding: 0;
+    flex: 1;
+    min-width: 0; /* Prevents flex items from overflowing */
 }
 
 .shape {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
     transition: transform 0.2s ease-in-out;
 }
 
 .shape:hover {
     transform: scale(1.05);
 }
-  #questionText {
+
+/* Maintain aspect ratio for chemical structure */
+.shape svg {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
+#questionText {
     vertical-align: middle;
     height: 200px;
     text-justify: auto;
@@ -61,47 +199,49 @@
     font-style: italic;
     font-size: auto;
     display: flex;
-     justify-content: center; /* Align horizontal */
-    align-items: center; 
+    justify-content: center; /* Align horizontal */
+    align-items: center;
     font-family: Arial, Helvetica, sans-serif;
-  }
-  
-  #imageCol {
+}
+
+#imageCol {
     border-right: 3px solid rgb(207, 201, 201);
     border-bottom: 3px solid rgb(207, 201, 201);
     vertical-align: middle;
     text-align: center;
-    height:100px;
-  }
-  
-  #CounterCol {
+    height: 100px;
+}
+
+#CounterCol {
     border-left: 3px solid rgb(207, 201, 201);
     border-bottom: 3px solid rgb(207, 201, 201);
     vertical-align: middle;
     text-align: center;
     font-style: italic;
     font-size: auto;
-    height:200px;
+    height: 200px;
     display: flex;
     justify-content: center; /* Align horizontal */
-    align-items: center; 
-  }
-  .img {
+    align-items: center;
+}
+
+.img {
     width: 100%;
     height: auto;
-  }
-  .App-logo {
+}
+
+.App-logo {
     height: 40vmin;
     pointer-events: none;
-  }
-  
-  @media (prefers-reduced-motion: no-preference) {
+}
+
+@media (prefers-reduced-motion: no-preference) {
     .App-logo {
-      animation: App-logo-spin infinite 20s linear;
+        animation: App-logo-spin infinite 20s linear;
     }
-  }
-  
-  .App-header {
+}
+
+.App-header {
     background-color: #282c34;
     min-height: 100vh;
     display: flex;
@@ -110,21 +250,58 @@
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
-  }
-  .shape 
-  {
-    height:'100px'
-  }
-  .App-link {
+}
+
+.App-link {
     color: #61dafb;
-  }
-  
-  @keyframes App-logo-spin {
+}
+
+@keyframes App-logo-spin {
     from {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
     to {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
-  
+}
+
+/* Media queries for different screen sizes */
+@media screen and (max-width: 768px) {
+    .chemistry-game-container {
+        padding-top: 30px;
+    }
+
+    .shapes-container {
+        transform: scale(0.9);
+    }
+
+    .carousel-container {
+        padding: 0.5rem;
+    }
+    
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .chemistry-game-container {
+        padding-top: 20px;
+    }
+
+    .shapes-container {
+        transform: scale(0.8);
+    }
+
+    .question-container {
+        padding: 0.5rem;
+    }
+}
+
+/* Add margin to Row components */
+.mb-3 {
+    margin-bottom: 1rem !important;
+    margin-top: 1rem !important;
+}

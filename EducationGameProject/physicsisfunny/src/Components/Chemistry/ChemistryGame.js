@@ -1,4 +1,3 @@
-
 import React from 'react'
 import './ChemistryGame.css';
 
@@ -24,7 +23,7 @@ const ChemistryGame = () => {
     const period = React.useMemo(() => { return Date.now() + 20000 }, [])
     const counterRef = React.useRef();
     const [chemicalData, setChemicalData] = React.useState([['', '', 'H', '', ''], ['', '', 'LV', '', ''], ['H', 'LH', 'C', 'LH', 'H'], ['', '', 'LV', '', ''], ['', '', 'H', '', '']])
-    const [question, setQuestion] = React.useState('Colorless gas produced by the decomposition of organic matter (plant and animal)')
+    const [question, setQuestion] = React.useState("Colorless gas produced by the decomposition of organic matter (plant and animal)")
     React.useEffect(() => {
         if (score === result) {
             Swal.fire({
@@ -42,37 +41,43 @@ no-repeat
             }).then(() => {
                 Dispatch(initialize())
                 setChemicalData([['', '', '', '', ''], ['H', 'LH', 'O', 'LH', 'H'], ['', '', '', '', '']])
+                setQuestion('Colorless gas produced by the decomposition of organic matter (plant and animal)')
             })
         }
     }, [score])
     const onCompletePeriod = () => { }
     const onTickCounter = () => { }
     const onStopCounter = () => { }
-// ...existing code...
-return (
-    <DndProvider backend={HTML5Backend}>
-        <div className="chemistry-game-container">
-            <Row className="mb-2">
-                <div className="question-container">
-                    <h2 className="question-text">
-                        {question}
-                    </h2>
-                </div>
-            </Row>
-            <Row className="mb-2">
-                <div className="shapes-container">
-                    <Shapes className="shape" Data={chemicalData} />
-                </div>
-            </Row>
-            <Row className="mb-2">
-                <div className="carousel-container">
-                    <Carousels />
-                </div>
-            </Row>
-        </div>
-    </DndProvider>
-);
-// ...existing code...
+
+    return (
+        <DndProvider backend={HTML5Backend}>
+            <div className="chemistry-game-container">
+                <Row>
+                    <Col xs={12}>
+                        <div className="question-container">
+                            <h3 className="question-text">{question}</h3>
+                        </div>
+                    </Col>
+                </Row>
+                
+                <Row>
+                    <Col xs={12}>
+                        <div className="shapes-container">
+                            <Shapes className="shape" Data={chemicalData} />
+                        </div>
+                    </Col>
+                </Row>
+                
+                <Row>
+                    <Col xs={12}>
+                        <div className="carousel-container">
+                            <Carousels />
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+        </DndProvider>
+    );
     /* <Row >
      <ElementsTable />
  </Row>*/
