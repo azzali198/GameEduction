@@ -11,10 +11,10 @@ const SpinningWheel = ({isDisplayed, onFinishing}) => {
     const segments = [
         "⓪ Modern Physics",
         "① Mechanics",
-        "② Quantic Physics",
+        "② Relativity",
         "③ Thermodynamics",
         "④ Optic",
-        "⑤ Gravity"
+        "⑤ Magnetism"
       ]; 
 
 
