@@ -1,0 +1,6 @@
+@PhysicsBack_HostAddress = http://localhost:5042
+
+GET {{PhysicsBack_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
