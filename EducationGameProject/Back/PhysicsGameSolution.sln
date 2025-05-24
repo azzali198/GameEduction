@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhysicsGameApi", "PhysicsGameApi\PhysicsGameApi.csproj", "{3B49AF7E-3D47-492A-8DED-5BB9ED52FB12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhysicsGame.BL", "PhysicsGame.BL\PhysicsGame.BL.csproj", "{DBC6B53B-550D-4757-9D94-7E1DB5491D63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhysicsGame.DAL", "PhysicsGame.DAL\PhysicsGame.DAL.csproj", "{5E6AD897-A66B-4440-BFD6-422AEA31149B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{3B49AF7E-3D47-492A-8DED-5BB9ED52FB12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B49AF7E-3D47-492A-8DED-5BB9ED52FB12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B49AF7E-3D47-492A-8DED-5BB9ED52FB12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBC6B53B-550D-4757-9D94-7E1DB5491D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBC6B53B-550D-4757-9D94-7E1DB5491D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBC6B53B-550D-4757-9D94-7E1DB5491D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBC6B53B-550D-4757-9D94-7E1DB5491D63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E6AD897-A66B-4440-BFD6-422AEA31149B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E6AD897-A66B-4440-BFD6-422AEA31149B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E6AD897-A66B-4440-BFD6-422AEA31149B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E6AD897-A66B-4440-BFD6-422AEA31149B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
