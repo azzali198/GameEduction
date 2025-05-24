@@ -11,7 +11,6 @@ import { increment, selectScore, initialize } from './ScoreSlice'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import congrats from '../../images/congratulations-7600.gif'
-
 import Swal from "sweetalert2";
 
 

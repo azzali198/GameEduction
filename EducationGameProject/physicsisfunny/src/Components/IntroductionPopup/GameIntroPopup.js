@@ -15,7 +15,7 @@ const GameIntroPopup = ({ onClose }) => {
         },
         {
             image: image2,
-            text: 'This interactive spinning wheel is designed to make learning physics fun and it contains six topics from the world of physics:Mechanics, Optics, Modern physics, Relativity, Thermodynamics and Magnetism. Each topic corresponds to the number of cells that you can pass through from the highlighted cell.'
+            text: 'This interactive spinning wheel is designed to make learning physics fun and it contains six topics from the world of physics:Mechanics, Optics, Modern physics, Relativity, Thermodynamics and Electricity & Magnetism. Each topic corresponds to the number of cells that you can pass through from the highlighted cell.'
         },
         {
             image: image3,

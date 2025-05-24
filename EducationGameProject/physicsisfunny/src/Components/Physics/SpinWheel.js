@@ -14,7 +14,7 @@ const SpinningWheel = ({isDisplayed, onFinishing}) => {
         "② Relativity",
         "③ Thermodynamics",
         "④ Optic",
-        "⑤ Magnetism"
+        "⑤ Electromagnetism"
       ]; 
 
 
