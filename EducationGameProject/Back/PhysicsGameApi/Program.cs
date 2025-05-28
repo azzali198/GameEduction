@@ -1,5 +1,7 @@
 using PhysicsGame.DAL.Context;
 using Microsoft.EntityFrameworkCore;
+using PhysicsGame.BL;
+using PhysicsGame.BL.services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +12,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<PhysicsGameContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

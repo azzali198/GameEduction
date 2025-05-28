@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PhysicsGame.DAL\PhysicsGame.DAL.csproj" />
+    <ProjectReference Include="..\PhysicsGame.BL\PhysicsGame.BL.csproj" />
   </ItemGroup>
 
 </Project>

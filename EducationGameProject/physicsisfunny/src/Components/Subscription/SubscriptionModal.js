@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { countries } from '../../data/countries';
 import ReactCountryFlag from 'react-country-flag';
+import { subscribeUser } from '../../services/userService';
 
 const CountryOption = ({ country }) => {
   return (
@@ -70,6 +71,10 @@ const SubscriptionModal = ({ isOpen, onClose, onSubscribe }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    dateOfBirth: '',
+    password: '',
+    confirmPassword: '',
+    profession: '',
     plan: 'basic',
     nationality: ''
   });
@@ -81,10 +86,31 @@ const SubscriptionModal = ({ isOpen, onClose, onSubscribe }) => {
     }));
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubscribe(formData);
-    onClose();
+    
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+        alert('Passwords do not match');
+        return;
+    }
+
+    try {
+        // Remove confirmPassword before sending to API
+        const submitData = { ...formData };
+        delete submitData.confirmPassword;
+        
+        // Call the subscribeUser method
+        const response = await subscribeUser(submitData);
+        
+        // Call the onSubscribe prop with the response
+        onSubscribe(response);
+        
+        // Close the modal
+        onClose();
+    } catch (error) {
+        alert(error.message || 'Subscription failed. Please try again.');
+    }
   };
 
   const handleModalClick = useCallback((e) => {
@@ -121,15 +147,50 @@ const SubscriptionModal = ({ isOpen, onClose, onSubscribe }) => {
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-2">Select Plan</label>
+            <label className="block text-gray-700 mb-2">Date of Birth</label>
+            <input
+                type="date"
+                className="w-full border rounded p-2"
+                value={formData.dateOfBirth}
+                onChange={(e) => handleChange('dateOfBirth', e.target.value)}
+                required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Password</label>
+            <input
+                type="password"
+                className="w-full border rounded p-2"
+                value={formData.password}
+                onChange={(e) => handleChange('password', e.target.value)}
+                required
+                minLength="8"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Confirm Password</label>
+            <input
+                type="password"
+                className="w-full border rounded p-2"
+                value={formData.confirmPassword}
+                onChange={(e) => handleChange('confirmPassword', e.target.value)}
+                required
+                minLength="8"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Profession</label>
             <select
-              className="w-full border rounded p-2"
-              value={formData.plan}
-              onChange={(e) => handleChange('plan', e.target.value)}
+                className="w-full border rounded p-2"
+                value={formData.profession}
+                onChange={(e) => handleChange('profession', e.target.value)}
+                required
             >
-              <option value="basic">Basic Plan ($9.99/month)</option>
-              <option value="premium">Premium Plan ($19.99/month)</option>
-              <option value="pro">Pro Plan ($29.99/month)</option>
+                <option value="">Select your profession</option>
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+                <option value="professional">Professional</option>
+                <option value="other">Other</option>
             </select>
           </div>
           <div>
