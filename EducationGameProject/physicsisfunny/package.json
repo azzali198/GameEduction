@@ -19,6 +19,7 @@
     "react-image-button": "^1.0.6",
     "react-lineto": "^3.3.0",
     "react-redux": "^9.2.0",
+    "react-router-dom": "^7.6.1",
     "react-scripts": "5.0.1",
     "react-spinning-wheel": "2.1.0",
     "react-tooltip": "^5.28.0",

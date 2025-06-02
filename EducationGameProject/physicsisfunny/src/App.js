@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import  "./App.css";
 import banner from './images/banner.png'
 import Home from './Components/Home/Home'
 import Forum from './Components/Forum/Forum'
 import PhysicsGame from './Components/Physics/PhysicsGame'
 import ChemistryGame from './Components/Chemistry/ChemistryGame'
-import SubscriptionModal from './Components/Subscription/SubscriptionModal'
+import SubscriptionPage from './Components/Subscription/SubscriptionPage'
 import LoginModal from './Components/Login/LoginModal'
 import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
@@ -71,6 +72,7 @@ const App = () => {
                     href="#" 
                     text="Subscribe" 
                     requiresAuth={false}
+                    onClick={() => setCurrentPage('subscription')}
                 />
             </div>
         </nav>
@@ -79,11 +81,6 @@ const App = () => {
 
   const NavLink = ({ href, text, onClick, requiresAuth = true }) => {
     const handleClick = (e) => {
-      if (text === 'Subscribe') {
-        e.preventDefault();
-        setIsSubscriptionModalOpen(true);
-        return;
-      }
       if (requiresAuth && !isAuthenticated) {
         e.preventDefault();
         setIsLoginModalOpen(true);
@@ -147,13 +144,16 @@ const App = () => {
         return <PhysicsGame />;
       case 'forum':
         return <Forum />;
+      case 'subscription':
+        return <SubscriptionPage/>;
       default:
         return <Home />;
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <Router>
+      <div className="flex flex-col min-h-screen">
         <Header />
         <Navbar />
         <main className="main-content flex-1">
@@ -166,12 +166,8 @@ const App = () => {
             handleLogin={handleLogin}
             onClose={() => setIsLoginModalOpen(false)} 
         />
-        <SubscriptionModal
-            isOpen={isSubscriptionModalOpen}
-            onClose={() => setIsSubscriptionModalOpen(false)}
-            onSubscribe={handleSubscribe}
-        />
-    </div>
+      </div>
+    </Router>
   );
 };
 
