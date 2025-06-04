@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { countries } from '../../data/countries';
 import { subscribeUser } from '../../services/userService';
 import ReactCountryFlag from 'react-country-flag';
+import Swal from 'sweetalert2';
 
 const CountryOption = ({ country }) => (
   <div className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer">
@@ -68,14 +69,14 @@ const CustomSelect = ({ value, onChange, countries }) => {
 const SubscriptionPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
+    userName: '', // Changed from name
     email: '',
     dateOfBirth: '',
     password: '',
     confirmPassword: '',
     profession: '',
     plan: 'basic',
-    nationality: ''
+    country: '' // Changed from nationality
   });
 
   const handleChange = useCallback((field, value) => {
@@ -89,7 +90,12 @@ const SubscriptionPage = () => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-        alert('Passwords do not match');
+        await Swal.fire({
+            icon: 'error',
+            title: 'Password Mismatch',
+            text: 'Passwords do not match. Please try again.',
+            confirmButtonColor: '#3085d6'
+        });
         return;
     }
 
@@ -98,10 +104,20 @@ const SubscriptionPage = () => {
         delete submitData.confirmPassword;
         
         const response = await subscribeUser(submitData);
-        alert('Subscription successful!');
-        navigate('/'); // Redirect to home page after successful subscription
+        await Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Subscription completed successfully',
+            confirmButtonColor: '#3085d6'
+        });
+        navigate('/');
     } catch (error) {
-        alert(error.message || 'Subscription failed. Please try again.');
+        await Swal.fire({
+            icon: 'error',
+            title: 'Subscription Failed',
+            text: error.message || 'Subscription failed. Please try again.',
+            confirmButtonColor: '#3085d6'
+        });
     }
   };
 
@@ -110,18 +126,18 @@ const SubscriptionPage = () => {
       <div className="max-w-md w-full mx-auto space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Subscribe to Premium Features
+            Subscribe to PhysicsIsFunny
           </h2>
         </div>
         <div className="mt-8 bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700">Username</label>
               <input
                 type="text"
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                value={formData.name}
-                onChange={(e) => handleChange('name', e.target.value)}
+                value={formData.userName}
+                onChange={(e) => handleChange('userName', e.target.value)}
                 required
               />
             </div>
@@ -189,10 +205,10 @@ const SubscriptionPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Nationality</label>
+              <label className="block text-sm font-medium text-gray-700">Country</label>
               <CustomSelect 
-                value={formData.nationality}
-                onChange={(value) => handleChange('nationality', value)}
+                value={formData.country}
+                onChange={(value) => handleChange('country', value)}
                 countries={countries}
               />
             </div>

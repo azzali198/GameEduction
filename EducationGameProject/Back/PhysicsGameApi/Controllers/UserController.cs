@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PhysicsGame.DAL.Entities;
 using PhysicsGame.BL;
+using Microsoft.AspNetCore.Cors;
 
 namespace PhysicsGameApi.Controllers
 {
     [ApiController]
+    [EnableCors()]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
