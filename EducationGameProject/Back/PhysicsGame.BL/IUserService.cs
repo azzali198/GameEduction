@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PhysicsGame.BL.Models;
 using PhysicsGame.DAL.Entities;
 
 namespace PhysicsGame.BL
@@ -14,5 +15,6 @@ namespace PhysicsGame.BL
         Task<IEnumerable<User>> GetAllUsers();
         Task<bool> DeleteUser(int id);
         Task<User> UpdateUser(User user);
+        Task<LoginResponse> LoginUser(string username, string password);
     }
 }

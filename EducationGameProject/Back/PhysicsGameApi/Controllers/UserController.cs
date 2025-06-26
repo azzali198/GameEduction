@@ -45,5 +45,49 @@ namespace PhysicsGameApi.Controllers
                 return StatusCode(500, "An error occurred while processing your request");
             }
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            try
+            {
+                if (request == null || string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
+                {
+                    return BadRequest("Username and password are required");
+                }
+
+                var loginResponse = await _userService.LoginUser(request.UserName, request.Password);
+                return Ok(new { 
+                    message = "Login successful", 
+                    token = loginResponse.Token,
+                    user = new {
+                        id = loginResponse.User.IdUser,
+                        userName = loginResponse.User.UserName,
+                        email = loginResponse.User.Email,
+                        country = loginResponse.User.Country,
+                        profession = loginResponse.User.Profession
+                        // Don't include sensitive data like password
+                    }
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing your request");
+            }
+        }
+    }
+
+    public class LoginRequest
+    {
+        public required string UserName { get; set; }
+        public required string Password { get; set; }
     }
 }

@@ -6,16 +6,23 @@ using PhysicsGame.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using PhysicsGame.DAL.Context;
 using BCrypt.Net;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using PhysicsGame.BL.Models;
 
 namespace PhysicsGame.BL.services
 {
     public class UserService : IUserService
     {
         private readonly PhysicsGameContext _context;
+        private readonly JwtSettings _jwtSettings;
 
-        public UserService(PhysicsGameContext context)
+        public UserService(PhysicsGameContext context, JwtSettings jwtSettings)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _jwtSettings = jwtSettings ?? throw new ArgumentNullException(nameof(jwtSettings));
         }
 
         private bool IsPasswordValid(string password)
@@ -139,6 +146,47 @@ namespace PhysicsGame.BL.services
         public Task SusbcribeUser(User user)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<LoginResponse> LoginUser(string username, string password)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                throw new ArgumentException("Username is required", nameof(username));
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("Password is required", nameof(password));
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+                throw new InvalidOperationException("Invalid username or password");
+
+            if (!VerifyPassword(password, user.Password))
+                throw new InvalidOperationException("Invalid username or password");
+
+            var token = GenerateJwtToken(user);
+            return new LoginResponse(user, token);
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.IdUser.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
