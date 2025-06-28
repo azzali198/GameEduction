@@ -1,0 +1,60 @@
+.scientist-card {
+  width: 80vw;                /* 80% of the viewport width */
+  max-width: 900px;           /* Optional: limit max width for large screens */
+  min-height: 100px;      /* Decreased from 160px */
+  height: 110px;          /* Add a fixed height for consistency */
+  margin: 1rem auto;   /* Less vertical space between cards */
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  transition: box-shadow 0.2s;
+  position: relative; /* Add this */
+  overflow: hidden;
+}
+.scientist-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.card-image {
+  height: 100%;
+  width: auto;                /* Let width scale naturally */
+  max-width: 35%;             /* Prevent it from being too wide */
+  object-fit: contain;        /* Show the whole image */
+  border-radius: 1.2rem 0 0 1.2rem;
+  display: block;
+  background: #f3f4f6;
+}
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.8rem 1rem 0.8rem 1rem; /* Reduced padding */
+  position: relative;
+}
+.scientist-card .quote {
+  font-style: italic;
+  color: #374151;
+  text-align: center;           /* Center the text */
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;      /* Center horizontally in the row */
+}
+.scientist-card .name {
+  color: #374151;         /* Same color as the quote */
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-align: right;
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.2rem;
+}
