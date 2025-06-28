@@ -10,6 +10,8 @@ import SubscriptionPage from './Components/Subscription/SubscriptionPage'
 import LoginModal from './Components/Login/LoginModal'
 import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
+
+
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -21,9 +23,10 @@ const App = () => {
     setIsSubscriptionModalOpen(false);
   };
 
-  const handleLogin = (credentials) => {
-    setIsAuthenticated(true);
-    setIsLoginModalOpen(false);
+  // This function will be called by LoginModal with true (success) or false (fail)
+  const handleLoginResult = (success) => {
+    setIsAuthenticated(success);
+    if (success) setIsLoginModalOpen(false);
   };
 
   const Navbar = () => {
@@ -58,7 +61,10 @@ const App = () => {
                         href="#" 
                         text="Logout" 
                         requiresAuth={false}
-                        onClick={() => setIsAuthenticated(false)} 
+                        onClick={() => {
+                            setIsAuthenticated(false);
+                            setCurrentPage('home'); // Redirect to Home on logout
+                        }} 
                     />
                 ) : (
                     <NavLink 
@@ -160,12 +166,14 @@ const App = () => {
             {renderPage()}
         </main>
         <Footer />
-        
-        <LoginModal 
-            isOpen={isLoginModalOpen} 
-            handleLogin={handleLogin}
-            onClose={() => setIsLoginModalOpen(false)} 
-        />
+
+        {isLoginModalOpen && (
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+            onLogin={handleLoginResult}
+          />
+        )}
       </div>
     </Router>
   );
