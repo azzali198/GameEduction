@@ -60,12 +60,13 @@ namespace PhysicsGameApi.Controllers
                 return Ok(new { 
                     message = "Login successful", 
                     token = loginResponse.Token,
+                    isAdmin = loginResponse.IsAdmin,
                     user = new {
                         id = loginResponse.User.IdUser,
                         userName = loginResponse.User.UserName,
                         email = loginResponse.User.Email,
                         country = loginResponse.User.Country,
-                        profession = loginResponse.User.Profession
+                        profession = loginResponse.User.Profession                       
                         // Don't include sensitive data like password
                     }
                 });

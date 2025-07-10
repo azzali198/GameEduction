@@ -10,12 +10,14 @@ import SubscriptionPage from './Components/Subscription/SubscriptionPage'
 import LoginModal from './Components/Login/LoginModal'
 import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
+import Admin from './Components/Admin/Admin'
 
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false); // Assuming you have a way to determine if the user is an admin
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
 
   const handleSubscribe = (subscriptionData) => {
@@ -24,64 +26,75 @@ const App = () => {
   };
 
   // This function will be called by LoginModal with true (success) or false (fail)
-  const handleLoginResult = (success) => {
-    setIsAuthenticated(success);
-    if (success) setIsLoginModalOpen(false);
+  const handleLoginResult = (response) => {
+    setIsAuthenticated(response?.user !== null);
+    if (response?.user !== null) 
+      {
+        setIsLoginModalOpen(false);
+        alert(JSON.stringify(response));
+        sessionStorage.setItem('JWT', response.token);
+        setIsAdmin(response.isAdmin);
+      }
   };
 
   const Navbar = () => {
     return (
-        <nav className="nav-container flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-                <NavLink 
-                    href="#" 
-                    text="Home" 
-                    onClick={() => setCurrentPage('home')} 
-                    requiresAuth={false}
-                />
-                <NavLink 
-                    href="#" 
-                    text="Physics" 
-                    onClick={() => setCurrentPage('physics')} 
-                />
-                <NavLink 
-                    href="#" 
-                    text="Chemistry" 
-                    onClick={() => setCurrentPage('chemistry')} 
-                />
-                <NavLink 
-                    href="#" 
-                    text="Forum" 
-                    onClick={() => setCurrentPage('forum')} 
-                />
-            </div>
-            <div className="flex items-center space-x-4">
-                {isAuthenticated ? (
-                    <NavLink 
-                        href="#" 
-                        text="Logout" 
-                        requiresAuth={false}
-                        onClick={() => {
-                            setIsAuthenticated(false);
-                            setCurrentPage('home'); // Redirect to Home on logout
-                        }} 
-                    />
-                ) : (
-                    <NavLink 
-                        href="#" 
-                        text="Login" 
-                        requiresAuth={false}
-                        onClick={() => setIsLoginModalOpen(true)} 
-                    />
-                )}
-                <NavLink 
-                    href="#" 
-                    text="Subscribe" 
-                    requiresAuth={false}
-                    onClick={() => setCurrentPage('subscription')}
-                />
-            </div>
-        </nav>
+      <nav className="nav-container flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <NavLink 
+            href="#" 
+            text="Home" 
+            onClick={() => setCurrentPage('home')} 
+            requiresAuth={false}
+          />
+          <NavLink 
+            href="#" 
+            text="Physics" 
+            onClick={() => setCurrentPage('physics')} 
+          />
+          <NavLink 
+            href="#" 
+            text="Chemistry" 
+            onClick={() => setCurrentPage('chemistry')} 
+          />
+          <NavLink 
+            href="#" 
+            text="Forum" 
+            onClick={() => setCurrentPage('forum')} 
+          />
+          {isAdmin && <NavLink 
+            href="#"
+            text="Admin"
+            onClick={() => setCurrentPage('admin')}           
+          />}
+        </div>
+        <div className="flex items-center space-x-4">
+          {isAuthenticated ? (
+            <NavLink 
+              href="#" 
+              text="Logout" 
+              requiresAuth={false}
+              onClick={() => {
+                setIsAuthenticated(false);
+                setCurrentPage('home'); // Redirect to Home on logout
+              }} 
+            />
+          ) : (
+            <NavLink 
+              href="#" 
+              text="Login" 
+              requiresAuth={false}
+              onClick={() => setIsLoginModalOpen(true)} 
+            />
+          )}
+          <NavLink 
+            href="#" 
+            text="Subscribe" 
+            requiresAuth={false}
+            onClick={() => setCurrentPage('subscription')}
+          />
+        </div>
+      </nav>
     );
   };
 
@@ -151,7 +164,9 @@ const App = () => {
       case 'forum':
         return <Forum />;
       case 'subscription':
-        return <SubscriptionPage/>;
+        return <SubscriptionPage />;
+      case 'admin':
+        return <Admin />;
       default:
         return <Home />;
     }

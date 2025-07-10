@@ -37,10 +37,10 @@ const gameImages = importAllImages(
        const segmentMap = {
         "⓪ Modern Physics": 0,
         "① Mechanics": 1,
-        "② Quantic Physics": 2,
+        "② Relativity": 2,
         "③ Thermodynamics": 3,
         "④ Optic": 4,
-        "⑤ Gravity": 5
+        "⑤ Electromagnetism": 5
     };
 const buttonStyle = {
   width: '100%',
@@ -251,6 +251,7 @@ return (
               console.log('Quiz completed with result:', isCorrect);           
               setDisplayQuiz(false);
               if(isCorrect) setCounter(counter + segmentMap[chos]);
+              alert(chos);
           }}
           items={propositions} 
           response={rightResponse}

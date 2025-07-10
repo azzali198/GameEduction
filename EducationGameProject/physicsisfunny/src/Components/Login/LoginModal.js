@@ -12,10 +12,10 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
     e.preventDefault();
     const credentials = { userName, password };
     try {
-      const user = await loginUser(credentials);
-      if (onLogin) onLogin(true);
+      const response = await loginUser(credentials);
+      if (onLogin) onLogin(response);
     } catch (error) {
-      if (onLogin) onLogin(false);
+      if (onLogin) onLogin(null);
       alert(error.message || 'Login failed');
     }
   };

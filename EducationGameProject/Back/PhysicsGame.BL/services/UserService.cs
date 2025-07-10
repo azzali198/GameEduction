@@ -163,7 +163,8 @@ namespace PhysicsGame.BL.services
                 throw new InvalidOperationException("Invalid username or password");
 
             var token = GenerateJwtToken(user);
-            return new LoginResponse(user, token);
+            return new LoginResponse(user, token, user.UserName == "admin.MAZ" && user.Email == "med_azzali@yahoo.fr");
+            
         }
 
         private string GenerateJwtToken(User user)
