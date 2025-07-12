@@ -16,8 +16,12 @@ import Admin from './Components/Admin/Admin'
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false); // Assuming you have a way to determine if the user is an admin
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('isAuthenticated') === 'true';
+  });
+  const [isAdmin, setIsAdmin] = useState(() => {
+    return sessionStorage.getItem('isAdmin') === 'true';
+  });
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
 
   const handleSubscribe = (subscriptionData) => {
@@ -27,19 +31,20 @@ const App = () => {
 
   // This function will be called by LoginModal with true (success) or false (fail)
   const handleLoginResult = (response) => {
-    setIsAuthenticated(response?.user !== null);
-    if (response?.user !== null) 
-      {
-        setIsLoginModalOpen(false);
-        alert(JSON.stringify(response));
-        sessionStorage.setItem('JWT', response.token);
-        setIsAdmin(response.isAdmin);
-      }
+    const authenticated = response?.user !== null && response?.token !== null;
+    setIsAuthenticated(authenticated);
+    setIsAdmin(response?.isAdmin);
+    if (authenticated) {
+      setIsLoginModalOpen(false);
+      sessionStorage.setItem('JWT', response.token);
+      sessionStorage.setItem('isAuthenticated', true);
+      sessionStorage.setItem('isAdmin', response.isAdmin);
+    }
   };
 
   const Navbar = () => {
     return (
-      <nav className="nav-container flex items-center justify-between">
+      <nav className="nav-container flex items-center justify-between responsive-nav">
         <div className="flex items-center space-x-4">
           <NavLink 
             href="#" 
@@ -76,7 +81,11 @@ const App = () => {
               requiresAuth={false}
               onClick={() => {
                 setIsAuthenticated(false);
-                setCurrentPage('home'); // Redirect to Home on logout
+                setIsAdmin(false);
+                sessionStorage.removeItem('JWT');
+                sessionStorage.removeItem('isAuthenticated');
+                sessionStorage.removeItem('isAdmin');
+                setCurrentPage('home');
               }} 
             />
           ) : (
