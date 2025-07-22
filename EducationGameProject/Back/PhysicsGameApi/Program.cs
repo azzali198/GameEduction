@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using PhysicsGame.BL.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using PhysicsGame.BL.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<PhysicsGameContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>

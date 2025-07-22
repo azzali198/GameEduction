@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Admin.css';
+import Swal from 'sweetalert2';
 
 const tabTitles = ['Physics', 'Chemistry', 'Users', 'Statistics'];
 const physicsTopics = [
@@ -15,8 +16,9 @@ const Admin = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [selectedTopic, setSelectedTopic] = useState(physicsTopics[0]);
   const [xmlFile, setXmlFile] = useState(null);
-  const [fieldsetOpen, setFieldsetOpen] = useState(true); // Collapsible state
-  const [editionFieldsetOpen, setEditionFieldsetOpen] = useState(true); // Add this state at the top with other useState
+  const [fieldsetOpen, setFieldsetOpen] = useState(true);
+  const [editionFieldsetOpen, setEditionFieldsetOpen] = useState(true);
+  const [fileType, setFileType] = useState('data'); // <-- Add this state
 
   return (
     <div
@@ -58,7 +60,7 @@ const Admin = () => {
                 Insertion Quiz Data
               </legend>
               {fieldsetOpen && (
-                <form className="admin-form-row">
+                <form className="admin-form-row flex gap-2 items-center">
                   <select
                     className=""
                     value={selectedTopic}
@@ -68,11 +70,42 @@ const Admin = () => {
                       <option key={topic} value={topic}>{topic}</option>
                     ))}
                   </select>
+                  {/* New dropdown list for Data or Pictures */}
+                  <select
+                    className=""
+                    value={fileType}
+                    onChange={e => setFileType(e.target.value || 'data')}
+                  >
+                    <option value="data">Data</option>
+                    <option value="pictures">Pictures</option>
+                  </select>
                   <input
                     type="file"
-                    accept=".xml"
-                    onChange={e => setXmlFile(e.target.files[0])}
+                    accept={fileType === 'pictures' ? '.zip' : '.xml'}
+                    onChange={e => {
+                      const file = e.target.files[0];
+                      if (fileType === 'pictures' && file && !file.name.endsWith('.zip')) {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Invalid file',
+                          text: 'Please select a .zip file.',
+                        });
+                        e.target.value = '';
+                        return;
+                      }
+                      if (fileType === 'data' && file && !file.name.endsWith('.xml')) {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Invalid file',
+                          text: 'Please select a .xml file.',
+                        });
+                        e.target.value = '';
+                        return;
+                      }
+                      setXmlFile(file);
+                    }}
                     className=""
+                    key={fileType} // This line forces the input to re-render when fileType changes
                   />
                   <button
                     type="button"
@@ -99,9 +132,12 @@ const Admin = () => {
               </legend>
               {editionFieldsetOpen && (
                 <div className="flex flex-col md:flex-row gap-4 w-full items-start">
-                  {/* Left: Datagrid */}
-                  <div className="w-full md:w-2/3 overflow-auto mt-12">
-                    <table className="min-w-full border text-xs md:text-sm bg-white rounded">
+                  {/* Left: Datagrid (scrollable) */}
+                  <div
+                    className="w-full md:w-2/3 admin-datagrid-wrapper"
+                    style={{ maxHeight: '500px', overflowY: 'auto', marginTop: '1.5rem' }}
+                  >
+                    <table className="admin-datagrid">
                       <thead>
                         <tr className="bg-gray-200">
                           <th>Identifier</th>
@@ -114,7 +150,7 @@ const Admin = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {/* Example row, replace with your data */}
+                        {/* Example rows, replace with your actual data */}
                         <tr>
                           <td>Q1</td>
                           <td>What is Newton's second law?</td>
@@ -124,11 +160,110 @@ const Admin = () => {
                           <td>F=ma</td>
                           <td>-</td>
                         </tr>
+                        <tr>
+                          <td>Q2</td>
+                          <td>What is the speed of light?</td>
+                          <td>3x10^8 m/s</td>
+                          <td>1.5x10^8 m/s</td>
+                          <td>9.8 m/s^2</td>
+                          <td>3x10^8 m/s</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q3</td>
+                          <td>Who formulated the law of universal gravitation?</td>
+                          <td>Newton</td>
+                          <td>Einstein</td>
+                          <td>Galileo</td>
+                          <td>Newton</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q4</td>
+                          <td>What is the unit of electric current?</td>
+                          <td>Ampere</td>
+                          <td>Volt</td>
+                          <td>Ohm</td>
+                          <td>Ampere</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q5</td>
+                          <td>What is the acceleration due to gravity on Earth?</td>
+                          <td>9.8 m/s²</td>
+                          <td>10 m/s²</td>
+                          <td>8.9 m/s²</td>
+                          <td>9.8 m/s²</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q6</td>
+                          <td>Who is known as the father of modern physics?</td>
+                          <td>Einstein</td>
+                          <td>Newton</td>
+                          <td>Galileo</td>
+                          <td>Einstein</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q7</td>
+                          <td>What is the formula for kinetic energy?</td>
+                          <td>1/2mv²</td>
+                          <td>mv</td>
+                          <td>mgh</td>
+                          <td>1/2mv²</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q8</td>
+                          <td>What is the SI unit of force?</td>
+                          <td>Newton</td>
+                          <td>Joule</td>
+                          <td>Watt</td>
+                          <td>Newton</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q9</td>
+                          <td>What is the value of Pi?</td>
+                          <td>3.14</td>
+                          <td>2.71</td>
+                          <td>1.62</td>
+                          <td>3.14</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q10</td>
+                          <td>What is the chemical symbol for water?</td>
+                          <td>H2O</td>
+                          <td>O2</td>
+                          <td>CO2</td>
+                          <td>H2O</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q11</td>
+                          <td>What is the main gas in Earth's atmosphere?</td>
+                          <td>Nitrogen</td>
+                          <td>Oxygen</td>
+                          <td>Carbon Dioxide</td>
+                          <td>Nitrogen</td>
+                          <td>-</td>
+                        </tr>
+                        <tr>
+                          <td>Q12</td>
+                          <td>Who discovered radioactivity?</td>
+                          <td>Marie Curie</td>
+                          <td>Newton</td>
+                          <td>Faraday</td>
+                          <td>Marie Curie</td>
+                          <td>-</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
-                  {/* Right: Form */}
-                  <div className="w-full md:w-1/3 flex flex-col gap-2">
+                  {/* Right: Form (fixed width, does not scroll) */}
+                  <div className="w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
                     {/* Icon buttons at the top */}
                     <div className="flex justify-end gap-2 mb-2">
                       <button type="button" className="icon-btn" title="Save">

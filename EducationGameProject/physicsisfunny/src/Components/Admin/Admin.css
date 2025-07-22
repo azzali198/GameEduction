@@ -130,3 +130,65 @@ legend {
 .icon-btn.upload:hover {
   background: #16a34a;
 }
+
+/* --- Improved Datagrid/Table Styles --- */
+.admin-datagrid {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.06);
+}
+
+.admin-datagrid th,
+.admin-datagrid td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.98rem;
+}
+
+.admin-datagrid th {
+  background: #e0e7ff;
+  color: #2563eb;
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.admin-datagrid tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-datagrid tbody tr:hover {
+  background: #f1f5f9;
+  transition: background 0.2s;
+}
+
+.admin-datagrid td {
+  color: #334155;
+  vertical-align: top;
+}
+
+.admin-datagrid tr.selected,
+.admin-datagrid tbody tr.selected:hover {
+  background: #dbeafe;
+}
+
+@media (max-width: 900px) {
+  .admin-datagrid th,
+  .admin-datagrid td {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.3rem;
+  }
+}
+
+/* Optional: Add horizontal scroll for overflow on small screens */
+.admin-datagrid-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
