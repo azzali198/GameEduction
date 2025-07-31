@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
 import './Admin.css';
 import Swal from 'sweetalert2';
+import importXml from '../../services/importXmlService';
+import deleteQuestion from '../../services/deleteQuestionService';
 
 const tabTitles = ['Physics', 'Chemistry', 'Users', 'Statistics'];
 const physicsTopics = [
@@ -18,7 +21,39 @@ const Admin = () => {
   const [xmlFile, setXmlFile] = useState(null);
   const [fieldsetOpen, setFieldsetOpen] = useState(true);
   const [editionFieldsetOpen, setEditionFieldsetOpen] = useState(true);
-  const [fileType, setFileType] = useState('data'); // <-- Add this state
+  const [fileType, setFileType] = useState('data');
+  const [questionsData, setQuestionsData] = useState([]);
+  const [selectedIdentifier, setSelectedIdentifier] = useState(null);
+
+  // Move columns definition here, so it can access selectedIdentifier and setSelectedIdentifier
+  const columns = [
+    { field: 'id', headerName: 'Select', width: 80, renderCell: (params) => (
+        <input
+          type="checkbox"
+          checked={params.row.id === selectedIdentifier}
+          onChange={() => setSelectedIdentifier(params.row.id)}
+        />
+      )
+    },
+    { field: 'Identifier', headerName: 'Identifier', width: 100 },
+    { field: 'QuestionEn', headerName: 'Question (EN)', width: 200 },
+    { field: 'ResponseAEn', headerName: 'Response A (EN)', width: 150 },
+    { field: 'ResponseBEn', headerName: 'Response B (EN)', width: 150 },
+    { field: 'ResponseCEn', headerName: 'Response C (EN)', width: 150 },
+    { field: 'RightResponseEn', headerName: 'Right Response (EN)', width: 150 },
+    { field: 'QuestionFr', headerName: 'Question (FR)', width: 200 },
+    { field: 'ResponseAFr', headerName: 'Response A (FR)', width: 150 },
+    { field: 'ResponseBFr', headerName: 'Response B (FR)', width: 150 },
+    { field: 'ResponseCFr', headerName: 'Response C (FR)', width: 150 },
+    { field: 'RightResponseFr', headerName: 'Right Response (FR)', width: 150 },
+    { field: 'Image', headerName: 'Image', width: 120 },
+  ];
+
+  // Prepare rows for DataGrid (must have unique 'id' field)
+  const rows = questionsData.map(q => ({
+    ...q,
+    id: q.Identifier
+  }));
 
   return (
     <div
@@ -105,12 +140,42 @@ const Admin = () => {
                       setXmlFile(file);
                     }}
                     className=""
-                    key={fileType} // This line forces the input to re-render when fileType changes
+                    key={fileType}
                   />
                   <button
                     type="button"
                     className="icon-btn upload"
                     title="Upload"
+                    onClick={async () => {
+                      if (!xmlFile) return;
+                      const fileContent = await xmlFile.text();
+                      await importXml(fileContent, selectedTopic).then((response) => {
+                        Swal.fire({
+                          icon: 'success',
+                          title: 'Success',
+                          text: `File ${xmlFile.name} uploaded successfully!`,
+                        });
+                        setXmlFile(null); // Reset the file input
+                        // Update questionsData from response if available
+                        if (response.data && Array.isArray(response.data)) {
+                          setQuestionsData(response.data);
+                        }
+                      }, (error) => {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error',
+                          text: `Failed to upload file: ${error.response ? error.response.data : error.message}`,
+                        });
+                      }).catch((error) => {
+                        if (error.response && error.response.data) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: `Failed to upload file: ${error.response.data.message || error.response.data}`,
+                          });
+                        }
+                      });
+                    }}
                   >
                     <span className="material-icons">cloud_upload</span>
                   </button>
@@ -118,188 +183,114 @@ const Admin = () => {
               )}
             </fieldset>
 
-            {/* Second fieldset: Edition Quiz Data */}
-            <fieldset className="border rounded-lg p-2 mb-4 bg-gray-50 w-full" style={{ maxHeight: 'none', overflowY: 'visible' }}>
-              <legend
-                className="font-semibold text-base mb-1 flex items-center cursor-pointer select-none"
-                onClick={() => setEditionFieldsetOpen(open => !open)}
-                style={{ userSelect: 'none' }}
-              >
-                <span className="mr-2">
-                  {editionFieldsetOpen ? '▼' : '►'}
-                </span>
-                Edition Quiz Data
-              </legend>
-              {editionFieldsetOpen && (
-                <div className="flex flex-col md:flex-row gap-4 w-full items-start">
-                  {/* Left: Datagrid (scrollable) */}
-                  <div
-                    className="w-full md:w-2/3 admin-datagrid-wrapper"
-                    style={{ maxHeight: '500px', overflowY: 'auto', marginTop: '1.5rem' }}
+        {/* Second fieldset: Edition Quiz Data */}
+        <fieldset className="border rounded-lg p-2 mb-4 bg-gray-50 w-full" style={{ maxHeight: 'none', overflowY: 'visible' }}>
+          <legend
+            className="font-semibold text-base mb-1 flex items-center cursor-pointer select-none"
+            onClick={() => setEditionFieldsetOpen(open => !open)}
+            style={{ userSelect: 'none' }}
+          >
+            <span className="mr-2">
+              {editionFieldsetOpen ? '▼' : '►'}
+            </span>
+            Edition Quiz Data
+          </legend>
+          {editionFieldsetOpen && (
+            <div className="flex flex-col md:flex-row gap-4 w-full items-start">
+              {/* Left: Datagrid (scrollable) */}
+              <div className="w-full md:w-2/3 admin-datagrid-wrapper" style={{ height: 500, marginTop: '1.5rem' }}>
+                <DataGrid
+                  rows={rows}
+                  columns={columns.map(col =>
+                    col.field === 'id'
+                      ? { ...col, renderCell: (params) => (
+                          <input
+                            type="checkbox"
+                            checked={params.row.id === selectedIdentifier}
+                            onChange={() => setSelectedIdentifier(params.row.id)}
+                          />
+                        )}
+                      : col
+                  )}
+                  pageSize={8}
+                  onRowClick={(params) => setSelectedIdentifier(params.row.id)}
+                  getRowClassName={(params) =>
+                    params.row.id === selectedIdentifier ? 'bg-indigo-100' : ''
+                  }
+                  sx={{
+                    '& .MuiDataGrid-row.Mui-selected': {
+                      backgroundColor: '#e0e7ff !important',
+                    }
+                  }}
+                />
+              </div>
+              {/* Right: Form (fixed width, does not scroll) */}
+              <div className="w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
+                {/* Icon buttons at the top */}
+                <div className="flex justify-end gap-2 mb-2">
+                  <button type="button" className="icon-btn" title="Save">
+                    <span className="material-icons">save</span>
+                  </button>
+                  <button type="button" className="icon-btn" title="Cancel" style={{ background: '#64748b' }}>
+                    <span className="material-icons">cancel</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="icon-btn"
+                    title="Delete"
+                    style={{ background: '#ef4444' }}
+                    onClick={async () => {
+                      if (!selectedIdentifier) {
+                        Swal.fire('No selection', 'Please select a question in the grid first.', 'info');
+                        return;
+                      }
+                      const confirm = await Swal.fire({
+                        title: 'Are you sure?',
+                        text: `Delete question with Identifier: ${selectedIdentifier}?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel'
+                      });
+                      if (confirm.isConfirmed) {
+                        try {
+                          await deleteQuestion(selectedTopic, selectedIdentifier);
+                          setQuestionsData(questionsData.filter(q => q.Identifier !== selectedIdentifier));
+                          setSelectedIdentifier(null);
+                          Swal.fire('Deleted!', 'The question has been deleted.', 'success');
+                        } catch (error) {
+                          Swal.fire('Error', 'Failed to delete question.', 'error');
+                        }
+                      }
+                    }}
                   >
-                    <table className="admin-datagrid">
-                      <thead>
-                        <tr className="bg-gray-200">
-                          <th>Identifier</th>
-                          <th>Question</th>
-                          <th>First Proposition</th>
-                          <th>Second  Proposition</th>
-                          <th>Third Proposition</th>
-                          <th>Right Response</th>
-                          <th>Image</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {/* Example rows, replace with your actual data */}
-                        <tr>
-                          <td>Q1</td>
-                          <td>What is Newton's second law?</td>
-                          <td>F=ma</td>
-                          <td>E=mc^2</td>
-                          <td>V=IR</td>
-                          <td>F=ma</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q2</td>
-                          <td>What is the speed of light?</td>
-                          <td>3x10^8 m/s</td>
-                          <td>1.5x10^8 m/s</td>
-                          <td>9.8 m/s^2</td>
-                          <td>3x10^8 m/s</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q3</td>
-                          <td>Who formulated the law of universal gravitation?</td>
-                          <td>Newton</td>
-                          <td>Einstein</td>
-                          <td>Galileo</td>
-                          <td>Newton</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q4</td>
-                          <td>What is the unit of electric current?</td>
-                          <td>Ampere</td>
-                          <td>Volt</td>
-                          <td>Ohm</td>
-                          <td>Ampere</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q5</td>
-                          <td>What is the acceleration due to gravity on Earth?</td>
-                          <td>9.8 m/s²</td>
-                          <td>10 m/s²</td>
-                          <td>8.9 m/s²</td>
-                          <td>9.8 m/s²</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q6</td>
-                          <td>Who is known as the father of modern physics?</td>
-                          <td>Einstein</td>
-                          <td>Newton</td>
-                          <td>Galileo</td>
-                          <td>Einstein</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q7</td>
-                          <td>What is the formula for kinetic energy?</td>
-                          <td>1/2mv²</td>
-                          <td>mv</td>
-                          <td>mgh</td>
-                          <td>1/2mv²</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q8</td>
-                          <td>What is the SI unit of force?</td>
-                          <td>Newton</td>
-                          <td>Joule</td>
-                          <td>Watt</td>
-                          <td>Newton</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q9</td>
-                          <td>What is the value of Pi?</td>
-                          <td>3.14</td>
-                          <td>2.71</td>
-                          <td>1.62</td>
-                          <td>3.14</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q10</td>
-                          <td>What is the chemical symbol for water?</td>
-                          <td>H2O</td>
-                          <td>O2</td>
-                          <td>CO2</td>
-                          <td>H2O</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q11</td>
-                          <td>What is the main gas in Earth's atmosphere?</td>
-                          <td>Nitrogen</td>
-                          <td>Oxygen</td>
-                          <td>Carbon Dioxide</td>
-                          <td>Nitrogen</td>
-                          <td>-</td>
-                        </tr>
-                        <tr>
-                          <td>Q12</td>
-                          <td>Who discovered radioactivity?</td>
-                          <td>Marie Curie</td>
-                          <td>Newton</td>
-                          <td>Faraday</td>
-                          <td>Marie Curie</td>
-                          <td>-</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  {/* Right: Form (fixed width, does not scroll) */}
-                  <div className="w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
-                    {/* Icon buttons at the top */}
-                    <div className="flex justify-end gap-2 mb-2">
-                      <button type="button" className="icon-btn" title="Save">
-                        <span className="material-icons">save</span>
-                      </button>
-                      <button type="button" className="icon-btn" title="Cancel" style={{ background: '#64748b' }}>
-                        <span className="material-icons">cancel</span>
-                      </button>
-                      <button type="button" className="icon-btn" title="Delete" style={{ background: '#ef4444' }}>
-                        <span className="material-icons">delete</span>
-                      </button>
-                    </div>
-                    {/* Form fields */}
-                    <input className="border rounded px-2 py-1" placeholder="Identifier" />
-                    <input className="border rounded px-2 py-1" placeholder="English Question" />
-                    <input className="border rounded px-2 py-1" placeholder="First English Proposition" />
-                    <input className="border rounded px-2 py-1" placeholder="Second English Proposition" />
-                    <input className="border rounded px-2 py-1" placeholder="Third English Proposition" />
-                    <input className="border rounded px-2 py-1" placeholder="Right Response English" />
-                    <input className="border rounded px-2 py-1" placeholder="French Question" />
-                    <input className="border rounded px-2 py-1" placeholder="First French Proposition" />
-                    <input className="border rounded px-2 py-1" placeholder="Second French Proposition" />
-                    <input className="border rounded px-2 py-1" placeholder="Third French Proposition" />
-                    <input className="border rounded px-2 py-1" placeholder="Right French Response" />
-                    <input className="border rounded px-2 py-1" placeholder="Image URL" />
-                  </div>
+                    <span className="material-icons">delete</span>
+                  </button>
                 </div>
-              )}
-            </fieldset>
-          </>
+                {/* Form fields */}
+                <input className="border rounded px-2 py-1" placeholder="Identifier" />
+                <input className="border rounded px-2 py-1" placeholder="English Question" />
+                <input className="border rounded px-2 py-1" placeholder="First English Proposition" />
+                <input className="border rounded px-2 py-1" placeholder="Second English Proposition" />
+                <input className="border rounded px-2 py-1" placeholder="Third English Proposition" />
+                <input className="border rounded px-2 py-1" placeholder="Right Response English" />
+                <input className="border rounded px-2 py-1" placeholder="French Question" />
+                <input className="border rounded px-2 py-1" placeholder="First French Proposition" />
+                <input className="border rounded px-2 py-1" placeholder="Second French Proposition" />
+                <input className="border rounded px-2 py-1" placeholder="Third French Proposition" />
+                <input className="border rounded px-2 py-1" placeholder="Right French Response" />
+                <input className="border rounded px-2 py-1" placeholder="Image URL" />
+              </div>
+            </div>
+          )}
+        </fieldset>
+      </>
         )}
-        {activeTab === 1 && <div>Chemistry admin content goes here.</div>}
-        {activeTab === 2 && <div>Users admin content goes here.</div>}
-        {activeTab === 3 && <div>Statistics admin content goes here.</div>}
-      </div>
+      {activeTab === 1 && <div>Chemistry admin content goes here.</div>}
+      {activeTab === 2 && <div>Users admin content goes here.</div>}
+      {activeTab === 3 && <div>Statistics admin content goes here.</div>}
     </div>
+    </div >
   );
 };
 

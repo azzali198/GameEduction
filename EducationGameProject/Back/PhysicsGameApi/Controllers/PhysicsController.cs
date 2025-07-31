@@ -8,6 +8,7 @@ using PhysicsGame.BL.Services;
 using System.Xml;
 using System.Xml.Schema;
 using System.IO;
+using System.Text.Json;
 
 namespace PhysicsGameApi.Controllers
 {
@@ -42,20 +43,20 @@ namespace PhysicsGameApi.Controllers
         }
 
         [HttpPost("import-xml")]
-        public async Task<IActionResult> ImportXml([FromBody] string request)
+        public async Task<IActionResult> ImportXml([FromBody] XmlInput request)
         {
-            if (string.IsNullOrWhiteSpace(request))
+            if (request == null || string.IsNullOrWhiteSpace(request.Xml))
                 return BadRequest("XML string is missing.");
 
-            // Get the XSD file path (adjust if needed)
-            var xsdPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "files", "PhysicsModel.xsd");
+            var xsdPath = Path.Combine(Directory.GetCurrentDirectory(), "Files", "PhysicsModel.xsd");
             if (!System.IO.File.Exists(xsdPath))
                 return BadRequest("XSD file not found.");
 
             try
             {
                 var xsdString = await System.IO.File.ReadAllTextAsync(xsdPath);
-                var questions = await _xmlImportService.ValidateAndParseXmlAsync(request, xsdString);
+               
+                var questions = await _xmlImportService.ValidateAndParseXmlAsync(request.Xml, xsdString, request.Topic);
                 return Ok(questions);
             }
             catch (XmlSchemaValidationException ex)
@@ -70,6 +71,33 @@ namespace PhysicsGameApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpDelete("delete-question")]
+        public async Task<IActionResult> DeleteQuestion([FromBody] DeleteQuestionInput request)
+        {
+            if (request == null || string.IsNullOrWhiteSpace(request.Topic))
+                return BadRequest("Topic is missing.");
+            if (request.Identifier <= 0)
+                return BadRequest("Identifier is invalid.");
+
+            try
+            {
+                var questions = await _xmlImportService.DeleteQuestionAsync(request.Topic, request.Identifier);
+                if (questions == null)
+                    return NotFound("Question not found.");
+                return Ok(questions);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public class DeleteQuestionInput
+        {
+            public string Topic { get; set; }
+            public int Identifier { get; set; }
         }
     }
     
