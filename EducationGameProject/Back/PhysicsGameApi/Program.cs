@@ -8,6 +8,8 @@ using Microsoft.Extensions.Options;
 using PhysicsGame.BL.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using PhysicsGame.BL.Services;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +70,14 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 
 app.UseHttpsRedirection();
+
+// Serve /Files as static files
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Files")),
+    RequestPath = "/files"
+});
 
 app.MapControllers();
 

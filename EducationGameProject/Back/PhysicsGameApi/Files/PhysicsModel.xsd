@@ -2,7 +2,7 @@
   <xs:element name="PhysicsData">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Data">
+        <xs:element name="Data" maxOccurs="unbounded" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:short" name="Identifier"/>

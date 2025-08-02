@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import './Admin.css';
 import Swal from 'sweetalert2';
 import importXml from '../../services/importXmlService';
 import deleteQuestion from '../../services/deleteQuestionService';
+import getQuestions from '../../services/getQuestionsService'; // Add this import
+import updateQuestions from '../../services/updateQuestionsService';
+import uploadImagesZip from '../../services/uploadImagesZipService'; // Add this import
+import notFoundImage from '../../images/404.png';
 
 const tabTitles = ['Physics', 'Chemistry', 'Users', 'Statistics'];
 const physicsTopics = [
@@ -24,29 +28,59 @@ const Admin = () => {
   const [fileType, setFileType] = useState('data');
   const [questionsData, setQuestionsData] = useState([]);
   const [selectedIdentifier, setSelectedIdentifier] = useState(null);
+  const [originalQuestion, setOriginalQuestion] = useState(null);
+  const [changedQuestions, setChangedQuestions] = useState([]);
+  const [imagePopup, setImagePopup] = useState({ open: false, src: '' });
+
+  // Find the selected question object
+  const selectedQuestion = questionsData.find(q => q.Identifier === selectedIdentifier) || {};
 
   // Move columns definition here, so it can access selectedIdentifier and setSelectedIdentifier
   const columns = [
-    { field: 'id', headerName: 'Select', width: 80, renderCell: (params) => (
+    {
+      field: 'id',
+      headerName: 'Select',
+      flex: 1,
+      renderCell: (params) => (
         <input
           type="checkbox"
           checked={params.row.id === selectedIdentifier}
-          onChange={() => setSelectedIdentifier(params.row.id)}
+          onChange={e => {
+            // Toggle selection: deselect if already selected, select if not
+            setSelectedIdentifier(
+              params.row.id === selectedIdentifier ? null : params.row.id
+            );
+          }}
         />
       )
     },
-    { field: 'Identifier', headerName: 'Identifier', width: 100 },
-    { field: 'QuestionEn', headerName: 'Question (EN)', width: 200 },
-    { field: 'ResponseAEn', headerName: 'Response A (EN)', width: 150 },
-    { field: 'ResponseBEn', headerName: 'Response B (EN)', width: 150 },
+    { field: 'Identifier', headerName: 'Identifier', flex: 1 },
+    { field: 'QuestionEn', headerName: 'Question (EN)', flex: 2 },
+    { field: 'ResponseAEn', headerName: 'Response A (EN)', flex: 1 },
+    { field: 'ResponseBEn', headerName: 'Response B (EN)', flex: 1 },
     { field: 'ResponseCEn', headerName: 'Response C (EN)', width: 150 },
     { field: 'RightResponseEn', headerName: 'Right Response (EN)', width: 150 },
-    { field: 'QuestionFr', headerName: 'Question (FR)', width: 200 },
-    { field: 'ResponseAFr', headerName: 'Response A (FR)', width: 150 },
-    { field: 'ResponseBFr', headerName: 'Response B (FR)', width: 150 },
-    { field: 'ResponseCFr', headerName: 'Response C (FR)', width: 150 },
-    { field: 'RightResponseFr', headerName: 'Right Response (FR)', width: 150 },
-    { field: 'Image', headerName: 'Image', width: 120 },
+    {
+      field: 'Image',
+      headerName: 'Image',
+      width: 120,
+      renderCell: (params) =>
+        params.value ? (
+          <a
+            href="#"
+            style={{ color: '#2563eb', textDecoration: 'underline', cursor: 'pointer' }}
+            onClick={e => {
+              e.preventDefault();
+              const imageUrl = `${process.env.REACT_APP_SERVER_URL}/files/${selectedTopic}/${params.value}.png`;
+              setImagePopup({ open: true, src: imageUrl });
+            }}
+          >
+            {params.value}
+          </a>
+        ) : (
+          <span style={{ color: '#888' }}>No Image</span>
+        )
+    }
   ];
 
   // Prepare rows for DataGrid (must have unique 'id' field)
@@ -54,6 +88,61 @@ const Admin = () => {
     ...q,
     id: q.Identifier
   }));
+
+  // When a row is selected, store its original data for cancel
+  useEffect(() => {
+    if (selectedIdentifier) {
+      const found = questionsData.find(q => q.Identifier === selectedIdentifier);
+      setOriginalQuestion(found ? { ...found } : null);
+    } else {
+      setOriginalQuestion(null);
+    }
+  }, [selectedIdentifier]);
+
+  // Fetch questions when selectedTopic changes
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await getQuestions(selectedTopic);
+        if (response.data && Array.isArray(response.data)) {
+          setQuestionsData(response.data);
+          setSelectedIdentifier(null); // Optionally clear selection
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to retrieve questions for the selected topic.',
+        });
+      }
+    };
+
+    fetchQuestions();
+  }, [selectedTopic]);
+
+  // Update changedQuestions whenever a question is edited
+  const handleQuestionChange = (field, value) => {
+    setQuestionsData(questionsData.map(q =>
+      q.Identifier === selectedIdentifier
+        ? { ...q, [field]: value }
+        : q
+    ));
+
+    setChangedQuestions(prev => {
+      const alreadyChanged = prev.find(q => q.Identifier === selectedIdentifier);
+      const updatedQuestion = {
+        ...questionsData.find(q => q.Identifier === selectedIdentifier),
+        [field]: value
+      };
+      if (alreadyChanged) {
+        return prev.map(q =>
+          q.Identifier === selectedIdentifier ? updatedQuestion : q
+        );
+      } else {
+        return [...prev, updatedQuestion];
+      }
+    });
+  };
 
   return (
     <div
@@ -148,6 +237,27 @@ const Admin = () => {
                     title="Upload"
                     onClick={async () => {
                       if (!xmlFile) return;
+
+                      if (fileType === 'pictures') {
+                        try {
+                          await uploadImagesZip(xmlFile, selectedTopic);
+                          Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: `Pictures zip uploaded successfully!`,
+                          });
+                          setXmlFile(null);
+                        } catch (error) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: `Failed to upload pictures zip: ${error.response?.data || error.message}`,
+                          });
+                        }
+                        return;
+                      }
+
+                      // ...existing XML upload logic...
                       const fileContent = await xmlFile.text();
                       await importXml(fileContent, selectedTopic).then((response) => {
                         Swal.fire({
@@ -156,7 +266,6 @@ const Admin = () => {
                           text: `File ${xmlFile.name} uploaded successfully!`,
                         });
                         setXmlFile(null); // Reset the file input
-                        // Update questionsData from response if available
                         if (response.data && Array.isArray(response.data)) {
                           setQuestionsData(response.data);
                         }
@@ -201,19 +310,13 @@ const Admin = () => {
               <div className="w-full md:w-2/3 admin-datagrid-wrapper" style={{ height: 500, marginTop: '1.5rem' }}>
                 <DataGrid
                   rows={rows}
-                  columns={columns.map(col =>
-                    col.field === 'id'
-                      ? { ...col, renderCell: (params) => (
-                          <input
-                            type="checkbox"
-                            checked={params.row.id === selectedIdentifier}
-                            onChange={() => setSelectedIdentifier(params.row.id)}
-                          />
-                        )}
-                      : col
-                  )}
+                  columns={columns}
                   pageSize={8}
-                  onRowClick={(params) => setSelectedIdentifier(params.row.id)}
+                  onRowClick={(params) => {
+                    setSelectedIdentifier(
+                      params.row.id === selectedIdentifier ? null : params.row.id
+                    );
+                  }}
                   getRowClassName={(params) =>
                     params.row.id === selectedIdentifier ? 'bg-indigo-100' : ''
                   }
@@ -228,10 +331,47 @@ const Admin = () => {
               <div className="w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
                 {/* Icon buttons at the top */}
                 <div className="flex justify-end gap-2 mb-2">
-                  <button type="button" className="icon-btn" title="Save">
+                  <button
+                    type="button"
+                    className="icon-btn"
+                    title="Save"
+                    onClick={async () => {
+                      if (changedQuestions.length === 0) {
+                        Swal.fire('No changes', 'There are no changes to save.', 'info');
+                        return;
+                      }
+                      try {
+                        await updateQuestions(selectedTopic, changedQuestions);
+                        Swal.fire('Saved!', 'Changes have been saved successfully.', 'success');
+                        setChangedQuestions([]); // Clear changed questions after save
+                        // Optionally refresh questions from server
+                        const response = await getQuestions(selectedTopic);
+                        if (response.data && Array.isArray(response.data)) {
+                          setQuestionsData(response.data);
+                          setSelectedIdentifier(null);
+                        }
+                      } catch (error) {
+                        Swal.fire('Error', 'Failed to save changes.', 'error');
+                      }
+                    }}
+                  >
                     <span className="material-icons">save</span>
                   </button>
-                  <button type="button" className="icon-btn" title="Cancel" style={{ background: '#64748b' }}>
+                  <button
+                    type="button"
+                    className="icon-btn"
+                    style={{ background: '#64748b' }}
+                    onClick={() => {
+                      if (originalQuestion) {
+                        setQuestionsData(questionsData.map(q =>
+                          q.Identifier === selectedIdentifier ? { ...originalQuestion } : q
+                        ));
+                        // Force refresh of displayed data by resetting selectedIdentifier
+                        setSelectedIdentifier(null);
+                        setTimeout(() => setSelectedIdentifier(originalQuestion.Identifier), 0);
+                      }
+                    }}
+                  >
                     <span className="material-icons">cancel</span>
                   </button>
                   <button
@@ -267,29 +407,234 @@ const Admin = () => {
                     <span className="material-icons">delete</span>
                   </button>
                 </div>
-                {/* Form fields */}
-                <input className="border rounded px-2 py-1" placeholder="Identifier" />
-                <input className="border rounded px-2 py-1" placeholder="English Question" />
-                <input className="border rounded px-2 py-1" placeholder="First English Proposition" />
-                <input className="border rounded px-2 py-1" placeholder="Second English Proposition" />
-                <input className="border rounded px-2 py-1" placeholder="Third English Proposition" />
-                <input className="border rounded px-2 py-1" placeholder="Right Response English" />
-                <input className="border rounded px-2 py-1" placeholder="French Question" />
-                <input className="border rounded px-2 py-1" placeholder="First French Proposition" />
-                <input className="border rounded px-2 py-1" placeholder="Second French Proposition" />
-                <input className="border rounded px-2 py-1" placeholder="Third French Proposition" />
-                <input className="border rounded px-2 py-1" placeholder="Right French Response" />
-                <input className="border rounded px-2 py-1" placeholder="Image URL" />
+                {/* Form fields, now controlled by selectedQuestion */}
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="Identifier"
+                  value={selectedQuestion.Identifier || ''}
+                  readOnly
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="English Question"
+                  value={selectedQuestion.QuestionEn || ''}
+                  onChange={e => handleQuestionChange('QuestionEn', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="First English Proposition"
+                  value={selectedQuestion.ResponseAEn || ''}
+                  onChange={e => handleQuestionChange('ResponseAEn', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="Second English Proposition"
+                  value={selectedQuestion.ResponseBEn || ''}
+                  onChange={e => handleQuestionChange('ResponseBEn', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="Third English Proposition"
+                  value={selectedQuestion.ResponseCEn || ''}
+                  onChange={e => handleQuestionChange('ResponseCEn', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="Right Response English"
+                  value={selectedQuestion.RightResponseEn || ''}
+                  onChange={e => handleQuestionChange('RightResponseEn', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="French Question"
+                  value={selectedQuestion.QuestionFr || ''}
+                  onChange={e => handleQuestionChange('QuestionFr', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="First French Proposition"
+                  value={selectedQuestion.ResponseAFr || ''}
+                  onChange={e => handleQuestionChange('ResponseAFr', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="Second French Proposition"
+                  value={selectedQuestion.ResponseBFr || ''}
+                  onChange={e => handleQuestionChange('ResponseBFr', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="Third French Proposition"
+                  value={selectedQuestion.ResponseCFr || ''}
+                  onChange={e => handleQuestionChange('ResponseCFr', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="Right French Response"
+                  value={selectedQuestion.RightResponseFr || ''}
+                  onChange={e => handleQuestionChange('RightResponseFr', e.target.value)}
+                />
+                <input
+                  className="border rounded px-2 py-1"
+                  placeholder="Image URL"
+                  value={selectedQuestion.Image || ''}
+                  onChange={e => handleQuestionChange('Image', e.target.value)}
+                />
               </div>
             </div>
           )}
         </fieldset>
       </>
         )}
-      {activeTab === 1 && <div>Chemistry admin content goes here.</div>}
+      {activeTab === 1 && (
+  <>
+    {/* First fieldset: Insertion Quiz Data */}
+    <fieldset
+      className="border rounded-lg p-2 mb-4 bg-gray-50 w-full"
+      style={{ maxHeight: 'none', overflowY: 'visible' }}
+    >
+      <legend
+        className="font-semibold text-base mb-1 flex items-center cursor-pointer select-none"
+        onClick={() => setFieldsetOpen(open => !open)}
+        style={{ userSelect: 'none' }}
+      >
+        <span className="mr-2">
+          {fieldsetOpen ? '▼' : '►'}
+        </span>
+        Insertion Quiz Data
+      </legend>
+      {fieldsetOpen && (
+        <form className="flex flex-row gap-2 w-full items-center">
+          <input
+            type="file"
+            accept=".xml"
+            onChange={e => {
+              const file = e.target.files[0];
+              if (file && !file.name.endsWith('.xml')) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Invalid file',
+                  text: 'Please select a .xml file.',
+                });
+                e.target.value = '';
+                return;
+              }
+              setXmlFile(file);
+            }}
+            className="border rounded px-2 py-1"
+            style={{ flex: 1 }}
+          />
+          <button
+            type="button"
+            className="icon-btn upload"
+            title="Upload"
+            onClick={async () => {
+              if (!xmlFile) return;
+              const fileContent = await xmlFile.text();
+              await importXml(fileContent, selectedTopic).then((response) => {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Success',
+                  text: `File ${xmlFile.name} uploaded successfully!`,
+                });
+                setXmlFile(null); // Reset the file input
+              }, (error) => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: `Failed to upload file: ${error.response ? error.response.data : error.message}`,
+                });
+              }).catch((error) => {
+                if (error.response && error.response.data) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: `Failed to upload file: ${error.response.data.message || error.response.data}`,
+                  });
+                }
+              });
+            }}
+            style={{ flex: 'none' }}
+          >
+            <span className="material-icons">cloud_upload</span>
+            Upload
+          </button>
+        </form>
+      )}
+    </fieldset>
+
+    {/* Second fieldset: Edition Quiz Data */}
+    <fieldset
+      className="border rounded-lg p-2 mb-4 bg-gray-50 w-full"
+      style={{ maxHeight: 'none', overflowY: 'visible' }}
+    >
+      <legend
+        className="font-semibold text-base mb-1 flex items-center cursor-pointer select-none"
+        onClick={() => setEditionFieldsetOpen(open => !open)}
+        style={{ userSelect: 'none' }}
+      >
+        <span className="mr-2">
+          {editionFieldsetOpen ? '▼' : '►'}
+        </span>
+        Edition Quiz Data
+      </legend>
+      {editionFieldsetOpen && (
+        <div className="flex flex-col gap-2">
+          <input className="border rounded px-2 py-1" placeholder="Edit Chemistry Data" />
+        </div>
+      )}
+    </fieldset>
+  </>
+)}
       {activeTab === 2 && <div>Users admin content goes here.</div>}
       {activeTab === 3 && <div>Statistics admin content goes here.</div>}
     </div>
+    {imagePopup.open && (
+  <div
+    style={{
+      position: 'fixed',
+      top: 0, left: 0, right: 0, bottom: 0,
+      background: 'rgba(0,0,0,0.5)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      zIndex: 1000
+    }}
+    onClick={() => setImagePopup({ open: false, src: '' })}
+  >
+    <div
+      style={{
+        background: '#fff',
+        padding: 16,
+        borderRadius: 8,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        position: 'relative'
+      }}
+      onClick={e => e.stopPropagation()}
+    >
+      <img
+        src={imagePopup.src}
+        alt="Question"
+        style={{ maxWidth: '80vw', maxHeight: '80vh', display: 'block', margin: '0 auto' }}
+        onError={e => { e.target.onerror = null; e.target.src = notFoundImage; }}
+      />
+      <button
+        style={{
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          background: '#ef4444',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 4,
+          padding: '4px 8px',
+          cursor: 'pointer'
+        }}
+        onClick={() => setImagePopup({ open: false, src: '' })}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
     </div >
   );
 };

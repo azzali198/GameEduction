@@ -17,6 +17,8 @@ namespace PhysicsGame.BL.Services
     {
         Task<List<QuestionModel>> ValidateAndParseXmlAsync(string xmlString, string xsdString, string topic);
         Task<List<QuestionModel>> DeleteQuestionAsync(string topic, int identifier);
+        Task<List<QuestionModel>> GetQuestionsByTopicAsync(string topic);
+        Task<List<QuestionModel>> UpdateQuestionsAsync(string topic, List<QuestionModel> questions);
     }
 
     public class XmlImportService : IXmlImportService
@@ -49,9 +51,10 @@ namespace PhysicsGame.BL.Services
             var dataNodes = doc.Descendants("Data");
             foreach (var node in dataNodes)
             {
+                var identifier = int.Parse(node.Element("Identifier")?.Value ?? "0");
                 var model = new QuestionModel
                 {
-                    Identifier = int.Parse(node.Element("Identifier")?.Value ?? "0"),
+                    Identifier = identifier,
                     QuestionEn = node.Element("QuestionEn")?.Value,
                     ResponseAEn = node.Element("ResponseAEn")?.Value,
                     ResponseBEn = node.Element("ResponseBEn")?.Value,
@@ -64,7 +67,22 @@ namespace PhysicsGame.BL.Services
                     RightResponseFr = node.Element("RightResponseFr")?.Value,
                     Image = node.Element("Image")?.Value
                 };
-                questions.Add(model);
+
+                // Check for duplicate identifier in the database for the topic
+                bool exists = topic?.ToLowerInvariant() switch
+                {
+                    "thermodynamics" => _context.Thermodynamics.Any(q => q.Identifier == identifier),
+                    "electromagnetism" => _context.Electromagnetism.Any(q => q.Identifier == identifier),
+                    "mechanics" => _context.Mechanics.Any(q => q.Identifier == identifier),
+                    "modernphysics" => _context.ModernPhysics.Any(q => q.Identifier == identifier),
+                    "optics" => _context.Optics.Any(q => q.Identifier == identifier),
+                    "relativity" => _context.Relativity.Any(q => q.Identifier == identifier),
+                    _ => false
+                };
+
+                if (!exists)
+                    questions.Add(model);
+                // If exists, skip insertion for this question
             }
 
             // Insert into the correct table based on topic
@@ -437,6 +455,269 @@ namespace PhysicsGame.BL.Services
                 default:
                     throw new ArgumentException("Unsupported topic type.");
             }
+        }
+
+        public async Task<List<QuestionModel>> GetQuestionsByTopicAsync(string topic)
+        {
+            var topicLower = topic?.Trim()?.ToLowerInvariant();
+            switch (topic.Trim()?.ToLowerInvariant())
+            {
+                case "thermodynamics":
+                    return await Task.FromResult(_context.Thermodynamics
+                        .Select(q => new QuestionModel
+                        {
+                            Id = q.Id,
+                            Identifier = q.Identifier,
+                            QuestionEn = q.QuestionEn,
+                            ResponseAEn = q.ResponseAEn,
+                            ResponseBEn = q.ResponseBEn,
+                            ResponseCEn = q.ResponseCEn,
+                            RightResponseEn = q.RightResponseEn,
+                            QuestionFr = q.QuestionFr,
+                            ResponseAFr = q.ResponseAFr,
+                            ResponseBFr = q.ResponseBFr,
+                            ResponseCFr = q.ResponseCFr,
+                            RightResponseFr = q.RightResponseFr,
+                            Image = q.Image
+                        }).ToList());
+
+                case "electromagnetism":
+                    return await Task.FromResult(_context.Electromagnetism
+                        .Select(q => new QuestionModel
+                        {
+                            Id = q.Id,
+                            Identifier = q.Identifier,
+                            QuestionEn = q.QuestionEn,
+                            ResponseAEn = q.ResponseAEn,
+                            ResponseBEn = q.ResponseBEn,
+                            ResponseCEn = q.ResponseCEn,
+                            RightResponseEn = q.RightResponseEn,
+                            QuestionFr = q.QuestionFr,
+                            ResponseAFr = q.ResponseAFr,
+                            ResponseBFr = q.ResponseBFr,
+                            ResponseCFr = q.ResponseCFr,
+                            RightResponseFr = q.RightResponseFr,
+                            Image = q.Image
+                        }).ToList());
+
+                case "mechanics":
+                    return await Task.FromResult(_context.Mechanics
+                        .Select(q => new QuestionModel
+                        {
+                            Id = q.Id,
+                            Identifier = q.Identifier,
+                            QuestionEn = q.QuestionEn,
+                            ResponseAEn = q.ResponseAEn,
+                            ResponseBEn = q.ResponseBEn,
+                            ResponseCEn = q.ResponseCEn,
+                            RightResponseEn = q.RightResponseEn,
+                            QuestionFr = q.QuestionFr,
+                            ResponseAFr = q.ResponseAFr,
+                            ResponseBFr = q.ResponseBFr,
+                            ResponseCFr = q.ResponseCFr,
+                            RightResponseFr = q.RightResponseFr,
+                            Image = q.Image
+                        }).ToList());
+
+                case "modern physics":
+                    return await Task.FromResult(_context.ModernPhysics
+                        .Select(q => new QuestionModel
+                        {
+                            Id = q.Id,
+                            Identifier = q.Identifier,
+                            QuestionEn = q.QuestionEn,
+                            ResponseAEn = q.ResponseAEn,
+                            ResponseBEn = q.ResponseBEn,
+                            ResponseCEn = q.ResponseCEn,
+                            RightResponseEn = q.RightResponseEn,
+                            QuestionFr = q.QuestionFr,
+                            ResponseAFr = q.ResponseAFr,
+                            ResponseBFr = q.ResponseBFr,
+                            ResponseCFr = q.ResponseCFr,
+                            RightResponseFr = q.RightResponseFr,
+                            Image = q.Image
+                        }).ToList());
+
+                case "optics":
+                    return await Task.FromResult(_context.Optics
+                        .Select(q => new QuestionModel
+                        {
+                            Id = q.Id,
+                            Identifier = q.Identifier,
+                            QuestionEn = q.QuestionEn,
+                            ResponseAEn = q.ResponseAEn,
+                            ResponseBEn = q.ResponseBEn,
+                            ResponseCEn = q.ResponseCEn,
+                            RightResponseEn = q.RightResponseEn,
+                            QuestionFr = q.QuestionFr,
+                            ResponseAFr = q.ResponseAFr,
+                            ResponseBFr = q.ResponseBFr,
+                            ResponseCFr = q.ResponseCFr,
+                            RightResponseFr = q.RightResponseFr,
+                            Image = q.Image
+                        }).ToList());
+
+                case "relativity":
+                    return await Task.FromResult(_context.Relativity
+                        .Select(q => new QuestionModel
+                        {
+                            Id = q.Id,
+                            Identifier = q.Identifier,
+                            QuestionEn = q.QuestionEn,
+                            ResponseAEn = q.ResponseAEn,
+                            ResponseBEn = q.ResponseBEn,
+                            ResponseCEn = q.ResponseCEn,
+                            RightResponseEn = q.RightResponseEn,
+                            QuestionFr = q.QuestionFr,
+                            ResponseAFr = q.ResponseAFr,
+                            ResponseBFr = q.ResponseBFr,
+                            ResponseCFr = q.ResponseCFr,
+                            RightResponseFr = q.RightResponseFr,
+                            Image = q.Image
+                        }).ToList());
+
+                default:
+                    throw new ArgumentException("Unsupported topic type.");
+            }
+        }
+
+        public async Task<List<QuestionModel>> UpdateQuestionsAsync(string topic, List<QuestionModel> questions)
+        {
+            switch (topic?.ToLowerInvariant())
+            {
+                case "thermodynamics":
+                    foreach (var q in questions)
+                    {
+                        var entity = await _context.Thermodynamics.FirstOrDefaultAsync(e => e.Identifier == q.Identifier);
+                        if (entity != null)
+                        {
+                            entity.QuestionEn = q.QuestionEn;
+                            entity.ResponseAEn = q.ResponseAEn;
+                            entity.ResponseBEn = q.ResponseBEn;
+                            entity.ResponseCEn = q.ResponseCEn;
+                            entity.RightResponseEn = q.RightResponseEn;
+                            entity.QuestionFr = q.QuestionFr;
+                            entity.ResponseAFr = q.ResponseAFr;
+                            entity.ResponseBFr = q.ResponseBFr;
+                            entity.ResponseCFr = q.ResponseCFr;
+                            entity.RightResponseFr = q.RightResponseFr;
+                            entity.Image = q.Image;
+                        }
+                    }
+                    break;
+
+                case "electromagnetism":
+                    foreach (var q in questions)
+                    {
+                        var entity = await _context.Electromagnetism.FirstOrDefaultAsync(e => e.Identifier == q.Identifier);
+                        if (entity != null)
+                        {
+                            entity.QuestionEn = q.QuestionEn;
+                            entity.ResponseAEn = q.ResponseAEn;
+                            entity.ResponseBEn = q.ResponseBEn;
+                            entity.ResponseCEn = q.ResponseCEn;
+                            entity.RightResponseEn = q.RightResponseEn;
+                            entity.QuestionFr = q.QuestionFr;
+                            entity.ResponseAFr = q.ResponseAFr;
+                            entity.ResponseBFr = q.ResponseBFr;
+                            entity.ResponseCFr = q.ResponseCFr;
+                            entity.RightResponseFr = q.RightResponseFr;
+                            entity.Image = q.Image;
+                        }
+                    }
+                    break;
+
+                case "mechanics":
+                    foreach (var q in questions)
+                    {
+                        var entity = await _context.Mechanics.FirstOrDefaultAsync(e => e.Identifier == q.Identifier);
+                        if (entity != null)
+                        {
+                            entity.QuestionEn = q.QuestionEn;
+                            entity.ResponseAEn = q.ResponseAEn;
+                            entity.ResponseBEn = q.ResponseBEn;
+                            entity.ResponseCEn = q.ResponseCEn;
+                            entity.RightResponseEn = q.RightResponseEn;
+                            entity.QuestionFr = q.QuestionFr;
+                            entity.ResponseAFr = q.ResponseAFr;
+                            entity.ResponseBFr = q.ResponseBFr;
+                            entity.ResponseCFr = q.ResponseCFr;
+                            entity.RightResponseFr = q.RightResponseFr;
+                            entity.Image = q.Image;
+                        }
+                    }
+                    break;
+
+                case "modernphysics":
+                    foreach (var q in questions)
+                    {
+                        var entity = await _context.ModernPhysics.FirstOrDefaultAsync(e => e.Identifier == q.Identifier);
+                        if (entity != null)
+                        {
+                            entity.QuestionEn = q.QuestionEn;
+                            entity.ResponseAEn = q.ResponseAEn;
+                            entity.ResponseBEn = q.ResponseBEn;
+                            entity.ResponseCEn = q.ResponseCEn;
+                            entity.RightResponseEn = q.RightResponseEn;
+                            entity.QuestionFr = q.QuestionFr;
+                            entity.ResponseAFr = q.ResponseAFr;
+                            entity.ResponseBFr = q.ResponseBFr;
+                            entity.ResponseCFr = q.ResponseCFr;
+                            entity.RightResponseFr = q.RightResponseFr;
+                            entity.Image = q.Image;
+                        }
+                    }
+                    break;
+
+                case "optics":
+                    foreach (var q in questions)
+                    {
+                        var entity = await _context.Optics.FirstOrDefaultAsync(e => e.Identifier == q.Identifier);
+                        if (entity != null)
+                        {
+                            entity.QuestionEn = q.QuestionEn;
+                            entity.ResponseAEn = q.ResponseAEn;
+                            entity.ResponseBEn = q.ResponseBEn;
+                            entity.ResponseCEn = q.ResponseCEn;
+                            entity.RightResponseEn = q.RightResponseEn;
+                            entity.QuestionFr = q.QuestionFr;
+                            entity.ResponseAFr = q.ResponseAFr;
+                            entity.ResponseBFr = q.ResponseBFr;
+                            entity.ResponseCFr = q.ResponseCFr;
+                            entity.RightResponseFr = q.RightResponseFr;
+                            entity.Image = q.Image;
+                        }
+                    }
+                    break;
+
+                case "relativity":
+                    foreach (var q in questions)
+                    {
+                        var entity = await _context.Relativity.FirstOrDefaultAsync(e => e.Identifier == q.Identifier);
+                        if (entity != null)
+                        {
+                            entity.QuestionEn = q.QuestionEn;
+                            entity.ResponseAEn = q.ResponseAEn;
+                            entity.ResponseBEn = q.ResponseBEn;
+                            entity.ResponseCEn = q.ResponseCEn;
+                            entity.RightResponseEn = q.RightResponseEn;
+                            entity.QuestionFr = q.QuestionFr;
+                            entity.ResponseAFr = q.ResponseAFr;
+                            entity.ResponseBFr = q.ResponseBFr;
+                            entity.ResponseCFr = q.ResponseCFr;
+                            entity.RightResponseFr = q.RightResponseFr;
+                            entity.Image = q.Image;
+                        }
+                    }
+                    break;
+
+                default:
+                    throw new ArgumentException("Unsupported topic type.");
+            }
+            await _context.SaveChangesAsync();
+
+            // Return updated questions
+            return await GetQuestionsByTopicAsync(topic);
         }
     }
 }

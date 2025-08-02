@@ -14,4 +14,32 @@
     <RightResponseFr>Gravité</RightResponseFr>
     <Image></Image>
   </Data>
+  <Data>
+  <Identifier>1226</Identifier>
+  <QuestionEn>What is the acceleration due to gravity on Earth?</QuestionEn>
+  <ResponseAEn>9.8 m/s²</ResponseAEn>
+  <ResponseBEn>6.67 m/s²</ResponseBEn>
+  <ResponseCEn>3.2 m/s²</ResponseCEn>
+  <RightResponseEn>9.8 m/s²</RightResponseEn>
+  <QuestionFr>Quelle est l'accélération due à la gravité sur Terre ?</QuestionFr>
+  <ResponseAFr>9,8 m/s²</ResponseAFr>
+  <ResponseBFr>6,67 m/s²</ResponseBFr>
+  <ResponseCFr>3,2 m/s²</ResponseCFr>
+  <RightResponseFr>9,8 m/s²</RightResponseFr>
+  <Image></Image>
+</Data>
+<Data>
+  <Identifier>1227</Identifier>
+  <QuestionEn>Which law states that for every action there is an equal and opposite reaction?</QuestionEn>
+  <ResponseAEn>Newton's First Law</ResponseAEn>
+  <ResponseBEn>Newton's Second Law</ResponseBEn>
+  <ResponseCEn>Newton's Third Law</ResponseCEn>
+  <RightResponseEn>Newton's Third Law</RightResponseEn>
+  <QuestionFr>Quelle loi stipule que toute action a une réaction égale et opposée ?</QuestionFr>
+  <ResponseAFr>Première loi de Newton</ResponseAFr>
+  <ResponseBFr>Deuxième loi de Newton</ResponseBFr>
+  <ResponseCFr>Troisième loi de Newton</ResponseCFr>
+  <RightResponseFr>Troisième loi de Newton</RightResponseFr>
+  <Image></Image>
+</Data>
 </PhysicsData>
