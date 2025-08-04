@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhysicsGame.BL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d282bb2df0003bf3fdee5c1587416ab0385b4490")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fddc78218410ab9d69e622654fc2b14944247e0d")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhysicsGame.BL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhysicsGame.BL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

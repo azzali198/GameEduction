@@ -7,6 +7,7 @@ import deleteQuestion from '../../services/deleteQuestionService';
 import getQuestions from '../../services/getQuestionsService'; // Add this import
 import updateQuestions from '../../services/updateQuestionsService';
 import uploadImagesZip from '../../services/uploadImagesZipService'; // Add this import
+import { importChemistryXml, getChemistryQuestions, updateChemistryQuestions, deleteChemistryQuestion } from '../../services/importChemistryXmlService'; // Update import
 import notFoundImage from '../../images/404.png';
 
 const tabTitles = ['Physics', 'Chemistry', 'Users', 'Statistics'];
@@ -31,6 +32,9 @@ const Admin = () => {
   const [originalQuestion, setOriginalQuestion] = useState(null);
   const [changedQuestions, setChangedQuestions] = useState([]);
   const [imagePopup, setImagePopup] = useState({ open: false, src: '' });
+  const [questionChemistryData, setQuestionChemistryData] = useState([]);
+  const [changedChemistryRows, setChangedChemistryRows] = useState([]);
+  const [originalChemistryRow, setOriginalChemistryRow] = useState(null); // Add this state near your other states
 
   // Find the selected question object
   const selectedQuestion = questionsData.find(q => q.Identifier === selectedIdentifier) || {};
@@ -143,6 +147,59 @@ const Admin = () => {
       }
     });
   };
+
+  // Fetch chemistry questions when the second fieldset is opened
+  useEffect(() => {
+    if (activeTab === 1 && editionFieldsetOpen) {
+      const fetchChemistryQuestions = async () => {
+        try {
+          const response = await getChemistryQuestions();
+          if (response.data && Array.isArray(response.data)) {
+            setQuestionChemistryData(response.data);
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to retrieve chemistry questions.',
+          });
+        }
+      };
+      fetchChemistryQuestions();
+    }
+  }, [activeTab, editionFieldsetOpen]);
+
+  // Handler for editing a chemistry question field
+  const handleChemistryFieldChange = (field, value) => {
+    setQuestionChemistryData(questionChemistryData.map(q =>
+      q.Id === selectedIdentifier ? { ...q, [field]: value } : q
+    ));
+
+    setChangedChemistryRows(prev => {
+      const alreadyChanged = prev.find(q => q.Id === selectedIdentifier);
+      const updatedRow = {
+        ...questionChemistryData.find(q => q.Id === selectedIdentifier),
+        [field]: value
+      };
+      if (alreadyChanged) {
+        return prev.map(q =>
+          q.Id === selectedIdentifier ? updatedRow : q
+        );
+      } else {
+        return [...prev, updatedRow];
+      }
+    });
+  };
+
+  // When a row is selected, store its original data
+  useEffect(() => {
+    if (selectedIdentifier) {
+      const found = questionChemistryData.find(q => q.Id === selectedIdentifier);
+      setOriginalChemistryRow(found ? { ...found } : null);
+    } else {
+      setOriginalChemistryRow(null);
+    }
+  }, [selectedIdentifier, questionChemistryData]);
 
   return (
     <div
@@ -510,16 +567,7 @@ const Admin = () => {
             accept=".xml"
             onChange={e => {
               const file = e.target.files[0];
-              if (file && !file.name.endsWith('.xml')) {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Invalid file',
-                  text: 'Please select a .xml file.',
-                });
-                e.target.value = '';
-                return;
-              }
-              setXmlFile(file);
+              setXmlFile(file || null);
             }}
             className="border rounded px-2 py-1"
             style={{ flex: 1 }}
@@ -529,35 +577,55 @@ const Admin = () => {
             className="icon-btn upload"
             title="Upload"
             onClick={async () => {
-              if (!xmlFile) return;
-              const fileContent = await xmlFile.text();
-              await importXml(fileContent, selectedTopic).then((response) => {
+              if (!xmlFile) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'No file selected',
+                  text: 'Please select a .xml file to upload.',
+                });
+                return;
+              }
+              if (!xmlFile.name.endsWith('.xml')) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Invalid file',
+                  text: 'Please select a .xml file.',
+                });
+                return;
+              }
+              try {
+                const response = await importChemistryXml(xmlFile);
                 Swal.fire({
                   icon: 'success',
                   title: 'Success',
                   text: `File ${xmlFile.name} uploaded successfully!`,
                 });
                 setXmlFile(null); // Reset the file input
-              }, (error) => {
+                // Optionally handle response.data here
+              } catch (error) {
                 Swal.fire({
                   icon: 'error',
                   title: 'Error',
-                  text: `Failed to upload file: ${error.response ? error.response.data : error.message}`,
+                 // text: `Failed to upload file: ${error.response ? error.response.data : error.message}`,
+                 text: `Failed to upload file: ${JSON.stringify(error.response?.data || error.message)}`,
                 });
-              }).catch((error) => {
-                if (error.response && error.response.data) {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: `Failed to upload file: ${error.response.data.message || error.response.data}`,
-                  });
-                }
-              });
+              }
             }}
-            style={{ flex: 'none' }}
+            style={{
+              flex: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              background: '#2563eb',
+              color: '#fff',
+              borderRadius: '6px',
+              border: 'none',
+              padding: '6px 16px',
+              fontWeight: '500',
+              cursor: 'pointer'
+            }}
           >
             <span className="material-icons">cloud_upload</span>
-            Upload
           </button>
         </form>
       )}
@@ -579,8 +647,183 @@ const Admin = () => {
         Edition Quiz Data
       </legend>
       {editionFieldsetOpen && (
-        <div className="flex flex-col gap-2">
-          <input className="border rounded px-2 py-1" placeholder="Edit Chemistry Data" />
+        <div className="flex flex-col md:flex-row gap-4 w-full items-start">
+          {/* Left: Datagrid */}
+          <div className="w-full md:w-2/3 admin-datagrid-wrapper" style={{ height: 500, marginTop: '1.5rem' }}>
+            <DataGrid
+              rows={questionChemistryData}
+              getRowId={row => row.Id}
+              columns={[
+                {
+                  field: 'select',
+                  headerName: 'Select',
+                  width: 80,
+                  renderCell: (params) => (
+                    <input
+                      type="checkbox"
+                      checked={params.row.Id === selectedIdentifier}
+                      onChange={() =>
+                        setSelectedIdentifier(
+                          params.row.Id === selectedIdentifier ? null : params.row.Id
+                        )
+                      }
+                    />
+                  )
+                },
+                { field: 'Id', headerName: 'Identifier', width: 120 },
+                { field: 'Definition', headerName: 'Definition', flex: 2 },
+                { field: 'ChemicalData', headerName: 'Chemical Data', flex: 1 },
+                { field: 'RightResponse', headerName: 'Right Response', flex: 1 },
+                { field: 'ResponseText', headerName: 'Response Text', flex: 1 }
+              ]}
+              pageSize={8}
+              onRowClick={(params) => {
+                setSelectedIdentifier(
+                  params.row.Id === selectedIdentifier ? null : params.row.Id
+                );
+              }}
+              getRowClassName={(params) =>
+                params.row.Id === selectedIdentifier ? 'bg-indigo-100' : ''
+              }
+              sx={{
+                '& .MuiDataGrid-row.Mui-selected': {
+                  backgroundColor: '#e0e7ff !important',
+                }
+              }}
+            />
+          </div>
+          {/* Right: Form for editing selected row */}
+          <div className="w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
+            {(() => {
+              const selectedRow = questionChemistryData.find(q => q.Id === selectedIdentifier) || {};
+              return (
+                <form className="flex flex-col gap-2">
+                  {/* Top buttons with icons */}
+                  <div className="flex justify-end gap-2 mb-2">
+                    <button
+                      type="button"
+                      className="icon-btn"
+                      title="Save"
+                      onClick={async () => {
+                        if (changedChemistryRows.length === 0) {
+                          Swal.fire('No changes', 'There are no changes to save.', 'info');
+                          return;
+                        }
+                        try {
+                          await updateChemistryQuestions(changedChemistryRows);
+                          Swal.fire('Saved!', 'Changes have been saved successfully.', 'success');
+                          setChangedChemistryRows([]); // Clear changed rows after save
+                          // Optionally refresh chemistry questions from server
+                          const response = await getChemistryQuestions();
+                          if (response.data && Array.isArray(response.data)) {
+                            setQuestionChemistryData(response.data);
+                            setSelectedIdentifier(null);
+                          }
+                        } catch (error) {
+                          Swal.fire('Error', 'Failed to save changes.', 'error');
+                        }
+                      }}
+                    >
+                      <span className="material-icons">save</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="icon-btn"
+                      title="Cancel"
+                      style={{ background: '#64748b' }}
+                      onClick={async () => {
+                        // Cancel changes: restore previous values for selected row
+                        if (originalChemistryRow) {
+                          setQuestionChemistryData(questionChemistryData.map(q =>
+                            q.Id === selectedIdentifier ? { ...originalChemistryRow } : q
+                          ));
+                        }
+                        setChangedChemistryRows(changedChemistryRows.filter(q => q.Id !== selectedIdentifier));
+                        // Refresh data from server to ensure latest state
+                        try {
+                          const response = await getChemistryQuestions();
+                          if (response.data && Array.isArray(response.data)) {
+                            setQuestionChemistryData(response.data);
+                          }
+                        } catch (error) {
+                          Swal.fire('Error', 'Failed to refresh chemistry questions.', 'error');
+                        }
+                        Swal.fire('Cancelled', 'Changes have been reverted.', 'info');
+                      }}
+                    >
+                      <span className="material-icons">cancel</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="icon-btn"
+                      title="Delete"
+                      style={{ background: '#ef4444' }}
+                      onClick={async () => {
+                        if (!selectedIdentifier) {
+                          Swal.fire('No selection', 'Please select a row to delete.', 'info');
+                          return;
+                        }
+                        const confirm = await Swal.fire({
+                          title: 'Are you sure?',
+                          text: `Delete chemistry question with Id: ${selectedIdentifier}?`,
+                          icon: 'warning',
+                          showCancelButton: true,
+                          confirmButtonText: 'Yes, delete it!',
+                          cancelButtonText: 'Cancel'
+                        });
+                        if (confirm.isConfirmed) {
+                          try {
+                            await deleteChemistryQuestion(selectedIdentifier);
+                            // Refresh data from server after deletion
+                            const response = await getChemistryQuestions();
+                            if (response.data && Array.isArray(response.data)) {
+                              setQuestionChemistryData(response.data);
+                              setSelectedIdentifier(null);
+                            }
+                            Swal.fire('Deleted!', 'The question has been deleted.', 'success');
+                          } catch (error) {
+                            Swal.fire('Error', 'Failed to delete question.', 'error');
+                          }
+                        }
+                      }}
+                    >
+                      <span className="material-icons">delete</span>
+                    </button>
+                  </div>
+                  <input
+                    className="border rounded px-2 py-1"
+                    placeholder="Identifier"
+                    value={selectedRow.Id || ''}
+                    readOnly
+                  />
+                  <textarea
+                    className="border rounded px-2 py-1"
+                    placeholder="Definition"
+                    value={selectedRow.Definition || ''}
+                    onChange={e => handleChemistryFieldChange('Definition', e.target.value)}
+                  />
+                  <input
+                    className="border rounded px-2 py-1"
+                    placeholder="Chemical Data"
+                    value={selectedRow.ChemicalData || ''}
+                    onChange={e => handleChemistryFieldChange('ChemicalData', e.target.value)}
+                  />
+                  <input
+                    className="border rounded px-2 py-1"
+                    placeholder="Right Response"
+                    value={selectedRow.RightResponse || ''}
+                    onChange={e => handleChemistryFieldChange('RightResponse', e.target.value)}
+                  />
+                  <textarea
+                    className="border rounded px-2 py-1"
+                    placeholder="Response Text"
+                    value={selectedRow.ResponseText || ''}
+                    onChange={e => handleChemistryFieldChange('ResponseText', e.target.value)}
+                  />
+                </form>
+              );
+            })()}
+          </div>
         </div>
       )}
     </fieldset>

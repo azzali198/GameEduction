@@ -2865,11 +2865,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
+      "projectUniqueName": "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
       "projectName": "PhysicsGame.BL",
-      "projectPath": "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
+      "projectPath": "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
       "packagesPath": "C:\\Users\\azzali\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\obj\\",
+      "outputPath": "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\azzali\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2887,8 +2887,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.DAL\\PhysicsGame.DAL.csproj": {
-              "projectPath": "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.DAL\\PhysicsGame.DAL.csproj"
+            "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.DAL\\PhysicsGame.DAL.csproj": {
+              "projectPath": "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.DAL\\PhysicsGame.DAL.csproj"
             }
           }
         }
