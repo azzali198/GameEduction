@@ -1,3 +1,5 @@
+
+
 namespace PhysicsGame.BL.Models
 {
     public class ChemistryModel
@@ -8,4 +10,5 @@ namespace PhysicsGame.BL.Models
         public int RightResponse { get; set; }
         public string ResponseText { get; set; }
     }
+
 }

@@ -673,7 +673,7 @@ const Admin = () => {
                 { field: 'Id', headerName: 'Identifier', width: 120 },
                 { field: 'Definition', headerName: 'Definition', flex: 2 },
                 { field: 'ChemicalData', headerName: 'Chemical Data', flex: 1 },
-                { field: 'RightResponse', headerName: 'Right Response', flex: 1 },
+                { field: 'RightResponse', headerName: 'Score', flex: 1 },
                 { field: 'ResponseText', headerName: 'Response Text', flex: 1 }
               ]}
               pageSize={8}
@@ -810,7 +810,7 @@ const Admin = () => {
                   />
                   <input
                     className="border rounded px-2 py-1"
-                    placeholder="Right Response"
+                    placeholder="Score"
                     value={selectedRow.RightResponse || ''}
                     onChange={e => handleChemistryFieldChange('RightResponse', e.target.value)}
                   />

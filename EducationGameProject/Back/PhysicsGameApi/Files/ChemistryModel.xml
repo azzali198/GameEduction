@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ChemistryData branch="">
   <Data>
-    <Identifier>1225</Identifier>
+    <Id>1225</Id>
     <Definition>Colorless gas produced by the decomposition of organic matter (plant and animal)</Definition>
     <ChemicalData>,,H,,;,,LV,,;H,LH,C,LH,H;,,LV,,;,,H,,</ChemicalData>
-    <Score>5</Score>
+    <RightResponse>5</RightResponse>
     <ResponseText>Right Response it is the molecule of Methane CH/sub4/sub</ResponseText>
   </Data>
 </ChemistryData>

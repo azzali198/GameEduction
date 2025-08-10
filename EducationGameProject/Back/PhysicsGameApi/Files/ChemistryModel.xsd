@@ -5,10 +5,10 @@
         <xs:element name="Data">
           <xs:complexType>
             <xs:sequence>
-              <xs:element type="xs:short" name="Identifier"/>
+              <xs:element type="xs:short" name="Id"/>
               <xs:element type="xs:string" name="Definition"/>
               <xs:element type="xs:string" name="ChemicalData"/>
-              <xs:element type="xs:byte" name="Score"/>
+              <xs:element type="xs:byte" name="RightResponse"/>
               <xs:element type="xs:string" name="ResponseText"/>
             </xs:sequence>
           </xs:complexType>

@@ -2865,11 +2865,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
+      "projectUniqueName": "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
       "projectName": "PhysicsGame.BL",
-      "projectPath": "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
+      "projectPath": "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
       "packagesPath": "C:\\Users\\azzali\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\obj\\",
+      "outputPath": "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\azzali\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -17,7 +17,12 @@ namespace PhysicsGameApi.Controllers
         {
             _chemistryImportService = chemistryImportService;
         }
-
+    public class ChemistryXmlInput
+    {
+       
+        [FromForm]
+        public IFormFile XmlFile { get; set; }
+    }
         [HttpGet("get-questions")]
         public async Task<IActionResult> GetQuestions()
         {
@@ -49,8 +54,8 @@ namespace PhysicsGameApi.Controllers
             }
         }
 
-        [HttpDelete("delete-question")]
-        public async Task<IActionResult> DeleteQuestion([FromBody] int id)
+        [HttpDelete("delete-question/{id}")]
+        public async Task<IActionResult> DeleteQuestion([FromRoute] int id)
         {
             if (id <= 0)
                 return BadRequest("Identifier is invalid.");
@@ -69,8 +74,10 @@ namespace PhysicsGameApi.Controllers
         }
 
         [HttpPost("import-xml")]
-        public async Task<IActionResult> ImportXml([FromForm] IFormFile xmlFile)
+        public async Task<IActionResult> ImportXml([FromForm] ChemistryXmlInput input)
         {
+            var xmlFile = input.XmlFile;
+
             if (xmlFile == null || xmlFile.Length == 0)
                 return BadRequest("XML file is missing.");
 
@@ -105,8 +112,7 @@ namespace PhysicsGameApi.Controllers
         }
     }
 
-    public class ChemistryXmlInput
-    {
-        public string Xml { get; set; }
-    }
+
+    
+  
 }
