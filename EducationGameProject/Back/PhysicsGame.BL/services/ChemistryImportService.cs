@@ -11,6 +11,8 @@ public interface IChemistryImportService
     Task<List<ChemistryModel>> GetChemistryQuestionsAsync();
     Task<List<ChemistryModel>> UpdateChemistryQuestionsAsync(List<ChemistryModel> questions);
     Task<List<ChemistryModel>> DeleteChemistryQuestionAsync(int id);
+    Task<int> GetChemistryQuestionsCountAsync();
+    Task<ChemistryModel> GetChemistryQuestionByIndexAsync(int index);
 }
 
 public class ChemistryImportService : IChemistryImportService
@@ -105,5 +107,30 @@ public class ChemistryImportService : IChemistryImportService
         _context.Chemistry.Remove(entity);
         await _context.SaveChangesAsync();
         return await GetChemistryQuestionsAsync();
+    }
+
+    public async Task<int> GetChemistryQuestionsCountAsync()
+    {
+        return await Task.FromResult(_context.Chemistry.Count());
+    }
+
+    public async Task<ChemistryModel> GetChemistryQuestionByIndexAsync(int index)
+    {
+        var questions = _context.Chemistry
+            .OrderBy(q => q.Id)
+            .Select(q => new ChemistryModel
+            {
+                Id = q.Id,
+                Definition = q.Definition,
+                ChemicalData = q.ChemicalData,
+                RightResponse = q.RightResponse,
+                ResponseText = q.ResponseText
+            })
+            .ToList();
+
+        if (index < 0 || index >= questions.Count)
+            return null;
+
+        return questions[index];
     }
 }

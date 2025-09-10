@@ -17,7 +17,7 @@ const Shapes = ({ Data }) => {
                                 <Col key={`col-${rowIndex}-${colIndex}`} className="shape-cell">
                                     <Rectangle
                                         width={window.innerWidth < 768 ? 80 : 120}
-                                        height={10}
+                                        height={5}
                                         fill={{ color: 'gray' }}
                                         className="horizontal-line"
                                     />
@@ -27,7 +27,7 @@ const Shapes = ({ Data }) => {
                             return (
                                 <Col key={`col-${rowIndex}-${colIndex}`} className="shape-cell">
                                     <Rectangle
-                                        width={10}
+                                        width={5}
                                         height={window.innerWidth < 768 ? 60 : 80}
                                         fill={{ color: 'gray' }}
                                         className="vertical-line"

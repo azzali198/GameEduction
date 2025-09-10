@@ -12,23 +12,78 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import congrats from '../../images/congratulations-7600.gif'
 import Swal from "sweetalert2";
+import { getChemistryQuestionsCount, getChemistryQuestionByIndex } from '../../services/importChemistryXmlService';
 
 
 
 const ChemistryGame = () => {
     const score = useSelector(selectScore)
-    const [result, setResult] = React.useState(5);
+    const [result, setResult] = React.useState(1);
     const Dispatch = useDispatch();
     const period = React.useMemo(() => { return Date.now() + 20000 }, [])
     const counterRef = React.useRef();
-    const [chemicalData, setChemicalData] = React.useState([['', '', 'H', '', ''], ['', '', 'LV', '', ''], ['H', 'LH', 'C', 'LH', 'H'], ['', '', 'LV', '', ''], ['', '', 'H', '', '']])
-    const [question, setQuestion] = React.useState("Colorless gas produced by the decomposition of organic matter (plant and animal)")
+    const [questionsCount, setQuestionsCount] = React.useState(0);
+    const [question, setQuestion] = React.useState("");
+    const [chemicalData, setChemicalData] = React.useState([]);
+    const [title, setTitle] = React.useState("");
+    const [questionsIndex, setQuestionsIndex] = React.useState([]);
+
+  
+
+    // Fetch a chemistry question by index (example: index 0)
+    const fetchAndSetRandomQuestion = async () => {
+ 
+        let randomIndex;
+        const response = await getChemistryQuestionsCount();
+        setQuestionsCount(response.data);
+        do {
+            randomIndex = Math.floor(Math.random() * response.data);
+        } while (questionsIndex.includes(randomIndex) && questionsIndex.length < response.data);
+
+        if (questionsIndex.length < response.data) {
+            setQuestionsIndex([...questionsIndex, randomIndex]);
+            const response = await getChemistryQuestionByIndex(randomIndex);
+            if (response.data) {
+                setQuestion(response.data.Definition || "");
+                var chemData = [];
+                response.data.ChemicalData.split(';').map(row => chemData.push(row.split(',')));
+                setResult(response.data.RightResponse || 0);
+                setChemicalData(chemData);
+                // Replace /sub with <sub> and sub/ with </sub> in ResponseText
+                const formattedResponseText = response.data.ResponseText
+                    .replace(/\/sub/g, '<sub>')
+                    .replace(/sub\//g, '</sub>');
+                setTitle(formattedResponseText || "");
+            }
+        }
+
+        else {
+            alert(questionsIndex.length + " " + questionsCount);
+            Swal.fire({
+                icon: 'info',
+                title: 'Game Over',
+                text: 'All questions have been answered!',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+    };
+
     React.useEffect(() => {
+       // fetchAndSetRandomQuestion();
+    }, [questionsIndex]);
+
+    React.useEffect(() => {
+        if(score === 0)
+        {
+          fetchAndSetRandomQuestion();
+        }
+         
         if (score === result) {
             Swal.fire({
                 position: "middle-middle",
                 icon: "success",
-                title: "Right Response it is the molecule of Methane CH<sub>4</sub>",
+                title: title,
                 showConfirmButton: false,
                 backdrop: `
 rgba(0,0,123,0.4)
@@ -39,11 +94,10 @@ no-repeat
                 timer: 5000
             }).then(() => {
                 Dispatch(initialize())
-                setChemicalData([['', '', '', '', ''], ['H', 'LH', 'O', 'LH', 'H'], ['', '', '', '', '']])
-                setQuestion('Colorless gas produced by the decomposition of organic matter (plant and animal)')
+                fetchAndSetRandomQuestion()
             })
         }
-    }, [score])
+    }, [ score])
     const onCompletePeriod = () => { }
     const onTickCounter = () => { }
     const onStopCounter = () => { }
@@ -54,19 +108,21 @@ no-repeat
                 <Row>
                     <Col xs={12}>
                         <div className="question-container">
-                            <h3 className="question-text">{question}</h3>
+                            <h4 className="question-text">{question}</h4>
                         </div>
                     </Col>
                 </Row>
-                
+
                 <Row>
                     <Col xs={12}>
-                        <div className="shapes-container">
+                        <div
+                            className="shapes-container"
+                        >
                             <Shapes className="shape" Data={chemicalData} />
                         </div>
                     </Col>
                 </Row>
-                
+
                 <Row>
                     <Col xs={12}>
                         <div className="carousel-container">

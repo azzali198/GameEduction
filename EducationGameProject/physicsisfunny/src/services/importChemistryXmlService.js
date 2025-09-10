@@ -42,4 +42,28 @@ const updateChemistryQuestions = async (changedQuestions) =>
 const deleteChemistryQuestion = async (identifier) =>
   axios.delete(`${API_URL}/Chemistry/delete-question/${identifier}`);
 
-export  { importChemistryXml, getChemistryQuestions, updateChemistryQuestions, deleteChemistryQuestion };
+/**
+ * Retrieves the number of chemistry questions from the backend.
+ * @returns {Promise} Axios response promise
+ */
+const getChemistryQuestionsCount = async () => {
+  return axios.get(`${API_URL}/Chemistry/count-questions`);
+};
+
+/**
+ * Retrieves a chemistry question by its index from the backend.
+ * @param {number} index - The index of the question to retrieve.
+ * @returns {Promise} Axios response promise
+ */
+const getChemistryQuestionByIndex = async (index) => {
+  return axios.get(`${API_URL}/Chemistry/get-question-by-index/${index}`);
+};
+
+export {
+  importChemistryXml,
+  getChemistryQuestions,
+  updateChemistryQuestions,
+  deleteChemistryQuestion,
+  getChemistryQuestionsCount,
+  getChemistryQuestionByIndex
+};

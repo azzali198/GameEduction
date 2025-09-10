@@ -1,38 +1,38 @@
 .shapes-container {
     width: 100%;
-    max-width: 1200px;
-    margin: 0;
-    padding: 0;
+    height: 100%;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 0.5rem;
-    border: none;
+    overflow-x: auto;
+    box-sizing: border-box;
 }
 
 .shape-row {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin: 0 !important;
-    padding: 0 !important;
-    gap: 0.25rem;
-    border: none !important;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .shape-cell {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 !important;
-    margin: 0 !important;
-    min-width: 0;
-    border: none !important;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 2px;
+    box-sizing: border-box;
 }
 
 .horizontal-line,
 .vertical-line {
-    transition: all 0.3s ease;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .element-container {
@@ -41,17 +41,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: none;
 }
 
-/* Media Queries */
-@media screen and (max-width: 768px) {
-    .shapes-container {
-        gap: 0.25rem;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .shape-cell {
+        min-width: 28px;
+        min-height: 28px;
+        padding: 1px;
     }
-
     .shape-row {
-        gap: 0.125rem;
+        margin-bottom: 0.25rem;
+    }
+    .shapes-container {
+        padding: 0.25rem;
     }
 }
 

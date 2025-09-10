@@ -74,10 +74,40 @@ const App = () => {
           />}
         </div>
         <div className="flex items-center space-x-4">
-          {isAuthenticated ? (
-            <NavLink 
-              href="#" 
-              text="Logout" 
+          {/* User avatar and right links */}
+          <div className="flex items-center space-x-2">
+            {/* Avatar (use a placeholder or user's avatar if available) */}
+            <img
+              src="https://ui-avatars.com/api/?name=User"
+              alt="User Avatar"
+              className="w-8 h-8 rounded-full border"
+            />
+            {/* Username (if available, otherwise 'User') */}
+            <span className="text-white font-semibold">
+              {isAuthenticated ? (sessionStorage.getItem('username') || 'User') : 'Guest'}
+            </span>
+          </div>
+          {/* Links */}
+          {!isAuthenticated && (
+            <>
+              <NavLink
+                href="#"
+                text="Login"
+                requiresAuth={false}
+                onClick={() => setIsLoginModalOpen(true)}
+              />
+              <NavLink
+                href="#"
+                text="Subscribe"
+                requiresAuth={false}
+                onClick={() => setCurrentPage('subscription')}
+              />
+            </>
+          )}
+          {isAuthenticated && (
+            <NavLink
+              href="#"
+              text="Logout"
               requiresAuth={false}
               onClick={() => {
                 setIsAuthenticated(false);
@@ -86,22 +116,9 @@ const App = () => {
                 sessionStorage.removeItem('isAuthenticated');
                 sessionStorage.removeItem('isAdmin');
                 setCurrentPage('home');
-              }} 
-            />
-          ) : (
-            <NavLink 
-              href="#" 
-              text="Login" 
-              requiresAuth={false}
-              onClick={() => setIsLoginModalOpen(true)} 
+              }}
             />
           )}
-          <NavLink 
-            href="#" 
-            text="Subscribe" 
-            requiresAuth={false}
-            onClick={() => setCurrentPage('subscription')}
-          />
         </div>
       </nav>
     );

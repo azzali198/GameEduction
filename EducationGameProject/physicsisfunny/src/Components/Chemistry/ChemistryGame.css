@@ -17,7 +17,7 @@
 .chemistry-game-container {
     width: 100%;
     padding-top: 80px; /* Increased from 60px */
-    margin-top: 2rem; /* Added margin-top */
+    margin-top: 0.5rem; /* Added margin-top */
     max-width: 1200px;
     margin: 0 auto;
     min-height: 100vh;
@@ -46,11 +46,37 @@
     background-color: #e3f2fd; /* Light blue background */
     border-radius: 8px;
     padding: 1.5rem;
-    margin-top: 2rem; /* Added margin at the top */
+    margin-top: 2px; /* Default for desktop */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1;
+    z-index: 2; /* Increased to ensure above navbar */
     position: relative;
     border-left: 4px solid #2196f3; /* Blue accent border */
+    width: 100%;
+    max-width: 100vw;
+    min-height: 60px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-word;
+    overflow-x: auto;
+}
+
+/* Responsive adjustments for navbar height */
+@media screen and (max-width: 768px) {
+    .question-container {
+        padding: 0.75rem;
+        margin-top: 2px; /* Increased to avoid navbar overlap on tablets */
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .question-container {
+        padding: 0.5rem;
+        margin-top: 2px; /* Further increased for mobile navbar */
+        font-size: 0.95rem;
+    }
 }
 
 .shapes-container {
@@ -284,6 +310,16 @@
         width: 30px;
         height: 30px;
     }
+
+    .question-container {
+        padding: 0.75rem;
+        margin-top: 90px; /* Increased to avoid navbar overlap on tablets */
+        font-size: 1rem;
+    }
+
+    .question-text {
+        font-size: 1rem;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -297,6 +333,12 @@
 
     .question-container {
         padding: 0.5rem;
+        margin-top: 110px; /* Further increased for mobile navbar */
+        font-size: 0.95rem;
+    }
+
+    .question-text {
+        font-size: 0.95rem;
     }
 }
 

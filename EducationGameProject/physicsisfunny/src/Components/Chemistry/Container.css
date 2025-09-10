@@ -1,7 +1,7 @@
 .drop-container {
     border-radius: 50%;
-    width: clamp(3rem, 4vw, 4rem);
-    height: clamp(3rem, 4vw, 4rem);
+    width: clamp(2.5rem, 10vw, 4rem);
+    height: clamp(2.5rem, 10vw, 4rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,7 +30,14 @@
 
 @media screen and (max-width: 768px) {
     .drop-container {
-        width: clamp(2.5rem, 3.5vw, 3.5rem);
-        height: clamp(2.5rem, 3.5vw, 3.5rem);
+        width: clamp(2rem, 14vw, 3rem);
+        height: clamp(2rem, 14vw, 3rem);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .drop-container {
+        width: clamp(1.5rem, 18vw, 2.5rem);
+        height: clamp(1.5rem, 18vw, 2.5rem);
     }
 }

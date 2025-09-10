@@ -5,6 +5,112 @@
     <Definition>Colorless gas produced by the decomposition of organic matter (plant and animal)</Definition>
     <ChemicalData>,,H,,;,,LV,,;H,LH,C,LH,H;,,LV,,;,,H,,</ChemicalData>
     <RightResponse>5</RightResponse>
-    <ResponseText>Right Response it is the molecule of Methane CH/sub4/sub</ResponseText>
+    <ResponseText>Right Response it is the molecule of Methane CH/sub4sub/</ResponseText>
+  </Data>
+  <Data>
+    <Id>1226</Id>
+    <Definition>Table salt; an ionic compound of sodium and chlorine</Definition>
+    <ChemicalData>,,,,;,Na,LH,Cl,;,,,,</ChemicalData>
+    <RightResponse>2</RightResponse>
+    <ResponseText>Right Response it is the molecule of Sodium Chloride NaCl</ResponseText>
+  </Data>
+    <Data>
+    <Id>1227</Id>
+    <Definition>It is a colorless gas with a sharp, pungent odor, it is a simple inorganic compound and a common nitrogen source
+    It is used in fertilizers, refrigeration and water purification</Definition>
+    <ChemicalData>,,H,,;,,LV,,;H,LH,N,LH,H;,,,,,</ChemicalData>
+    <RightResponse>4</RightResponse>
+    <ResponseText>Right Response it is the molecule of Ammonia NH/sub3sub/</ResponseText>
+  </Data>
+    <Data>
+    <Id>1228</Id>
+    <Definition>It is a strong acid present in stomach acid.It is used in cleaning and PH control</Definition>
+    <ChemicalData>,,,,;,H,LH,Cl,;,,,,</ChemicalData>
+    <RightResponse>2</RightResponse>
+    <ResponseText>Right Response it is the molecule of Hydrochloric Acid HCl</ResponseText>
+  </Data>
+    <Data>
+    <Id>1229</Id>
+    <Definition>It is a highly corrosive and toxic gas that forms hydrofluoric acid in water.It is used in producing fluoropolymers and etching glass</Definition>
+    <ChemicalData>,,,,;,H,LH,F,;,,,,</ChemicalData>
+    <RightResponse>2</RightResponse>
+    <ResponseText>Right Response it is the molecule of Hydrofluoric Acid HF</ResponseText>
+  </Data>
+    <Data>
+    <Id>1230</Id>
+    <Definition>It is the lightest and most abundant element in the universe and it is used in clean fuel and rocket propulsion.</Definition>
+    <ChemicalData>,,,,;,H,LH,H,;,,,,</ChemicalData>
+    <RightResponse>2</RightResponse>
+    <ResponseText>Right Response it is the molecule of Hydrogen H/sub2sub/</ResponseText>
+  </Data>
+    <Data>
+    <Id>1231</Id>
+    <Definition>It is a toxic gas with a rotten egg odor, found in volcanic gases and crude oil. It is used in sulfur production and chemical industry.</Definition>
+    <ChemicalData>,,,,;H,LH,S,LH,H;,,,,</ChemicalData>
+    <RightResponse>3</RightResponse>
+    <ResponseText>Right Response it is the molecule of Hydrogen Sulfide H/sub2sub/S</ResponseText>
+  </Data>
+    <Data>
+    <Id>1232</Id>
+    <Definition>It is halogenated methane used as solvant and intermediate.It is used in refrigerants and silicones production.</Definition>
+    <ChemicalData>,,H,,;,,LV,,;;H,LH,C,LH,Cl;,,LV,,;,H,,</ChemicalData>
+    <RightResponse>5</RightResponse>
+    <ResponseText>Right Response it is the molecule of Chloromethane CH/sub3sub/Cl</ResponseText>
+  </Data>
+  <Data>
+    <Id>1233</Id>
+    <Definition>It is a dense colorless liquid used in organic chemistry.It is used in methylating agent and pharmaceutical synthesis</Definition>
+    <ChemicalData>,,H,,;,,LV,,;H,LH,C,LH,I;,,LV,,;,,H,,</ChemicalData>
+    <RightResponse>5</RightResponse>
+    <ResponseText>Right Response it is the molecule of Iodomethane CH/sub3sub/I</ResponseText>
+  </Data>
+  <Data>
+    <Id>1234</Id>
+    <Definition>It is a low boiling gas used as a refrigerant and propellant.It is used in aerosol sprays and refrigeration.</Definition>
+    <ChemicalData>,,H,,;,,LV,,;;H,LH,C,LH,F;,,LV,,;,H,,</ChemicalData>
+    <RightResponse>5</RightResponse>
+    <ResponseText>Right Response it is the molecule of Fluoromethane CH/sub3sub/F</ResponseText>
+  </Data>
+  <Data>
+    <Id>1235</Id>
+    <Definition>It is a chlorinated derivative of ammonia used for disinfection.It is used in water treatment.</Definition>
+    <ChemicalData>,,H,,;,,LV,,;,N,LH,C,;,,LV,,;,H,,</ChemicalData>
+    <RightResponse>4</RightResponse>
+    <ResponseText>Right Response it is the molecule of Monochloramine NH/sub2sub/Cl</ResponseText>
+  </Data>
+  <Data>
+    <Id>1236</Id>
+    <Definition>It is a strong acid when dissolved in water and it comes from a hydrogen and bromine atom.</Definition>
+    <ChemicalData>,,,,;,,,,;,H,LH,Br,;,,,,;,,,</ChemicalData>
+    <RightResponse>4</RightResponse>
+    <ResponseText>Right Response it is the molecule of Hydrogen bromide HBr</ResponseText>
+  </Data>
+  <Data>
+    <Id>1238</Id>
+    <Definition>It is found in rocket fuel and as powerful reducing agent in chemistry labs.</Definition>
+    <ChemicalData>,,H,,;,LV,,LV,;,N,LH,N,;,LV,,LV,;,,H,</ChemicalData>
+    <RightResponse>4</RightResponse>
+    <ResponseText>Right Response it is the molecule of Hydrazine N/sub2sub/H/sub4sub/</ResponseText>
+  </Data>
+  <Data>
+    <Id>1239</Id>
+    <Definition>It is a Lewis acid used in organic chemistry and made from boron and fluorine.</Definition>
+    <ChemicalData>,,F,,;,,LV,,;F,LH,B,LH,F;,,,,;,,,</ChemicalData>
+    <RightResponse>4</RightResponse>
+    <ResponseText>Right Response it is the molecule of Boron trifluoride BF/sub3sub/</ResponseText>
+  </Data>
+    <Data>
+    <Id>1240</Id>
+    <Definition>It is a strong smelling gas made of hydrogen and phosphorus and it is very flammable.</Definition>
+    <ChemicalData>,,H,,;,,LV,,;H,LH,P,LH,H;,,,,;,,,</ChemicalData>
+    <RightResponse>4</RightResponse>
+    <ResponseText>Right Response it is the molecule of Phosphine PH/sub3sub/</ResponseText>
+  </Data>
+     <Data>
+    <Id>1241</Id>
+    <Definition>It is composed  of chlorine and oxygen and it acts as an oxidizer in water treatment.</Definition>
+    <ChemicalData>,,,,;,,,,;Cl,LH,O,LH,Cl;,,,,;,,,</ChemicalData>
+    <RightResponse>4</RightResponse>
+    <ResponseText>Right Response it is the molecule of Dichlorine monoxide Cl/sub2sub/O</ResponseText>
   </Data>
 </ChemistryData>

@@ -37,6 +37,13 @@ namespace PhysicsGameApi.Controllers
             }
         }
 
+        [HttpGet("count-questions")]
+        public async Task<IActionResult> GetChemistryQuestionsCount()
+        {
+            var count = await _chemistryImportService.GetChemistryQuestionsCountAsync();
+            return Ok(count);
+        }
+
         [HttpPut("update-questions")]
         public async Task<IActionResult> UpdateQuestions([FromBody] List<ChemistryModel> questions)
         {
@@ -104,6 +111,25 @@ namespace PhysicsGameApi.Controllers
             catch (XmlException ex)
             {
                 return BadRequest($"XML parsing error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("get-question-by-index/{index}")]
+        public async Task<IActionResult> GetQuestionByIndex([FromRoute] int index)
+        {
+            if (index < 0)
+                return BadRequest("Index must be non-negative.");
+
+            try
+            {
+                var question = await _chemistryImportService.GetChemistryQuestionByIndexAsync(index);
+                if (question == null)
+                    return NotFound("No question found at this index.");
+                return Ok(question);
             }
             catch (Exception ex)
             {
