@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import  "./App.css";
 import banner from './images/banner.png'
@@ -43,6 +43,32 @@ const App = () => {
   };
 
   const Navbar = () => {
+    const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+
+    const avatarUrl = isAuthenticated
+      ? `https://ui-avatars.com/api/?name=${encodeURIComponent(sessionStorage.getItem('username') || 'User')}`
+      : `https://ui-avatars.com/api/?name=Guest`;
+
+    // Dynamic combobox items based on authentication state
+    const menuItems = isAuthenticated
+      ? [
+          { key: 'profile', label: 'Profile', action: () => setCurrentPage('profile') },
+          { key: 'subscription', label: 'Subscription', action: () => setCurrentPage('subscription') },
+          { key: 'logout', label: 'Logout', action: () => {
+              setIsAuthenticated(false);
+              setIsAdmin(false);
+              sessionStorage.removeItem('JWT');
+              sessionStorage.removeItem('isAuthenticated');
+              sessionStorage.removeItem('isAdmin');
+              setCurrentPage('home');
+            }
+          }
+        ]
+      : [
+          { key: 'login', label: 'Login', action: () => setIsLoginModalOpen(true) },
+          { key: 'subscription', label: 'Subscription', action: () => setCurrentPage('subscription') }
+        ];
+
     return (
       <nav className="nav-container flex items-center justify-between responsive-nav">
         <div className="flex items-center space-x-4">
@@ -73,51 +99,44 @@ const App = () => {
             onClick={() => setCurrentPage('admin')}           
           />}
         </div>
-        <div className="flex items-center space-x-4">
-          {/* User avatar and right links */}
-          <div className="flex items-center space-x-2">
-            {/* Avatar (use a placeholder or user's avatar if available) */}
+        <div className="flex items-center space-x-4 relative">
+          {/* Avatar Combobox */}
+          <div
+            className="flex items-center space-x-2 cursor-pointer select-none"
+            onClick={() => setAvatarMenuOpen(open => !open)}
+            tabIndex={0}
+            style={{ position: 'relative' }}
+          >
             <img
-              src="https://ui-avatars.com/api/?name=User"
+              src={avatarUrl}
               alt="User Avatar"
               className="w-8 h-8 rounded-full border"
             />
-            {/* Username (if available, otherwise 'User') */}
             <span className="text-white font-semibold">
               {isAuthenticated ? (sessionStorage.getItem('username') || 'User') : 'Guest'}
             </span>
+            <span className="material-icons" style={{ color: 'white', fontSize: '20px' }}>
+              arrow_drop_down
+            </span>
           </div>
-          {/* Links */}
-          {!isAuthenticated && (
-            <>
-              <NavLink
-                href="#"
-                text="Login"
-                requiresAuth={false}
-                onClick={() => setIsLoginModalOpen(true)}
-              />
-              <NavLink
-                href="#"
-                text="Subscribe"
-                requiresAuth={false}
-                onClick={() => setCurrentPage('subscription')}
-              />
-            </>
-          )}
-          {isAuthenticated && (
-            <NavLink
-              href="#"
-              text="Logout"
-              requiresAuth={false}
-              onClick={() => {
-                setIsAuthenticated(false);
-                setIsAdmin(false);
-                sessionStorage.removeItem('JWT');
-                sessionStorage.removeItem('isAuthenticated');
-                sessionStorage.removeItem('isAdmin');
-                setCurrentPage('home');
-              }}
-            />
+          {avatarMenuOpen && (
+            <div
+              className="absolute right-0 mt-2 w-40 bg-white rounded shadow z-50"
+              style={{ top: '100%' }}
+            >
+              {menuItems.map(item => (
+                <button
+                  key={item.key}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  onClick={() => {
+                    setAvatarMenuOpen(false);
+                    item.action();
+                  }}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           )}
         </div>
       </nav>

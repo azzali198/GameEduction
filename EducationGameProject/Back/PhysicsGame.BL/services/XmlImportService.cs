@@ -19,6 +19,8 @@ namespace PhysicsGame.BL.Services
         Task<List<QuestionModel>> DeleteQuestionAsync(string topic, int identifier);
         Task<List<QuestionModel>> GetQuestionsByTopicAsync(string topic);
         Task<List<QuestionModel>> UpdateQuestionsAsync(string topic, List<QuestionModel> questions);
+        Dictionary<string, int> GetQuestionsCountByBranch();
+        Task<QuestionModel> GetQuestionByBranchAndIndexAsync(string branch, int index);
     }
 
     public class XmlImportService : IXmlImportService
@@ -69,7 +71,7 @@ namespace PhysicsGame.BL.Services
                 };
 
                 // Check for duplicate identifier in the database for the topic
-                bool exists = topic?.ToLowerInvariant() switch
+                bool exists = topic?.ToLowerInvariant().Replace(" ", "") switch
                 {
                     "thermodynamics" => _context.Thermodynamics.Any(q => q.Identifier == identifier),
                     "electromagnetism" => _context.Electromagnetism.Any(q => q.Identifier == identifier),
@@ -86,7 +88,7 @@ namespace PhysicsGame.BL.Services
             }
 
             // Insert into the correct table based on topic
-            switch (topic?.ToLowerInvariant())
+            switch (topic?.ToLowerInvariant().Replace(" ", ""))
             {
                 case "thermodynamics":
                     var thermoEntities = questions.Select(q => new Thermodynamics
@@ -718,6 +720,133 @@ namespace PhysicsGame.BL.Services
 
             // Return updated questions
             return await GetQuestionsByTopicAsync(topic);
+        }
+
+        public Dictionary<string, int> GetQuestionsCountByBranch()
+        {
+            return new Dictionary<string, int>
+            {
+                { "thermodynamics", _context.Thermodynamics.Count() },
+                { "electromagnetism", _context.Electromagnetism.Count() },
+                { "mechanics", _context.Mechanics.Count() },
+                { "modernphysics", _context.ModernPhysics.Count() },
+                { "optics", _context.Optics.Count() },
+                { "relativity", _context.Relativity.Count() }
+            };
+        }
+
+        public async Task<QuestionModel> GetQuestionByBranchAndIndexAsync(string branch, int index)
+        {
+            List<QuestionModel> questions = branch.Trim().ToLowerInvariant() switch
+            {
+                "thermodynamics" => _context.Thermodynamics
+                    .OrderBy(q => q.Id)
+                    .Select(q => new QuestionModel
+                    {
+                        Id = q.Id,
+                        Identifier = q.Identifier,
+                        QuestionEn = q.QuestionEn,
+                        ResponseAEn = q.ResponseAEn,
+                        ResponseBEn = q.ResponseBEn,
+                        ResponseCEn = q.ResponseCEn,
+                        RightResponseEn = q.RightResponseEn,
+                        QuestionFr = q.QuestionFr,
+                        ResponseAFr = q.ResponseAFr,
+                        ResponseBFr = q.ResponseBFr,
+                        ResponseCFr = q.ResponseCFr,
+                        RightResponseFr = q.RightResponseFr,
+                        Image = q.Image
+                    }).ToList(),
+                "electromagnetism" => _context.Electromagnetism
+                    .OrderBy(q => q.Id)
+                    .Select(q => new QuestionModel
+                    {
+                        Id = q.Id,
+                        Identifier = q.Identifier,
+                        QuestionEn = q.QuestionEn,
+                        ResponseAEn = q.ResponseAEn,
+                        ResponseBEn = q.ResponseBEn,
+                        ResponseCEn = q.ResponseCEn,
+                        RightResponseEn = q.RightResponseEn,
+                        QuestionFr = q.QuestionFr,
+                        ResponseAFr = q.ResponseAFr,
+                        ResponseBFr = q.ResponseBFr,
+                        ResponseCFr = q.ResponseCFr,
+                        RightResponseFr = q.RightResponseFr,
+                        Image = q.Image
+                    }).ToList(),
+                // Add other branches similarly...
+                "mechanics" => _context.Mechanics.OrderBy(q => q.Id).Select(q => new QuestionModel
+                {
+                    Id = q.Id,
+                    Identifier = q.Identifier,
+                    QuestionEn = q.QuestionEn,
+                    ResponseAEn = q.ResponseAEn,
+                    ResponseBEn = q.ResponseBEn,
+                    ResponseCEn = q.ResponseCEn,
+                    RightResponseEn = q.RightResponseEn,
+                    QuestionFr = q.QuestionFr,
+                    ResponseAFr = q.ResponseAFr,
+                    ResponseBFr = q.ResponseBFr,
+                    ResponseCFr = q.ResponseCFr,
+                    RightResponseFr = q.RightResponseFr,
+                    Image = q.Image
+                }).ToList(),
+                "modernphysics" => _context.ModernPhysics.OrderBy(q => q.Id).Select(q => new QuestionModel
+                {
+                    Id = q.Id,
+                    Identifier = q.Identifier,
+                    QuestionEn = q.QuestionEn,
+                    ResponseAEn = q.ResponseAEn,
+                    ResponseBEn = q.ResponseBEn,
+                    ResponseCEn = q.ResponseCEn,
+                    RightResponseEn = q.RightResponseEn,
+                    QuestionFr = q.QuestionFr,
+                    ResponseAFr = q.ResponseAFr,
+                    ResponseBFr = q.ResponseBFr,
+                    ResponseCFr = q.ResponseCFr,
+                    RightResponseFr = q.RightResponseFr,
+                    Image = q.Image
+                }).ToList(),
+                "optics" => _context.Optics.OrderBy(q => q.Id).Select(q => new QuestionModel
+                {
+                    Id = q.Id,
+                    Identifier = q.Identifier,
+                    QuestionEn = q.QuestionEn,
+                    ResponseAEn = q.ResponseAEn,
+                    ResponseBEn = q.ResponseBEn,
+                    ResponseCEn = q.ResponseCEn,
+                    RightResponseEn = q.RightResponseEn,
+                    QuestionFr = q.QuestionFr,
+                    ResponseAFr = q.ResponseAFr,
+                    ResponseBFr = q.ResponseBFr,
+                    ResponseCFr = q.ResponseCFr,
+                    RightResponseFr = q.RightResponseFr,
+                    Image = q.Image
+                }).ToList(),
+                "relativity" => _context.Relativity.OrderBy(q => q.Id).Select(q => new QuestionModel
+                {
+                    Id = q.Id,
+                    Identifier = q.Identifier,
+                    QuestionEn = q.QuestionEn,
+                    ResponseAEn = q.ResponseAEn,
+                    ResponseBEn = q.ResponseBEn,
+                    ResponseCEn = q.ResponseCEn,
+                    RightResponseEn = q.RightResponseEn,
+                    QuestionFr = q.QuestionFr,
+                    ResponseAFr = q.ResponseAFr,
+                    ResponseBFr = q.ResponseBFr,
+                    ResponseCFr = q.ResponseCFr,
+                    RightResponseFr = q.RightResponseFr,
+                    Image = q.Image
+                }).ToList(),
+                _ => new List<QuestionModel>()
+            };
+
+            if (index < 0 || index >= questions.Count)
+                return null;
+
+            return questions[index];
         }
     }
 }

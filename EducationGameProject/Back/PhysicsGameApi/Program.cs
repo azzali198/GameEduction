@@ -27,8 +27,8 @@ builder.Services.AddDbContext<PhysicsGameContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IQuizService, QuizService>();
-builder.Services.AddScoped<IXmlImportService, XmlImportService>();
 builder.Services.AddScoped<IChemistryImportService, ChemistryImportService>();
+builder.Services.AddScoped<IXmlImportService, XmlImportService>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>

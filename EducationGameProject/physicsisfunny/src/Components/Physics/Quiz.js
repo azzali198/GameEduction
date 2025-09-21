@@ -1,6 +1,6 @@
 import React from 'react';
 
-import image1 from '../../images/M1259.png'
+
 
 const modalOverlayClasses = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'
 const modalContentClasses = 'bg-white w-full max-w-md p-6 rounded-lg shadow-lg'
@@ -16,7 +16,7 @@ const QuizModal = (props) => {
     const [rightResponse, setRightResponse] = React.useState(false);
 
     const handleButtonClick = (index) => {
-        const isCorrect = props.items[index] === props.items[props.response];
+        const isCorrect = props.items[index] === props.response;
         if (index === 0) setFirstButtonClassCss(isCorrect ? rightResponseClass : wrongResponseClass);
         if (index === 1) setSecondButtonClassCss(isCorrect ? rightResponseClass : wrongResponseClass);
         if (index === 2) setThirdButtonClassCss(isCorrect ? rightResponseClass : wrongResponseClass);
@@ -30,10 +30,10 @@ const QuizModal = (props) => {
     };
 
     return (
-        <div className={modalOverlayClasses} style={{backgroundImage: rightResponse ? 'url(' + require('../../images/congratulations-7600.gif') + ')' : null}}>
+        <div className={modalOverlayClasses} >
             <div className={modalContentClasses}>
-                <img src={image1} alt="quiz-question" className="mb-4 rounded-lg" />
-                <h3 className="text-2xl font-bold text-center mb-4">Who is the scientist that discovered the law of gravity?</h3>
+                <img src={props.image} alt="quiz-question" className="mb-4 rounded-lg" />
+                <h3 className="text-2xl font-bold text-center mb-4">{props.question}</h3>
                 <div className="grid grid-cols-1 gap-4">
                     <button 
                         className={firstButtonClassCss} 

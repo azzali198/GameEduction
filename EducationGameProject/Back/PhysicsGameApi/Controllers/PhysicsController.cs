@@ -56,7 +56,7 @@ namespace PhysicsGameApi.Controllers
             try
             {
                 var xsdString = await System.IO.File.ReadAllTextAsync(xsdPath);
-               
+
                 var questions = await _xmlImportService.ValidateAndParseXmlAsync(request.Xml, xsdString, request.Topic);
                 return Ok(questions);
             }
@@ -176,6 +176,34 @@ namespace PhysicsGameApi.Controllers
             {
                 System.IO.File.Delete(tempZipPath);
                 return BadRequest($"Error processing zip file: {ex.Message}");
+            }
+        }
+
+        [HttpGet("count-questions-by-branch")]
+        public IActionResult GetQuestionsCountByBranch()
+        {
+            var result = _xmlImportService.GetQuestionsCountByBranch();
+            return Ok(result);
+        }
+
+        [HttpGet("get-question-by-branch-and-index")]
+        public async Task<IActionResult> GetQuestionByBranchAndIndex([FromQuery] string branch, [FromQuery] int index)
+        {
+            if (string.IsNullOrWhiteSpace(branch))
+                return BadRequest("Physics branch is missing.");
+            if (index < 0)
+                return BadRequest("Index must be non-negative.");
+
+            try
+            {
+                var question = await _xmlImportService.GetQuestionByBranchAndIndexAsync(branch, index);
+                if (question == null)
+                    return NotFound("No question found for this branch and index.");
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

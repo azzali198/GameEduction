@@ -10,5 +10,27 @@ const getQuestions = async (topic) => {
     params: { topic }
   });
 };
+/**
+ * Retrieves a question by branch and index from the backend.
+ * @param {string} branch - The branch (e.g., "Physics", "Chemistry").
+ * @param {number} index - The index of the question.
+ * @returns {Promise} Axios response promise
+ */
+const getQuestionByBranchAndIndex = async (branch, index) => {
+  return axios.get(`${API_URL}/Physics/get-question-by-branch-and-index`, {
+    params: { branch, index }
+  });
+};
+/**
+ * Retrieves the number of questions for a given branch from the backend.
+ * @returns {Promise} Axios response promise
+ */
+const countQuestionsByBranch = async () => {
+  return axios.get(`${API_URL}/Physics/count-questions-by-branch`);
+};
 
-export default getQuestions;
+export  {
+  getQuestions,
+  getQuestionByBranchAndIndex,
+  countQuestionsByBranch
+};

@@ -4,7 +4,7 @@ import './Admin.css';
 import Swal from 'sweetalert2';
 import importXml from '../../services/importXmlService';
 import deleteQuestion from '../../services/deleteQuestionService';
-import getQuestions from '../../services/getQuestionsService'; // Add this import
+import {getQuestions} from '../../services/getQuestionsService'; // Add this import
 import updateQuestions from '../../services/updateQuestionsService';
 import uploadImagesZip from '../../services/uploadImagesZipService'; // Add this import
 import { importChemistryXml, getChemistryQuestions, updateChemistryQuestions, deleteChemistryQuestion } from '../../services/importChemistryXmlService'; // Update import

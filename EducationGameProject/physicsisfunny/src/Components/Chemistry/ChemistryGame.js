@@ -7,13 +7,13 @@ import Shapes from './Shapes.js'
 import Carousels from './Carousel.js'
 import ElementsTable from './ElementsTable.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { increment, selectScore, initialize } from './ScoreSlice'
+import { increment, selectScore, initialize,clearDropResults } from './ScoreSlice'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import congrats from '../../images/congratulations-7600.gif'
 import Swal from "sweetalert2";
 import { getChemistryQuestionsCount, getChemistryQuestionByIndex } from '../../services/importChemistryXmlService';
-
+import ChemistryGameIntroPopup from '../IntroductionChemistryPopup/ChemistryGameIntroPopup';
 
 
 const ChemistryGame = () => {
@@ -27,12 +27,11 @@ const ChemistryGame = () => {
     const [chemicalData, setChemicalData] = React.useState([]);
     const [title, setTitle] = React.useState("");
     const [questionsIndex, setQuestionsIndex] = React.useState([]);
-
-  
+    const [showIntro, setShowIntro] = React.useState(true);
 
     // Fetch a chemistry question by index (example: index 0)
     const fetchAndSetRandomQuestion = async () => {
- 
+
         let randomIndex;
         const response = await getChemistryQuestionsCount();
         setQuestionsCount(response.data);
@@ -70,15 +69,14 @@ const ChemistryGame = () => {
     };
 
     React.useEffect(() => {
-       // fetchAndSetRandomQuestion();
+        // fetchAndSetRandomQuestion();
     }, [questionsIndex]);
 
     React.useEffect(() => {
-        if(score === 0)
-        {
-          fetchAndSetRandomQuestion();
+        if (score === 0) {
+            fetchAndSetRandomQuestion();
         }
-         
+
         if (score === result) {
             Swal.fire({
                 position: "middle-middle",
@@ -94,10 +92,11 @@ no-repeat
                 timer: 5000
             }).then(() => {
                 Dispatch(initialize())
+                Dispatch(clearDropResults());
                 fetchAndSetRandomQuestion()
             })
         }
-    }, [ score])
+    }, [score])
     const onCompletePeriod = () => { }
     const onTickCounter = () => { }
     const onStopCounter = () => { }
@@ -105,6 +104,7 @@ no-repeat
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="chemistry-game-container">
+                {showIntro && <ChemistryGameIntroPopup onClose={() => setShowIntro(false)} />}
                 <Row>
                     <Col xs={12}>
                         <div className="question-container">
