@@ -57,7 +57,6 @@ const ChemistryGame = () => {
         }
 
         else {
-            alert(questionsIndex.length + " " + questionsCount);
             Swal.fire({
                 icon: 'info',
                 title: 'Game Over',
@@ -101,7 +100,9 @@ const ChemistryGame = () => {
     }).then(() => {
                 Dispatch(initialize())
                 Dispatch(clearDropResults());
-                fetchAndSetRandomQuestion()
+                 setChemicalData([]);
+                fetchAndSetRandomQuestion();
+               
             })
         }
     }, [score])

@@ -33,7 +33,7 @@ const Containers = ({ name, accept }) => {
             className={containerClass}
             data-testid="dustbin"
         >
-            <h3 className="container-text">{containerName}</h3>
+            <h3 className="container-text"> {containerName}</h3>
         </div>
     );
 };
