@@ -14,7 +14,7 @@ import congrats from '../../images/congratulations-7600.gif'
 import Swal from "sweetalert2";
 import { getChemistryQuestionsCount, getChemistryQuestionByIndex } from '../../services/importChemistryXmlService';
 import ChemistryGameIntroPopup from '../IntroductionChemistryPopup/ChemistryGameIntroPopup';
-
+import einsteinImg from '../../assets/images/BtnDemoImgs/einsteinCongratulate.png';
 
 const ChemistryGame = () => {
     const score = useSelector(selectScore)
@@ -78,19 +78,27 @@ const ChemistryGame = () => {
         }
 
         if (score === result) {
-            Swal.fire({
-                position: "middle-middle",
-                icon: "success",
-                title: title,
-                showConfirmButton: false,
-                backdrop: `
-rgba(0,0,123,0.4)
-url(`+ congrats + `)
- center / cover
-no-repeat
-`,
-                timer: 5000
-            }).then(() => {
+  Swal.fire({
+      title: 'Congratulations!',
+      showConfirmButton: false,
+      timer: 5000,
+      backdrop: `
+      rgba(0,0,123,0.4)
+      url(`+ congrats + `)
+       center / cover
+      no-repeat
+      `,
+      html: `
+        <div style="display:flex; flex-direction:column; align-items:center;">
+          <img src="${einsteinImg}" alt="Einstein" style="width:120px; margin-bottom:16px;" />
+          <div>${title}</div>
+        </div>
+      `,
+
+      customClass: {
+        popup: 'congrats-popup'
+      }
+    }).then(() => {
                 Dispatch(initialize())
                 Dispatch(clearDropResults());
                 fetchAndSetRandomQuestion()

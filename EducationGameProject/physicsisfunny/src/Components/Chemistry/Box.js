@@ -1,22 +1,25 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { increment, addDropResult, selectDropResults } from './ScoreSlice';
+import { increment, addDropResult, selectDropResults, fetchCurrentDropResults } from './ScoreSlice';
 import './Box.css';
 
 const Box = ({ name, type }) => {
     const dispatch = useDispatch();
-        const dropResults = useSelector(selectDropResults); 
+     
     const [{ isDragging }, drag] = useDrag(() => ({
         type: type,
         item: { name },
         end: (item, monitor) => {
             const dropResult = monitor.getDropResult();
             if (item && dropResult && monitor.didDrop()) {
-                if (!dropResults.includes(dropResult.id)) {
-                dispatch(increment());
+                const currentDropResults = dispatch(fetchCurrentDropResults());              
+                if (!currentDropResults.includes(dropResult.id)) {
+                     // Store drop result id in Redux store table
+                     dispatch(addDropResult(dropResult.id));
+                    dispatch(increment());
                 }
-               // dispatch(addDropResult({ containerId: dropResult.id, droppedId: item.name }));
+            
             }
         },
         collect: (monitor) => ({

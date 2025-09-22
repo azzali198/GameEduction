@@ -17,6 +17,7 @@ export const scoreSlice = createSlice({
             state.dropResults = [];
         },
         addDropResult: (state, action) => {
+            debugger;
             state.dropResults.push(action.payload);
         },
         clearDropResults: state => {
@@ -29,5 +30,11 @@ export const { increment, initialize, addDropResult, clearDropResults } = scoreS
 
 export const selectScore = state => state.score.value;
 export const selectDropResults = state => state.score.dropResults;
+
+// Thunk to get current dropResults (returns a function for dispatch)
+export const fetchCurrentDropResults = () => (dispatch, getState) => {
+    const dropResults = getState().score.dropResults;
+    return dropResults;
+};
 
 export default scoreSlice.reducer;
