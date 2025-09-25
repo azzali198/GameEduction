@@ -125,7 +125,9 @@ const Physics = () => {
   useEffect(() => {
     // When wheel spinner is hidden, fetch a question by branch and index
     if (!displayWheel && chos && questionsCount[branchs[chos]?.replace(/\s+/g, '').toLowerCase()] > 0 && counter <= 57) {
+      
       const fetchQuestion = async () => {
+
         var randomIndex = Math.floor(Math.random() * questionsCount[branchs[chos]?.replace(/\s+/g, '').toLowerCase()]);
         while (quizQuestions.includes(chos + '-' + randomIndex)) {
           // Get a random index between 0 and questionsCount - 1
@@ -159,7 +161,7 @@ const Physics = () => {
       setRightResponse(null);
       setImage(null);
       setQuestion(null);
-      setChos(null);
+      //setChos(null);
     }
   }, [displayWheel, chos, displayQuiz]);
 useEffect(() => {

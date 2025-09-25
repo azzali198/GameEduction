@@ -333,6 +333,7 @@
 
     .question-container {
         padding: 0.5rem;
+         min-height: 3.5rem;
         margin-top: 110px; /* Further increased for mobile navbar */
         font-size: 0.95rem;
     }
