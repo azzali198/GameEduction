@@ -11,6 +11,7 @@ import LoginModal from './Components/Login/LoginModal'
 import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
 import Admin from './Components/Admin/Admin'
+import { useUser } from './context/UserContext'; // Add this import
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
     return sessionStorage.getItem('isAdmin') === 'true';
   });
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const { userName } = useUser(); // Get username from context
 
   const handleSubscribe = (subscriptionData) => {
     console.log('Subscription data:', subscriptionData);
@@ -46,7 +48,7 @@ const App = () => {
     const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
 
     const avatarUrl = isAuthenticated
-      ? `https://ui-avatars.com/api/?name=${encodeURIComponent(sessionStorage.getItem('username') || 'User')}`
+      ? `https://ui-avatars.com/api/?name=${encodeURIComponent(userName || 'User')}`
       : `https://ui-avatars.com/api/?name=Guest`;
 
     // Dynamic combobox items based on authentication state
@@ -113,7 +115,7 @@ const App = () => {
               className="w-8 h-8 rounded-full border"
             />
             <span className="text-white font-semibold">
-              {isAuthenticated ? (sessionStorage.getItem('username') || 'User') : 'Guest'}
+              {isAuthenticated ? `Welcome ${userName || 'User'}` : 'Guest'}
             </span>
             <span className="material-icons" style={{ color: 'white', fontSize: '20px' }}>
               arrow_drop_down

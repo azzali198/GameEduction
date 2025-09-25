@@ -9,6 +9,9 @@ import updateQuestions from '../../services/updateQuestionsService';
 import uploadImagesZip from '../../services/uploadImagesZipService'; // Add this import
 import { importChemistryXml, getChemistryQuestions, updateChemistryQuestions, deleteChemistryQuestion } from '../../services/importChemistryXmlService'; // Update import
 import notFoundImage from '../../images/404.png';
+import Shapes from '../Chemistry/Shapes.js'; // Import Shapes component
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const tabTitles = ['Physics', 'Chemistry', 'Users', 'Statistics'];
 const physicsTopics = [
@@ -35,6 +38,8 @@ const Admin = () => {
   const [questionChemistryData, setQuestionChemistryData] = useState([]);
   const [changedChemistryRows, setChangedChemistryRows] = useState([]);
   const [originalChemistryRow, setOriginalChemistryRow] = useState(null); // Add this state near your other states
+  const [showShapesPopup, setShowShapesPopup] = useState(false);
+  const [popupChemicalData, setPopupChemicalData] = useState([]);
 
   // Find the selected question object
   const selectedQuestion = questionsData.find(q => q.Identifier === selectedIdentifier) || {};
@@ -674,7 +679,48 @@ const Admin = () => {
                 { field: 'Definition', headerName: 'Definition', flex: 2 },
                 { field: 'ChemicalData', headerName: 'Chemical Data', flex: 1 },
                 { field: 'RightResponse', headerName: 'Score', flex: 1 },
-                { field: 'ResponseText', headerName: 'Response Text', flex: 1 }
+                { field: 'ResponseText', headerName: 'Response Text', flex: 1 },
+                {
+                  field: 'displayChemicalData',
+                  headerName: '',
+                  width: 60,
+                  renderCell: (params) => (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                      width: '100%'
+                    }}>
+                      <button
+                        type="button"
+                        className="icon-btn"
+                        title="Display"
+                        onClick={() => {
+                          
+                          // Parse chemical data for Shapes
+                          const chemData = (String(params.row.ChemicalData).split(';').map(row =>  {return row.split(',')}) || [])
+                          setPopupChemicalData(chemData);
+                          setShowShapesPopup(true);
+                        }}
+                        style={{
+                          background: '#2563eb',
+                          color: '#fff',
+                          borderRadius: '6px',
+                          border: 'none',
+                          padding: '6px',
+                          fontWeight: '500',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <span className="material-icons">visibility</span>
+                      </button>
+                    </div>
+                  )
+                }
               ]}
               pageSize={8}
               onRowClick={(params) => {
@@ -872,6 +918,56 @@ const Admin = () => {
           cursor: 'pointer'
         }}
         onClick={() => setImagePopup({ open: false, src: '' })}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+    {showShapesPopup && (
+  <div
+    style={{
+      position: 'fixed',
+      top: 0, left: 0, right: 0, bottom: 0,
+      background: 'rgba(0,0,0,0.5)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      zIndex: 1000
+    }}
+    onClick={() => setShowShapesPopup(false)}
+  >
+    <div
+      style={{
+        background: '#fff',
+        padding: 16,
+        borderRadius: 8,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        position: 'relative',
+        minWidth: '320px',
+        minHeight: '300px',
+        height: '600px', // Set a fixed height for the popup
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+      onClick={e => e.stopPropagation()}
+    >
+      <DndProvider backend={HTML5Backend} style={{ flex: 1, height: '100%' }}>
+       
+          <Shapes Data={popupChemicalData} className="shape" style={{ height: '100%' }} />
+        
+      </DndProvider>
+      <button
+        style={{
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          background: '#ef4444',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 4,
+          padding: '4px 8px',
+          cursor: 'pointer'
+        }}
+        onClick={() => setShowShapesPopup(false)}
       >
         Close
       </button>

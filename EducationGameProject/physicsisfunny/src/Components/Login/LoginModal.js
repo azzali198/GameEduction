@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { loginUser } from '../../services/userService';
+import { useUser } from '../../context/UserContext'; // Import context
 
 const MODAL_OVERLAY = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center';
 const MODAL_CONTENT = 'bg-white p-8 rounded-lg shadow-xl max-w-md w-full';
@@ -7,12 +8,16 @@ const MODAL_CONTENT = 'bg-white p-8 rounded-lg shadow-xl max-w-md w-full';
 const LoginModal = ({ isOpen, onClose, onLogin }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const { setUserName: setGlobalUserName } = useUser(); // Get context setter
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const credentials = { userName, password };
     try {
       const response = await loginUser(credentials);
+      if (response && response.user.userName) {
+        setGlobalUserName(response.user.userName); // Store globally
+      }
       if (onLogin) onLogin(response);
     } catch (error) {
       if (onLogin) onLogin(null);

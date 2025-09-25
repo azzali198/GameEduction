@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0NSlLm/mrf4=",
+  "dgSpecHash": "MG7nt8pHDY8=",
   "success": true,
-  "projectFilePath": "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
+  "projectFilePath": "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.BL\\PhysicsGame.BL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\azzali\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\azzali\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
