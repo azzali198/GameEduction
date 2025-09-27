@@ -368,8 +368,7 @@ const Admin = () => {
           </legend>
           {editionFieldsetOpen && (
             <div className="flex flex-col md:flex-row gap-4 w-full items-start">
-              {/* Left: Datagrid (scrollable) */}
-              <div className="w-full md:w-2/3 admin-datagrid-wrapper" style={{ height: 500, marginTop: '1.5rem' }}>
+              <div className="admin-datagrid-wrapper">
                 <DataGrid
                   rows={rows}
                   columns={columns}
@@ -389,8 +388,7 @@ const Admin = () => {
                   }}
                 />
               </div>
-              {/* Right: Form (fixed width, does not scroll) */}
-              <div className="w-full md:w-1/3 flex-shrink-0 flex flex-col gap-2">
+              <div className="admin-edition-form">
                 {/* Icon buttons at the top */}
                 <div className="flex justify-end gap-2 mb-2">
                   <button
@@ -652,10 +650,9 @@ const Admin = () => {
         Edition Quiz Data
       </legend>
       {editionFieldsetOpen && (
-        <div className="flex flex-col md:flex-row gap-4 w-full items-start">
-          {/* Left: Datagrid */}
-          <div className="w-full md:w-2/3 admin-datagrid-wrapper" style={{ height: 500, marginTop: '1.5rem' }}>
-            <DataGrid
+             <div className="flex flex-col md:flex-row gap-4 w-full items-start">
+              <div className="admin-datagrid-wrapper">
+                <DataGrid
               rows={questionChemistryData}
               getRowId={row => row.Id}
               columns={[

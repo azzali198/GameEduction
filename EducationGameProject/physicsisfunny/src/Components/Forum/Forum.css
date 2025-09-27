@@ -1,0 +1,255 @@
+.forum-container {
+  width: 100vw;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 80px 0 80px 0; /* Top for navbar, bottom for footer */
+  margin: 0;
+  background: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.forum-container form,
+.forum-container > div {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+body, html {
+  overflow-x: hidden; /* Remove horizontal scroll bar globally */
+}
+
+form {
+  background: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+label {
+  font-weight: 600;
+  color: #374151;
+}
+
+input, select, textarea {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+button {
+  transition: background 0.2s, color 0.2s;
+}
+
+.bg-blue-600 {
+  background: #2563eb;
+}
+
+.bg-blue-600:hover {
+  background: #1d4ed8;
+}
+
+.bg-blue-500 {
+  background: #3b82f6;
+}
+
+.bg-blue-500:hover {
+  background: #2563eb;
+}
+
+.bg-gray-50 {
+  background: #f9fafb;
+}
+
+.bg-gray-100 {
+  background: #f3f4f6;
+}
+
+.bg-gray-200 {
+  background: #e5e7eb;
+}
+
+.bg-gray-300 {
+  background: #d1d5db;
+}
+
+.bg-gray-400 {
+  background: #9ca3af;
+}
+
+.text-blue-700 {
+  color: #1d4ed8;
+}
+
+.text-blue-600 {
+  color: #2563eb;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.text-gray-800 {
+  color: #1f2937;
+}
+
+.text-white {
+  color: #fff;
+}
+
+.rounded {
+  border-radius: 8px !important;
+}
+
+.shadow {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.p-4 {
+  padding: 1rem !important;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.text-sm {
+  font-size: 0.95rem;
+}
+
+.text-xs {
+  font-size: 0.8rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.w-10 {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.w-8 {
+  width: 2rem;
+  height: 2rem;
+}
+
+.border {
+  border: 1px solid #d1d5db;
+}
+
+.pl-8 {
+  padding-left: 2rem;
+}
+
+@media (max-width: 900px) {
+  .forum-container form,
+  .forum-container > div {
+    max-width: 100vw;
+    width: 100vw;
+    margin: 0;
+    padding: 0 1vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .forum-container {
+    padding: 70px 1vw 80px 1vw; /* Add bottom padding for footer */
+  }
+  .forum-container form,
+  .forum-container > div {
+    max-width: 100vw;
+    width: 100vw;
+    padding: 0;
+  }
+  .bg-white {
+    padding: 1rem !important;
+  }
+  .p-4 {
+    padding: 1rem !important;
+  }
+  .pl-8 {
+    padding-left: 1rem;
+  }
+  .w-10 {
+    width: 2rem;
+    height: 2rem;
+  }
+  .w-8 {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

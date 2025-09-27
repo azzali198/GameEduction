@@ -203,3 +203,84 @@ legend {
     max-width: 100%;
     transition: transform 0.2s ease-in-out;
 }
+
+/* Edition section: flex row on desktop */
+.flex-col.md\:flex-row {
+  display: flex;
+  flex-direction: row !important;
+  gap: 2rem;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Datagrid on the left, 2/3 width */
+.admin-datagrid-wrapper {
+  flex: 2 1 0%;
+  min-width: 0;
+  height: 500px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form on the right, 1/3 width */
+.admin-edition-form, .w-full.md\:w-1\/3 {
+  flex: 1 1 0%;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Edition form buttons: always visible, wrap if needed */
+.admin-edition-form .flex,
+.admin-edition-form .flex.justify-end {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
+}
+
+/* Ensure buttons are visible and not clipped */
+.admin-edition-form button,
+.admin-edition-form .icon-btn {
+  min-width: 40px;
+  min-height: 40px;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Responsive: stack vertically on small screens */
+@media (max-width: 900px) {
+  .flex-col.md\:flex-row {
+    flex-direction: column !important;
+    gap: 1rem;
+    width: 100%;
+    min-width: 0;
+  }
+  .admin-datagrid-wrapper,
+  .admin-edition-form, .w-full.md\:w-1\/3 {
+    flex: none !important;
+    width: 100% !important;
+    min-width: 0;
+    margin-top: 1rem;
+  }
+  .admin-edition-form .flex,
+  .admin-edition-form .flex.justify-end {
+    justify-content: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+  }
+}
+
+/* Fix for button overflow on very small screens */
+@media (max-width: 600px) {
+  .admin-edition-form .flex,
+  .admin-edition-form .flex.justify-end {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+}
