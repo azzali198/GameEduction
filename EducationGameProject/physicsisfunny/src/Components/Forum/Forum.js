@@ -1,217 +1,111 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Forum.css';
+import { submitFeedback, getAllFeedbacks } from '../../services/forumService';
+import Swal from 'sweetalert2';
 
-const topics = [
-  'Quantum Mechanics',
-  'Thermodynamics',
-  'Electromagnetism',
-  'Optics',
-  'Classical Mechanics',
-  'Other'
-];
-
-const Forum = () => {
-  const [subject, setSubject] = useState(topics[0]);
+const Opinions = () => {
   const [content, setContent] = useState('');
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      subject: 'Quantum Mechanics',
-      content: 'Can someone explain the double-slit experiment?',
-      author: 'Alice',
-      date: '2025-09-27',
-      replies: []
-    },
-    {
-      id: 2,
-      subject: 'Thermodynamics',
-      content: 'What is entropy in simple terms?',
-      author: 'Bob',
-      date: '2025-09-26',
-      replies: []
-    },
-    {
-      id: 3,
-      subject: 'Optics',
-      content: 'How does a prism split light?',
-      author: 'Carol',
-      date: '2025-09-25',
-      replies: []
-    }
-  ]);
+  const [opinions, setOpinions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedTopic, setSelectedTopic] = useState('All');
-  const [replyingTo, setReplyingTo] = useState(null);
-  const [replyContent, setReplyContent] = useState('');
-  const postsPerPage = 2;
+  const opinionsPerPage = 3;
 
-  // Filter posts by topic
-  const filteredPosts = selectedTopic === 'All'
-    ? posts
-    : posts.filter(post => post.subject === selectedTopic);
+  // Load feedbacks on page load
+  useEffect(() => {
+    const fetchFeedbacks = async () => {
+      try {
+        const feedbacks = await getAllFeedbacks();
+        // Map feedbacks to match local opinion structure if needed
+        const mapped = feedbacks.map((fb, idx) => ({
+          id: idx + 1,
+          content: fb.FeedbackText || fb.content,
+          author: fb.Login || fb.author,
+          date: fb.Date || fb.date
+        }));
+        setOpinions(mapped);
+      } catch (error) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to load feedbacks. Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    };
+    fetchFeedbacks();
+  }, []);
 
-  // Pagination logic
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-  const paginatedPosts = filteredPosts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (content.trim()) {
+      const feedbackBody = {
+        Login: sessionStorage.getItem('userName') || 'Guest',
+        FeedbackText: content,
+        Date: new Date().toISOString().slice(0, 10),
+        Email: ''
+      };
+      try {
+        await submitFeedback(feedbackBody);
+        setOpinions([
+          {
+            id: opinions.length + 1,
+            content,
+            author: sessionStorage.getItem('userName') || 'Guest',
+            date: feedbackBody.Date
+          },
+          ...opinions
+        ]);
+        setContent('');
+        setCurrentPage(1);
+      } catch (error) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to submit feedback. Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    }
+  };
+
+  const totalPages = Math.ceil(opinions.length / opinionsPerPage);
+  const paginatedOpinions = opinions.slice(
+    (currentPage - 1) * opinionsPerPage,
+    currentPage * opinionsPerPage
   );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (subject && content) {
-      setPosts([
-        {
-          id: posts.length + 1,
-          subject,
-          content,
-          author: 'You',
-          date: new Date().toISOString().slice(0, 10),
-          replies: []
-        },
-        ...posts
-      ]);
-      setContent('');
-      setSubject(topics[0]);
-      setCurrentPage(1);
-      setSelectedTopic('All');
-    }
-  };
-
-  const handleReply = (post) => {
-    setReplyingTo(post.id);
-    setReplyContent('');
-  };
-
-  const handleReplySubmit = (e, postId) => {
-    e.preventDefault();
-    if (replyContent.trim()) {
-      setPosts(posts =>
-        posts.map(post =>
-          post.id === postId
-            ? {
-                ...post,
-                replies: [
-                  ...post.replies,
-                  {
-                    author: 'You',
-                    content: replyContent,
-                    date: new Date().toISOString().slice(0, 10)
-                  }
-                ]
-              }
-            : post
-        )
-      );
-      setReplyingTo(null);
-      setReplyContent('');
-    }
-  };
-
   return (
-    <div className="forum-container">
-      <div className="mb-4">
-        <label className="font-semibold mr-2">Filter by Topic:</label>
-        <select
-          value={selectedTopic}
-          onChange={e => {
-            setSelectedTopic(e.target.value);
-            setCurrentPage(1);
-          }}
-          className="border rounded p-2"
-        >
-          <option value="All">All</option>
-          {topics.map(topic => (
-            <option key={topic} value={topic}>{topic}</option>
-          ))}
-        </select>
-      </div>
+    <div className="forum-container responsive-forum">
+      <h2 className="text-2xl font-bold mb-4 text-blue-700 text-center">
+        Tell Us What You Think!
+        <span className="block text-lg font-normal text-gray-700 mt-1">
+          Your feedback helps us make Physics Is Funny even better.
+        </span>
+      </h2>
       <div>
-        <h3 className="text-xl font-semibold mb-2">Publications</h3>
-        {paginatedPosts.length === 0 ? (
-          <p>No publications yet.</p>
+        <h3 className="text-xl font-semibold mb-2 text-center">Visitor Opinions</h3>
+        {paginatedOpinions.length === 0 ? (
+          <p className="text-center">No opinions yet.</p>
         ) : (
           <ul className="space-y-4">
-            {paginatedPosts.map(post => (
-              <li key={post.id} className="bg-white p-4 rounded shadow flex items-start gap-4">
+            {paginatedOpinions.map(opinion => (
+              <li key={opinion.id} className="bg-white p-4 rounded shadow flex items-start gap-4 responsive-opinion">
                 <img
-                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}`}
-                  alt={post.author}
-                  className="w-10 h-10 rounded-full border"
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(opinion.author)}`}
+                  alt={opinion.author}
+                  className="w-10 h-10 rounded-full border flex-shrink-0"
                 />
                 <div style={{ flex: 1 }}>
-                  <div className="font-bold text-blue-700">{post.subject}</div>
-                  <div className="mt-1">{post.content}</div>
+                  <div className="mt-1 break-words">{opinion.content}</div>
                   <div className="text-sm text-gray-500 mt-2">
-                    By {post.author} on {post.date}
+                    By {opinion.author} on {opinion.date}
                   </div>
-                  <div className="mt-2">
-                    <button
-                      className="text-blue-600 hover:underline text-sm"
-                      onClick={() => handleReply(post)}
-                    >
-                      Reply
-                    </button>
-                  </div>
-                  {/* Replies with indentation */}
-                  {post.replies && post.replies.length > 0 && (
-                    <ul className="mt-4 space-y-2 pl-8">
-                      {post.replies.map((reply, idx) => (
-                        <li key={idx} className="flex items-start gap-2 bg-gray-50 rounded p-2">
-                          <img
-                            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(reply.author)}`}
-                            alt={reply.author}
-                            className="w-8 h-8 rounded-full border"
-                          />
-                          <div>
-                            <div className="text-sm">{reply.content}</div>
-                            <div className="text-xs text-gray-500">
-                              By {reply.author} on {reply.date}
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {/* Reply form */}
-                  {replyingTo === post.id && (
-                    <form
-                      onSubmit={e => handleReplySubmit(e, post.id)}
-                      className="mt-4 bg-gray-100 p-2 rounded"
-                    >
-                      <textarea
-                        className="w-full border rounded p-2 mb-2"
-                        placeholder="Write your reply..."
-                        value={replyContent}
-                        onChange={e => setReplyContent(e.target.value)}
-                        rows={2}
-                        required
-                      />
-                      <div className="flex gap-2">
-                        <button
-                          type="submit"
-                          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm"
-                        >
-                          Send Reply
-                        </button>
-                        <button
-                          type="button"
-                          className="bg-gray-300 text-gray-800 px-3 py-1 rounded hover:bg-gray-400 text-sm"
-                          onClick={() => setReplyingTo(null)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </form>
-                  )}
                 </div>
               </li>
             ))}
           </ul>
         )}
-        {/* Pagination controls */}
         {totalPages > 1 && (
-          <div className="flex justify-center mt-6 gap-2">
+          <div className="flex flex-wrap justify-center mt-6 gap-2">
             <button
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
@@ -238,35 +132,23 @@ const Forum = () => {
           </div>
         )}
       </div>
-      {/* Move publication form to the bottom */}
-      <form onSubmit={handleSubmit} className="mt-8 mb-6 bg-gray-50 p-4 rounded shadow">
+      <br/>
+      <form onSubmit={handleSubmit} className="mt-8 mb-8 bg-gray-50 p-4 rounded shadow responsive-form">
         <div className="mb-3">
-          <label className="block font-semibold mb-1">Subject / Topic</label>
-          <select
-            className="w-full border rounded p-2"
-            value={subject}
-            onChange={e => setSubject(e.target.value)}
-            required
-          >
-            {topics.map(topic => (
-              <option key={topic} value={topic}>{topic}</option>
-            ))}
-          </select>
-        </div>
-        <div className="mb-3">
-          <label className="block font-semibold mb-1">Your Question or Publication</label>
+          <label className="block font-semibold mb-1">Your Opinion</label>
           <textarea
             className="w-full border rounded p-2"
-            placeholder="Write your question or publication here..."
+            placeholder="Write your opinion or feedback about the website..."
             value={content}
             onChange={e => setContent(e.target.value)}
             rows={4}
             required
+            style={{ resize: 'vertical', minHeight: '80px', maxHeight: '200px' }}
           />
         </div>
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto"
         >
           Publish
         </button>
@@ -275,4 +157,4 @@ const Forum = () => {
   );
 };
 
-export default Forum;
+export default Opinions;

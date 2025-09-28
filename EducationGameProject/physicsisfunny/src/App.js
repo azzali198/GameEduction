@@ -12,7 +12,7 @@ import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
 import Admin from './Components/Admin/Admin'
 import { useUser } from './context/UserContext'; // Add this import
-
+import Swal from 'sweetalert2';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -115,7 +115,7 @@ const App = () => {
               className="w-8 h-8 rounded-full border"
             />
             <span className="text-white font-semibold">
-              {isAuthenticated ? `Welcome ${userName || 'User'}` : 'Guest'}
+              {isAuthenticated ? `Welcome ${sessionStorage.getItem('userName')}` : 'Guest'}
             </span>
             <span className="material-icons" style={{ color: 'white', fontSize: '20px' }}>
               arrow_drop_down
@@ -146,10 +146,32 @@ const App = () => {
   };
 
   const NavLink = ({ href, text, onClick, requiresAuth = true }) => {
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
       if (requiresAuth && !isAuthenticated) {
         e.preventDefault();
         setIsLoginModalOpen(true);
+        return;
+      }
+      // Intercept leaving physics or chemistry page
+      const isLeavingPhysics = currentPage === 'physics' && text.toLowerCase() !== 'physics';
+      const isLeavingChemistry = currentPage === 'chemistry' && text.toLowerCase() !== 'chemistry';
+      if (isLeavingPhysics || isLeavingChemistry) {
+        e.preventDefault();
+        const result = await Swal.fire({
+          title: `Would you really like to leave the ${isLeavingPhysics ? 'Physics' : 'Chemistry'} game?`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+          reverseButtons: true,
+          customClass: {
+            popup: 'quit-game-popup'
+          }
+        });
+        if (result.isConfirmed) {
+          if (onClick) onClick();
+        }
+        // If "No", do nothing (stay in game)
         return;
       }
       if (onClick) onClick();
@@ -196,7 +218,7 @@ const App = () => {
 
   const Footer = () => (
       <footer className="footer">
-          <span>&copy; 2023 Your Website Name</span>
+          <span>&copy; 2023 PhysicsIsFunny</span>
       </footer>
   );
 

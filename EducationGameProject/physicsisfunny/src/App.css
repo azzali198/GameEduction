@@ -185,6 +185,15 @@
   z-index: 100;
 }
 
+/* Reduce space between avatar, welcome username, and arrow */
+.nav-container .flex.items-center.space-x-2 {
+  gap: 0.2rem !important;
+}
+
+.nav-container .flex.items-center.space-x-4 {
+  gap: 1rem !important;
+}
+
 /* --- Improved Responsive Styles --- */
 @media (max-width: 900px) {
   .nav-container {
@@ -228,6 +237,66 @@
   .nav-container .relative {
     margin-top: 0.5rem;
     align-self: flex-end;
+  }
+}
+
+/* Responsive Navbar: horizontal scroll on small screens */
+@media (max-width: 600px) {
+  .nav-container {
+    flex-direction: row !important;
+    align-items: center;
+    padding: 0.5rem 0.5vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+  .nav-container .flex {
+    flex-direction: row !important;
+    gap: 0.5rem;
+    align-items: center;
+    width: auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  .nav-container a {
+    padding: 0.5rem 0.5rem;
+    font-size: 1rem;
+    min-width: 80px;
+    width: auto;
+    box-sizing: border-box;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .nav-container .relative {
+    margin-top: 0;
+    align-self: center;
+    min-width: 120px;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .nav-container .absolute {
+    left: auto !important;
+    right: 0 !important;
+    min-width: 140px !important;
+    max-width: 80vw;
+    white-space: normal;
+    overflow-x: auto;
+    z-index: 100;
+  }
+}
+
+/* Make dropdown menu scrollable horizontally if needed */
+@media (max-width: 600px) {
+  .nav-container .absolute {
+    overflow-x: auto;
+    overflow-y: visible;
+    display: block;
+    white-space: nowrap;
+  }
+  .nav-container .absolute button {
+    min-width: 120px;
+    white-space: nowrap;
+    display: inline-block;
   }
 }
 
@@ -291,5 +360,67 @@
   }
   .header-container {
     padding: 0 0.5vw;
+  }
+}
+
+/* Ensure navbar and avatar dropdown stay horizontal and scrollable on very small screens */
+@media (max-width: 600px) {
+  .nav-container {
+    flex-direction: row !important;
+    align-items: center;
+    padding: 0.5rem 0.5vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+  .nav-container .flex {
+    flex-direction: row !important;
+    gap: 0.5rem;
+    align-items: center;
+    width: auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  .nav-container .relative {
+    order: 99; /* Always last */
+    margin-top: 0;
+    align-self: center;
+    min-width: 120px;
+    display: inline-block;
+    white-space: nowrap;
+    position: relative;
+    z-index: 101;
+  }
+  .nav-container .absolute {
+    left: auto !important;
+    right: 0 !important;
+    min-width: 140px !important;
+    max-width: 80vw;
+    white-space: nowrap;
+    overflow-x: auto;
+    display: inline-block;
+    z-index: 102;
+  }
+  .nav-container .absolute button {
+    min-width: 120px;
+    white-space: nowrap;
+    display: inline-block;
+  }
+}
+
+/* Fix for extra small screens (≤ 400px) */
+@media (max-width: 400px) {
+  .nav-container {
+    padding: 0.25rem 0.25vw;
+  }
+  .nav-container .flex {
+    gap: 0.25rem;
+  }
+  .nav-container .relative {
+    min-width: 100px;
+  }
+  .nav-container .absolute {
+    min-width: 100px !important;
+    max-width: 90vw;
   }
 }

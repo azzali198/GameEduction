@@ -17,6 +17,7 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
       const response = await loginUser(credentials);
       if (response && response.user.userName) {
         setGlobalUserName(response.user.userName); // Store globally
+        sessionStorage.setItem('userName', response.user.userName); // Store in session
       }
       if (onLogin) onLogin(response);
     } catch (error) {
