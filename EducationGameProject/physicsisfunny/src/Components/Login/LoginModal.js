@@ -9,20 +9,21 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const { setUserName: setGlobalUserName } = useUser(); // Get context setter
+  const [errorMsg, setErrorMsg] = useState(''); // Add error message state
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const credentials = { userName, password };
+    setErrorMsg(''); // Clear previous error
     try {
       const response = await loginUser(credentials);
-      if (response && response.user.userName) {
+      if (response) {
         setGlobalUserName(response.user.userName); // Store globally
         sessionStorage.setItem('userName', response.user.userName); // Store in session
       }
       if (onLogin) onLogin(response);
     } catch (error) {
-      if (onLogin) onLogin(null);
-      alert(error.message || 'Login failed');
+      setErrorMsg(error.message || 'Login failed'); // Set error message
     }
   };
 
@@ -70,6 +71,11 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
               Cancel
             </button>
           </div>
+          {errorMsg && (
+            <div className="mt-2 text-red-600 text-center">
+              {errorMsg}
+            </div>
+          )}
         </form>
       </div>
     </div>

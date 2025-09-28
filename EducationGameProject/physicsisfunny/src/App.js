@@ -33,7 +33,8 @@ const App = () => {
 
   // This function will be called by LoginModal with true (success) or false (fail)
   const handleLoginResult = (response) => {
-    const authenticated = response?.user !== null && response?.token !== null;
+    alert(JSON.stringify(response));
+    const authenticated = response?.user.userName !== null && response?.token !== null;
     setIsAuthenticated(authenticated);
     setIsAdmin(response?.isAdmin);
     if (authenticated) {
@@ -62,6 +63,7 @@ const App = () => {
               sessionStorage.removeItem('JWT');
               sessionStorage.removeItem('isAuthenticated');
               sessionStorage.removeItem('isAdmin');
+              sessionStorage.removeItem('userName');
               setCurrentPage('home');
             }
           }

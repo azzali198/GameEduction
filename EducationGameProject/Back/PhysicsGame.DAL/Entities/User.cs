@@ -17,5 +17,7 @@ namespace PhysicsGame.DAL.Entities
         public DateOnly DateOfBirth { get; set; }  // Changed to DateOnly which represents just a date
         
         public string Profession { get; set; }
+        
+        public bool Actif { get; set; } // <-- Add this line
     }
 }

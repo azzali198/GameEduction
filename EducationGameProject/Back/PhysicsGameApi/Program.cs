@@ -30,6 +30,7 @@ builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddScoped<IChemistryImportService, ChemistryImportService>();
 builder.Services.AddScoped<IXmlImportService, XmlImportService>();
 builder.Services.AddScoped<IForumService, ForumService>();
+builder.Services.AddScoped<IConnectionService, ConnectionService>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>

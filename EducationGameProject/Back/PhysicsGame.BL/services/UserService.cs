@@ -91,7 +91,7 @@ namespace PhysicsGame.BL.services
 
         public async Task<bool> UserExists(string email, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Actif == true);
             if (user == null) return false;
             
             return VerifyPassword(password, user.Password);
@@ -155,10 +155,13 @@ namespace PhysicsGame.BL.services
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Password is required", nameof(password));
 
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username );
             if (user == null)
                 throw new InvalidOperationException("Invalid username or password");
 
+            if (user != null && !user.Actif)
+                throw new InvalidOperationException("User is not active");
+            
             if (!VerifyPassword(password, user.Password))
                 throw new InvalidOperationException("Invalid username or password");
 
