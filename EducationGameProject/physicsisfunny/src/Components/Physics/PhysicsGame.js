@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -19,11 +19,45 @@ import Swal from 'sweetalert2';
 import einsteinImg from '../../assets/images/BtnDemoImgs/einsteinCongratulate.png';
 import congrats from '../../images/congratulations-7600.gif'
 
+const CartoonChrono = ({ seconds }) => (
+  <div
+    style={{
+      position: 'absolute',
+      top: '120px', // Move chrono down from the very top
+      left: '50%',
+      transform: 'translateX(-50%)',
+      zIndex: 100,
+      background: '#ffe066',
+      border: '4px solid #ff9800',
+      borderRadius: '50px',
+      padding: '10px 32px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+      fontFamily: 'Comic Sans MS, Comic Sans, cursive',
+      fontSize: '2rem',
+      color: '#ff5722',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      width: 'fit-content',
+      justifyContent: 'center'
+    }}
+  >
+    <span>
+      {String(Math.floor(seconds / 3600)).padStart(2, '0')}:
+      {String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}:
+      {String(seconds % 60).padStart(2, '0')}
+    </span>
+  </div>
+);
+
 const Physics = () => {
   const [displayWheel, setDisplayWheel] = useState(false);
   const [displayQuiz, setDisplayQuiz] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [questionsCount, setQuestionsCount] = useState(0);
+  const [chrono, setChrono] = useState(0);
+  const [chronoActive, setChronoActive] = useState(false);
+  const chronoRef = useRef();
   const onFinishHandler = (chosen) => { return new Promise(resolve => setTimeout(resolve, 1000)).then(() => { setChos(chosen); setDisplayWheel(false); setDisplayQuiz(true); }); }
   const onClickButtonHandler = () => { return new Promise(resolve => setTimeout(resolve, 1400)).then(() => { setDisplayQuiz(false); }); }
   const [propositions, setPropositions] = useState(['Albert Einstein', 'Isaac Newton', 'Thoms Edison']);
@@ -188,6 +222,7 @@ useEffect(() => {
       }
     }).then((result) => {
       if (result.isConfirmed) {
+        resetChronometer();
         setWinner(true);
         setCounter(0);
         setPropositions([]);
@@ -196,6 +231,7 @@ useEffect(() => {
         setQuestion(null);
         setChos(null);
         setQuizQuestions([]);
+        setChronoActive(true);
       } else {
         // Navigate to home page
         window.location.href = '/';
@@ -203,9 +239,35 @@ useEffect(() => {
     });
   }
 }, [counter])
+  useEffect(() => {
+    chronoRef.current = setInterval(() => {
+      setChrono((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(chronoRef.current);
+  }, []);
+  // Add this function inside your Physics component
+  const resetChronometer = () => {
+    setChrono(0);
+    setChronoActive(false);
+    if (chronoRef.current) {
+      clearInterval(chronoRef.current);
+    }
+  };
   return (
     <div className="physics-game-wrapper">
-      {showIntro && <GameIntroPopup onClose={() => setShowIntro(false)} />}
+      {/* Chronometer centered horizontally at the top */}
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        {chronoActive && <CartoonChrono seconds={chrono} />}
+      </div>
+      <br /><br /><br /><br />
+      {showIntro && (
+        <GameIntroPopup
+          onClose={() => {
+            setShowIntro(false);
+            setChronoActive(true); // Start chronometer when intro modal closes
+          }}
+        />
+      )}
       <div style={{ position: 'relative' }}>
         <Container style={{ paddingTop: '3px', paddingBottom: '3px' }}>
           <Row>

@@ -7,7 +7,7 @@ import Shapes from './Shapes.js'
 import Carousels from './Carousel.js'
 import ElementsTable from './ElementsTable.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { increment, selectScore, initialize,clearDropResults } from './ScoreSlice'
+import { increment, selectScore, initialize, clearDropResults } from './ScoreSlice'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import congrats from '../../images/congratulations-7600.gif'
@@ -21,6 +21,7 @@ const ChemistryGame = () => {
     const [result, setResult] = React.useState(1);
     const Dispatch = useDispatch();
     const period = React.useMemo(() => { return Date.now() + 20000 }, [])
+
     const counterRef = React.useRef();
     const [questionsCount, setQuestionsCount] = React.useState(0);
     const [question, setQuestion] = React.useState("");
@@ -28,6 +29,41 @@ const ChemistryGame = () => {
     const [title, setTitle] = React.useState("");
     const [questionsIndex, setQuestionsIndex] = React.useState([]);
     const [showIntro, setShowIntro] = React.useState(true);
+    const [chronoActive, setChronoActive] = React.useState(true);
+    const chronoRef = React.useRef();
+    const [chrono, setChrono] = React.useState(30); // Start from 30 seconds
+
+    // chronometer display component
+    const CartoonChrono = ({ seconds }) => (
+        <div
+            style={{
+                position: 'relative',
+                
+                left: '10%',
+                transform: 'translateX(-50%)',
+                zIndex: 100,
+                background: '#ffe066',
+                border: '4px solid #ff9800',
+                borderRadius: '50px',
+                padding: '10px 32px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                fontFamily: 'Comic Sans MS, Comic Sans, cursive',
+                fontSize: '2rem',
+                color: '#ff5722',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                width: 'fit-content',
+                justifyContent: 'center'
+            }}
+        >
+            <span>
+                {String(Math.floor(seconds / 3600)).padStart(2, '0')}:
+                {String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}:
+                {String(seconds % 60).padStart(2, '0')}
+            </span>
+        </div>
+    );
 
     // Fetch a chemistry question by index (example: index 0)
     const fetchAndSetRandomQuestion = async () => {
@@ -66,7 +102,43 @@ const ChemistryGame = () => {
             return;
         }
     };
+   
+    React.useEffect(() => {
+        if (!chronoActive) return;
+        chronoRef.current = setInterval(() => {
+            setChrono((prev) => {
+                if (prev > 0) {
+                    return prev - 1;
+                } else {
+                    clearInterval(chronoRef.current);
+                    // When time is out and answer is not correct, show alert and fetch next question
+                    if (score !== result) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Time is out!',
+                            text: 'You did not answer in time.',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            fetchAndSetRandomQuestion();
+                            setChrono(30);         // Reinitialize to 30 seconds
+                            setChronoActive(true); // Start chronometer
+                            
+                        });
+                    }
+                    return 0;
+                }
+            });
+        }, 1000);
+        return () => clearInterval(chronoRef.current);
+    }, [chronoActive, score, result]);
 
+    const resetChronometer = () => {
+        setChrono(30); // Reset to 30 seconds
+        setChronoActive(false);
+        if (chronoRef.current) {
+            clearInterval(chronoRef.current);
+        }
+    };
     React.useEffect(() => {
         // fetchAndSetRandomQuestion();
     }, [questionsIndex]);
@@ -77,32 +149,32 @@ const ChemistryGame = () => {
         }
 
         if (score === result) {
-  Swal.fire({
-      title: 'Congratulations!',
-      showConfirmButton: false,
-      timer: 5000,
-      backdrop: `
+            Swal.fire({
+                title: 'Congratulations!',
+                showConfirmButton: false,
+                timer: 5000,
+                backdrop: `
       rgba(0,0,123,0.4)
       url(`+ congrats + `)
        center / cover
       no-repeat
       `,
-      html: `
+                html: `
         <div style="display:flex; flex-direction:column; align-items:center;">
           <img src="${einsteinImg}" alt="Einstein" style="width:120px; margin-bottom:16px;" />
           <div>${title}</div>
         </div>
       `,
 
-      customClass: {
-        popup: 'congrats-popup'
-      }
-    }).then(() => {
+                customClass: {
+                    popup: 'congrats-popup'
+                }
+            }).then(() => {
                 Dispatch(initialize())
                 Dispatch(clearDropResults());
-                 setChemicalData([]);
+                setChemicalData([]);
                 fetchAndSetRandomQuestion();
-               
+
             })
         }
     }, [score])
@@ -113,12 +185,26 @@ const ChemistryGame = () => {
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="chemistry-game-container">
-                {showIntro && <ChemistryGameIntroPopup onClose={() => setShowIntro(false)} />}
+                {showIntro && (
+                    <ChemistryGameIntroPopup
+                        onClose={() => {
+                            setShowIntro(false);
+                            setChrono(30);         // Reinitialize to 30 seconds
+                            setChronoActive(true); // Start chronometer
+                        }}
+                    />
+                )}
                 <Row>
                     <Col xs={12}>
                         <div className="question-container">
                             <h4 className="question-text">{question}</h4>
                         </div>
+                    </Col>
+                </Row>
+                <Row>
+                    {/* Chronometer centered horizontally in the row */}
+                    <Col xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                        {chronoActive && <CartoonChrono seconds={chrono} />}
                     </Col>
                 </Row>
 
