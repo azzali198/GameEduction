@@ -15,7 +15,7 @@ namespace PhysicsGameApi.Controllers
             _connectionService = connectionService;
         }
 
-        [HttpPost("add")]
+        [HttpPost("add-connection")]
         public async Task<IActionResult> AddConnection([FromBody] ConnectionInput input)
         {
             if (input == null || string.IsNullOrWhiteSpace(input.UserName))
@@ -23,7 +23,14 @@ namespace PhysicsGameApi.Controllers
 
             try
             {
-                await _connectionService.AddConnectionAsync(input);
+                var connectionModel = new PhysicsGame.BL.Models.ConnectionModel
+                {
+                    Login = input.UserName,
+                    Date = input.ConnectionDate,
+                    ScorePhysics = input.PhysicsScore,
+                    ScoreChemistry = input.ChemistryScore
+                };
+                await _connectionService.AddConnectionAsync(connectionModel);
                 return Ok(new { message = "Connection saved successfully." });
             }
             catch (Exception ex)
@@ -38,5 +45,8 @@ namespace PhysicsGameApi.Controllers
         public string UserName { get; set; }
         public DateTime ConnectionDate { get; set; }
         // Add other properties as needed
+
+        public string PhysicsScore { get; set; }
+        public string ChemistryScore { get; set; }
     }
 }

@@ -15,13 +15,13 @@ import Swal from "sweetalert2";
 import { getChemistryQuestionsCount, getChemistryQuestionByIndex } from '../../services/importChemistryXmlService';
 import ChemistryGameIntroPopup from '../IntroductionChemistryPopup/ChemistryGameIntroPopup';
 import einsteinImg from '../../assets/images/BtnDemoImgs/einsteinCongratulate.png';
+import { addConnection } from '../../services/score';
 
 const ChemistryGame = () => {
     const score = useSelector(selectScore)
     const [result, setResult] = React.useState(1);
     const Dispatch = useDispatch();
     const period = React.useMemo(() => { return Date.now() + 20000 }, [])
-
     const counterRef = React.useRef();
     const [questionsCount, setQuestionsCount] = React.useState(0);
     const [question, setQuestion] = React.useState("");
@@ -32,13 +32,14 @@ const ChemistryGame = () => {
     const [chronoActive, setChronoActive] = React.useState(true);
     const chronoRef = React.useRef();
     const [chrono, setChrono] = React.useState(30); // Start from 30 seconds
+    const [scoreTotal, setScoreTotal] = React.useState(0);
 
     // chronometer display component
     const CartoonChrono = ({ seconds }) => (
         <div
             style={{
                 position: 'relative',
-                
+
                 left: '10%',
                 transform: 'translateX(-50%)',
                 zIndex: 100,
@@ -97,12 +98,24 @@ const ChemistryGame = () => {
                 icon: 'info',
                 title: 'Game Over',
                 text: 'All questions have been answered!',
-                confirmButtonText: 'OK'
+                showCancelButton: true,
+                confirmButtonText: 'Play Again',
+                cancelButtonText: 'Exit to Home'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    setQuestionsIndex([]);
+                    setScoreTotal(0);
+                    fetchAndSetRandomQuestion();
+                    setChrono(30);
+                    setChronoActive(true);
+                } else {
+                    window.location.href = '/'; // Navigate to home
+                }
             });
             return;
         }
     };
-   
+
     React.useEffect(() => {
         if (!chronoActive) return;
         chronoRef.current = setInterval(() => {
@@ -119,10 +132,13 @@ const ChemistryGame = () => {
                             text: 'You did not answer in time.',
                             confirmButtonText: 'OK'
                         }).then(() => {
+                           // setQuestionsIndex(prev => prev.slice(0, -1));
                             fetchAndSetRandomQuestion();
                             setChrono(30);         // Reinitialize to 30 seconds
                             setChronoActive(true); // Start chronometer
-                            
+                            // To remove the last element of questionsIndex:
+                            setResult(0);
+
                         });
                     }
                     return 0;
@@ -130,7 +146,7 @@ const ChemistryGame = () => {
             });
         }, 1000);
         return () => clearInterval(chronoRef.current);
-    }, [chronoActive, score, result]);
+    }, [chronoActive, score, result, chrono]);
 
     const resetChronometer = () => {
         setChrono(30); // Reset to 30 seconds
@@ -149,21 +165,28 @@ const ChemistryGame = () => {
         }
 
         if (score === result) {
+            setScoreTotal(scoreTotal + 1);
+            addConnection(
+                sessionStorage.getItem('userName'),
+                "", // Use chronometer value instead of counter
+                String(scoreTotal + 1), // Set actual chemistry score if available
+                new Date().toISOString().slice(0, 10)
+            );
             Swal.fire({
                 title: 'Congratulations!',
                 showConfirmButton: false,
                 timer: 5000,
                 backdrop: `
-      rgba(0,0,123,0.4)
-      url(`+ congrats + `)
-       center / cover
-      no-repeat
-      `,
+                            rgba(0,0,123,0.4)
+                            url(`+ congrats + `)
+                            center / cover
+                            no-repeat
+                            `,
                 html: `
-        <div style="display:flex; flex-direction:column; align-items:center;">
-          <img src="${einsteinImg}" alt="Einstein" style="width:120px; margin-bottom:16px;" />
-          <div>${title}</div>
-        </div>
+                        <div style="display:flex; flex-direction:column; align-items:center;">
+                        <img src="${einsteinImg}" alt="Einstein" style="width:120px; margin-bottom:16px;" />
+                        <div>${title}</div>
+                        </div>
       `,
 
                 customClass: {
@@ -174,10 +197,12 @@ const ChemistryGame = () => {
                 Dispatch(clearDropResults());
                 setChemicalData([]);
                 fetchAndSetRandomQuestion();
+                setChrono(30);         // Reinitialize to 30 seconds
+                setChronoActive(true); // Start chronometer
 
             })
         }
-    }, [score])
+    }, [score, scoreTotal])
     const onCompletePeriod = () => { }
     const onTickCounter = () => { }
     const onStopCounter = () => { }

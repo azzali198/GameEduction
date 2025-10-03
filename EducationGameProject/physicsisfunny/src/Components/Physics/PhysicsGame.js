@@ -18,6 +18,7 @@ import { countQuestionsByBranch, getQuestionByBranchAndIndex } from '../../servi
 import Swal from 'sweetalert2';
 import einsteinImg from '../../assets/images/BtnDemoImgs/einsteinCongratulate.png';
 import congrats from '../../images/congratulations-7600.gif'
+import { addConnection } from '../../services/score';
 
 const CartoonChrono = ({ seconds }) => (
   <div
@@ -158,8 +159,8 @@ const Physics = () => {
 
   useEffect(() => {
     // When wheel spinner is hidden, fetch a question by branch and index
-    if (!displayWheel && chos && questionsCount[branchs[chos]?.replace(/\s+/g, '').toLowerCase()] > 0 && counter <= 57) {
-      
+    if (!displayWheel && chos && questionsCount[branchs[chos]?.replace(/\s+/g, '').toLowerCase()] > 0 && counter <= 58) {
+
       const fetchQuestion = async () => {
 
         var randomIndex = Math.floor(Math.random() * questionsCount[branchs[chos]?.replace(/\s+/g, '').toLowerCase()]);
@@ -167,25 +168,24 @@ const Physics = () => {
           // Get a random index between 0 and questionsCount - 1
           randomIndex = Math.floor(Math.random() * questionsCount[branchs[chos]?.replace(/\s+/g, '').toLowerCase()]);
         }
-        if(displayQuiz)
-        {
-         setQuizQuestions(prev => [...prev, chos + '-' + randomIndex]);
-      
-        try {
+        if (displayQuiz) {
+          setQuizQuestions(prev => [...prev, chos + '-' + randomIndex]);
 
-          const response = await getQuestionByBranchAndIndex(branchs[chos]?.replace(/\s+/g, ''), randomIndex);
-          setPropositions([response.data.ResponseAEn, response.data.ResponseBEn, response.data.ResponseCEn]);
-          setRightResponse(response.data.RightResponseEn);
-          setImage(API_URL + '/Files/' + branchs[chos] + '/' + response.data.Image + '.png');
+          try {
 
-          // Do something with response.data (e.g., setQuestion, setOptions, etc.)
-          setQuestion(response.data.QuestionEn);
-          console.log('Fetched question:', response.data);
+            const response = await getQuestionByBranchAndIndex(branchs[chos]?.replace(/\s+/g, ''), randomIndex);
+            setPropositions([response.data.ResponseAEn, response.data.ResponseBEn, response.data.ResponseCEn]);
+            setRightResponse(response.data.RightResponseEn);
+            setImage(API_URL + '/Files/' + branchs[chos] + '/' + response.data.Image + '.png');
 
-        } catch (error) {
-          console.error('Error fetching question:', error);
+            // Do something with response.data (e.g., setQuestion, setOptions, etc.)
+            setQuestion(response.data.QuestionEn);
+            console.log('Fetched question:', response.data);
+
+          } catch (error) {
+            console.error('Error fetching question:', error);
+          }
         }
-      }
       };
       fetchQuestion();
     }
@@ -198,53 +198,68 @@ const Physics = () => {
       //setChos(null);
     }
   }, [displayWheel, chos, displayQuiz]);
-useEffect(() => {
-  if (counter > 57) {
-    Swal.fire({
-      title: 'Congratulations!',
-      backdrop: `
+  useEffect(() => {
+    if (counter > 58) {
+      addConnection(
+        sessionStorage.getItem('userName'),
+        String(chrono), // Use chronometer value instead of counter
+        null, // Set actual chemistry score if available
+        new Date().toISOString().slice(0, 10)
+      );
+      Swal.fire({
+        title: 'Congratulations!',
+        backdrop: `
       rgba(0,0,123,0.4)
       url(`+ congrats + `)
        center / cover
       no-repeat
       `,
-      html: `
+        html: `
         <div style="display:flex; flex-direction:column; align-items:center;">
           <img src="${einsteinImg}" alt="Einstein" style="width:120px; margin-bottom:16px;" />
           <div>You've completed the Physics Game!<br>Do you want to replay?</div>
         </div>
       `,
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-      customClass: {
-        popup: 'congrats-popup'
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        resetChronometer();
-        setWinner(true);
-        setCounter(0);
-        setPropositions([]);
-        setRightResponse(null);
-        setImage(null);
-        setQuestion(null);
-        setChos(null);
-        setQuizQuestions([]);
-        setChronoActive(true);
-      } else {
-        // Navigate to home page
-        window.location.href = '/';
-      }
-    });
-  }
-}, [counter])
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        customClass: {
+          popup: 'congrats-popup'
+        }
+      }).then(async (result) => {
+        // Call addConnection service here
+
+
+        if (result.isConfirmed) {
+
+          resetChronometer();
+          setWinner(true);
+          setCounter(0);
+          setPropositions([]);
+          setRightResponse(null);
+          setImage(null);
+          setQuestion(null);
+          setChos(null);
+          setQuizQuestions([]);
+          setChronoActive(true);
+
+
+        } else {
+
+
+
+          // Navigate to home page
+          window.location.href = '/';
+        }
+      });
+    }
+  }, [counter])
   useEffect(() => {
     chronoRef.current = setInterval(() => {
       setChrono((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(chronoRef.current);
-  }, []);
+  }, [counter]);
   // Add this function inside your Physics component
   const resetChronometer = () => {
     setChrono(0);
@@ -370,15 +385,15 @@ useEffect(() => {
           </Row>
           <Row>
 
-            {renderGameCell('41.png', counter === 39)}
-            {renderGameCell('42.png', counter === 40)}
-            {renderGameCell('43.png', counter === 41)}
-            {renderGameCell('44.png', counter === 42)}
-            {renderGameCell('45.png', counter === 43)}
-            {renderGameCell('46.png', counter === 44)}
-            {renderGameCell('47.png', counter === 45)}
-            {renderGameCell('48.png', counter === 46)}
-            {renderGameCell('49.png', counter === 47)}
+            {renderGameCell('41.png', counter === 40)}
+            {renderGameCell('42.png', counter === 41)}
+            {renderGameCell('43.png', counter === 42)}
+            {renderGameCell('44.png', counter === 43)}
+            {renderGameCell('45.png', counter === 44)}
+            {renderGameCell('46.png', counter === 45)}
+            {renderGameCell('47.png', counter === 46)}
+            {renderGameCell('48.png', counter === 47)}
+            {renderGameCell('49.png', counter === 48)}
 
           </Row>
           <Row>
@@ -391,19 +406,19 @@ useEffect(() => {
             {renderEmptyCell()}
             {renderEmptyCell()}
             {renderEmptyCell()}
-            {renderGameCell('50.png', counter === 48)}
+            {renderGameCell('50.png', counter === 49)}
           </Row>
           <Row>
 
-            {renderGameCell('finish.png', counter === 57)}
-            {renderGameCell('52.png', counter === 56)}
-            {renderGameCell('53.png', counter === 55)}
-            {renderGameCell('54.png', counter === 54)}
-            {renderGameCell('55.png', counter === 53)}
-            {renderGameCell('56.png', counter === 52)}
-            {renderGameCell('57.png', counter === 51)}
-            {renderGameCell('58.png', counter === 50)}
-            {renderGameCell('60.png', counter === 49)}
+            {renderGameCell('finish.png', counter === 58)}
+            {renderGameCell('52.png', counter === 57)}
+            {renderGameCell('53.png', counter === 56)}
+            {renderGameCell('54.png', counter === 55)}
+            {renderGameCell('55.png', counter === 54)}
+            {renderGameCell('56.png', counter === 53)}
+            {renderGameCell('57.png', counter === 52)}
+            {renderGameCell('58.png', counter === 51)}
+            {renderGameCell('60.png', counter === 50)}
 
 
           </Row>
