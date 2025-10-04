@@ -12,7 +12,7 @@ import notFoundImage from '../../images/404.png';
 import Shapes from '../Chemistry/Shapes.js'; // Import Shapes component
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { getAllUsers } from '../../services/userService';
+import { getAllUsers, activateUser, deactivateUser, deleteUser } from '../../services/userService';
 import { countries } from '../../data/countries';
 
 const tabTitles = ['Physics', 'Chemistry', 'Users', 'Statistics'];
@@ -24,13 +24,6 @@ const physicsTopics = [
   'Thermodynamics',
   'Relativity'
 ];
-
-// Function to get country name from country code
-const getCountryName = (countryCode) => {
-  if (!countryCode) return 'Unknown';
-  const country = countries.find(c => c.code === countryCode);
-  return country ? country.name : countryCode;
-};
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -50,6 +43,110 @@ const Admin = () => {
   const [showShapesPopup, setShowShapesPopup] = useState(false);
   const [popupChemicalData, setPopupChemicalData] = useState([]);
   const [users, setUsers] = useState([]);
+
+  // Function to get country name from country code
+  const getCountryName = (countryCode) => {
+    if (!countryCode) return 'Unknown';
+    const country = countries.find(c => c.code === countryCode);
+    return country ? country.name : countryCode;
+  };
+
+  // User action handlers
+  const handleActivateUser = async (username) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Activate User',
+        text: `Are you sure you want to activate user: ${username}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, activate!'
+      });
+      
+      if (result.isConfirmed) {
+        await activateUser(username);
+        Swal.fire(
+          'Activated!',
+          'User has been activated successfully.',
+          'success'
+        );
+        // Refresh the user list
+        const response = await getAllUsers();
+        setUsers(response);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message || 'Failed to activate user.',
+      });
+    }
+  };
+
+  const handleDeactivateUser = async (username) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Deactivate User',
+        text: `Are you sure you want to deactivate user: ${username}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, deactivate!'
+      });
+      
+      if (result.isConfirmed) {
+        await deactivateUser(username);
+        Swal.fire(
+          'Deactivated!',
+          'User has been deactivated successfully.',
+          'success'
+        );
+        // Refresh the user list
+        const response = await getAllUsers();
+        setUsers(response);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message || 'Failed to deactivate user.',
+      });
+    }
+  };
+
+  const handleDeleteUser = async (username) => {
+    try {
+      const result = await Swal.fire({
+        title: 'Delete User',
+        text: `Are you sure you want to permanently delete user: ${username}? This action cannot be undone!`,
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete!'
+      });
+      
+      if (result.isConfirmed) {
+        await deleteUser(username);
+        Swal.fire(
+          'Deleted!',
+          'User has been deleted successfully.',
+          'success'
+        );
+        // Refresh the user list
+        const response = await getAllUsers();
+        setUsers(response);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message || 'Failed to delete user.',
+      });
+    }
+  };
 
   // Find the selected question object
   const selectedQuestion = questionsData.find(q => q.Identifier === selectedIdentifier) || {};
@@ -895,7 +992,115 @@ const Admin = () => {
         columns={[
           { field: 'UserName', headerName: 'User Name', flex: 1 },
           { field: 'Email', headerName: 'Email', flex: 1 },
-          { field: 'Country', headerName: 'Country', flex: 1 }
+          { field: 'Country', headerName: 'Country', flex: 1 },
+          {
+            field: 'activate',
+            headerName: 'Activate',
+            width: 80,
+            sortable: false,
+            renderCell: (params) => (
+              <button
+                onClick={() => handleActivateUser(params.row.UserName)}
+                style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  color: '#10b981',
+                  padding: '4px',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '32px',
+                  height: '32px'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
+                  e.target.style.color = '#059669';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.color = '#10b981';
+                }}
+                title="Activate User"
+              >
+                ✓
+              </button>
+            )
+          },
+          {
+            field: 'deactivate',
+            headerName: 'Deactivate',
+            width: 90,
+            sortable: false,
+            renderCell: (params) => (
+              <button
+                onClick={() => handleDeactivateUser(params.row.UserName)}
+                style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  color: '#f59e0b',
+                  padding: '4px',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '32px',
+                  height: '32px'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.backgroundColor = 'rgba(245, 158, 11, 0.1)';
+                  e.target.style.color = '#d97706';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.color = '#f59e0b';
+                }}
+                title="Deactivate User"
+              >
+                ⏸
+              </button>
+            )
+          },
+          {
+            field: 'delete',
+            headerName: 'Delete',
+            width: 70,
+            sortable: false,
+            renderCell: (params) => (
+              <button
+                onClick={() => handleDeleteUser(params.row.UserName)}
+                style={{
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  color: '#ef4444',
+                  padding: '4px',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '32px',
+                  height: '32px'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+                  e.target.style.color = '#dc2626';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.color = '#ef4444';
+                }}
+                title="Delete User"
+              >
+                🗑
+              </button>
+            )
+          }
         ]}
         pageSize={8}
         rowsPerPageOptions={[8]}

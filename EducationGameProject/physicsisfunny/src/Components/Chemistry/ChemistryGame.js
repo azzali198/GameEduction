@@ -78,7 +78,7 @@ const ChemistryGame = () => {
             randomIndex = Math.floor(Math.random() * response.data);
         } while (currentQuestionsIndex.includes(randomIndex) && currentQuestionsIndex.length < response.data);
 
-        if (currentQuestionsIndex.length < 3) {
+        if (currentQuestionsIndex.length < response.data) {
             setQuestionsIndex([...currentQuestionsIndex, randomIndex]);
             const response = await getChemistryQuestionByIndex(randomIndex);
             if (response.data) {

@@ -201,5 +201,44 @@ namespace PhysicsGame.BL.services
         {
               return await _context.Users.ToListAsync();
         }
+
+        public async Task ActivateUserAsync(string userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userId);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found");
+            }
+
+            user.Actif = true;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeactivateUserAsync(string userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userId);
+            
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found");
+            }
+
+            user.Actif = false;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUserAsync(string userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userId);
+            
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found");
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }

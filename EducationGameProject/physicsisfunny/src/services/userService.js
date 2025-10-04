@@ -85,3 +85,121 @@ export const getAllUsers = async () => {
         throw error;
     }
 };
+
+export const activateUser = async (username) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        const response = await axios.put(
+            `${API_URL}/User/activate-user/${username}`,
+            {},
+            config
+        );
+
+        if (response.status !== 200) {
+            throw new Error(response.data.message || 'User activation failed');
+        }
+
+        return response.data;
+    } catch (error) {
+        let errorMessage = 'An unexpected error occurred';
+
+        if (error.response) {
+            if (error.response.status === 404) {
+                errorMessage = 'User not found.';
+            } else if (error.response.status === 400) {
+                errorMessage = 'Invalid request. User may already be active.';
+            } else {
+                errorMessage = error.response.data?.message || 'User activation failed';
+            }
+        } else if (error.request) {
+            errorMessage = 'No response from server. Please check your connection.';
+        }
+
+        throw new Error(errorMessage);
+    }
+};
+
+export const deactivateUser = async (username) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        const response = await axios.put(
+            `${API_URL}/User/deactivate-user/${username}`,
+            {},
+            config
+        );
+
+        if (response.status !== 200) {
+            throw new Error(response.data.message || 'User deactivation failed');
+        }
+
+        return response.data;
+    } catch (error) {
+        let errorMessage = 'An unexpected error occurred';
+
+        if (error.response) {
+            if (error.response.status === 404) {
+                errorMessage = 'User not found.';
+            } else if (error.response.status === 400) {
+                errorMessage = 'Invalid request. User may already be inactive.';
+            } else {
+                errorMessage = error.response.data?.message || 'User deactivation failed';
+            }
+        } else if (error.request) {
+            errorMessage = 'No response from server. Please check your connection.';
+        }
+
+        throw new Error(errorMessage);
+    }
+};
+
+export const deleteUser = async (username) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        const response = await axios.delete(
+            `${API_URL}/User/delete-user/${username}`,
+            config
+        );
+
+        if (response.status !== 200) {
+            throw new Error(response.data.message || 'User deletion failed');
+        }
+
+        return response.data;
+    } catch (error) {
+        let errorMessage = 'An unexpected error occurred';
+
+        if (error.response) {
+            if (error.response.status === 404) {
+                errorMessage = 'User not found.';
+            } else if (error.response.status === 400) {
+                errorMessage = 'Invalid request. User cannot be deleted.';
+            } else if (error.response.status === 403) {
+                errorMessage = 'Permission denied. You are not authorized to delete this user.';
+            } else {
+                errorMessage = error.response.data?.message || 'User deletion failed';
+            }
+        } else if (error.request) {
+            errorMessage = 'No response from server. Please check your connection.';
+        }
+
+        throw new Error(errorMessage);
+    }
+};

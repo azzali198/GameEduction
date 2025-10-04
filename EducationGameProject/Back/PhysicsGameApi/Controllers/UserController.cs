@@ -98,6 +98,87 @@ namespace PhysicsGameApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpPut("activate-user/{userId}")]
+        public async Task<IActionResult> ActivateUser(string userId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(userId))
+                {
+                    return BadRequest("Invalid user ID");
+                }
+
+                await _userService.ActivateUserAsync(userId);
+                return Ok(new { message = "User activated successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing your request");
+            }
+        }
+
+        [HttpPut("deactivate-user/{userId}")]
+        public async Task<IActionResult> DeactivateUser(string userId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(userId))
+                {
+                    return BadRequest("Invalid user ID");
+                }
+
+                await _userService.DeactivateUserAsync(userId);
+                return Ok(new { message = "User deactivated successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing your request");
+            }
+        }
+
+        [HttpDelete("delete-user/{userId}")]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(userId))
+                {
+                    return BadRequest("Invalid user ID");
+                }
+
+                await _userService.DeleteUserAsync(userId);
+                return Ok(new { message = "User deleted successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing your request");
+            }
+        }
     }
 
     public class LoginRequest

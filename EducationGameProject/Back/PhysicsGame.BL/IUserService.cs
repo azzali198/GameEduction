@@ -17,5 +17,8 @@ namespace PhysicsGame.BL
         Task<User> UpdateUser(User user);
         Task<LoginResponse> LoginUser(string username, string password);
         Task<IEnumerable<User>> GetAllUsersAsync();
+        Task ActivateUserAsync(string userId);
+        Task DeactivateUserAsync(string userId);
+        Task DeleteUserAsync(string userId);
     }
 }
