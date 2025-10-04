@@ -7,6 +7,7 @@ import Forum from './Components/Forum/Forum'
 import PhysicsGame from './Components/Physics/PhysicsGame'
 import ChemistryGame from './Components/Chemistry/ChemistryGame'
 import SubscriptionPage from './Components/Subscription/SubscriptionPage'
+import Profile from './Components/Profile/Profile'
 import LoginModal from './Components/Login/LoginModal'
 import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
@@ -238,6 +239,8 @@ const App = () => {
         return <SubscriptionPage />;
       case 'admin':
         return <Admin />;
+      case 'profile':
+        return <Profile />;
       default:
         return <Home />;
     }

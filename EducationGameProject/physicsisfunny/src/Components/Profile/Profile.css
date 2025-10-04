@@ -1,0 +1,338 @@
+.profile-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  border-bottom: 3px solid #e5e7eb;
+  padding-bottom: 20px;
+}
+
+.profile-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 0;
+}
+
+.edit-button {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  color: white;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.edit-button:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+}
+
+.profile-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input:disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+}
+
+.disabled-input {
+  background-color: #f9fafb !important;
+  color: #6b7280 !important;
+  cursor: not-allowed !important;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  min-height: 20px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 3px solid #e5e7eb;
+  width: 100%;
+}
+
+.save-button {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+  min-width: 120px;
+}
+
+.save-button:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(16, 185, 129, 0.4);
+}
+
+.cancel-button {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: none;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+  min-width: 120px;
+}
+
+.cancel-button:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* Custom select styling */
+.relative {
+  position: relative;
+  width: 100%;
+}
+
+.relative .form-input {
+  cursor: pointer;
+  width: 100%;
+}
+
+.relative .form-input:disabled {
+  cursor: not-allowed;
+}
+
+/* Country flag styling */
+.flex.items-center {
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .profile-container {
+    max-width: 700px;
+    padding: 25px;
+    margin: 15px auto;
+  }
+  
+  .profile-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    margin: 10px;
+    padding: 20px;
+    max-width: none;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .profile-title {
+    font-size: 2rem;
+  }
+
+  .edit-button {
+    font-size: 1rem;
+    padding: 12px 20px;
+  }
+
+  .profile-form {
+    gap: 20px;
+  }
+
+  .form-group {
+    gap: 8px;
+  }
+
+  .form-input {
+    padding: 12px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .save-button,
+  .cancel-button {
+    width: 100%;
+    padding: 18px;
+    font-size: 1.1rem;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    margin: 5px;
+    padding: 15px;
+  }
+
+  .profile-title {
+    font-size: 1.8rem;
+  }
+
+  .form-input {
+    padding: 10px;
+  }
+
+  .disabled-input {
+    padding: 10px;
+  }
+
+  .save-button,
+  .cancel-button {
+    padding: 15px;
+    font-size: 1rem;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+  .profile-form {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    column-gap: 40px;
+  }
+
+  .form-group:nth-last-child(1),
+  .form-group:nth-last-child(2) {
+    grid-column: 1 / -1; /* Full width for button group and nationality */
+  }
+
+  .button-group {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Animation for form state changes */
+.form-input {
+  transition: all 0.3s ease;
+}
+
+.form-input:disabled {
+  transition: all 0.3s ease;
+}
+
+/* Focus states for accessibility */
+.save-button:focus,
+.cancel-button:focus,
+.edit-button:focus {
+  outline: 3px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* Loading state styles */
+.form-input.loading {
+  background-color: #f3f4f6;
+  background-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+/* Custom dropdown styles */
+.absolute {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: white;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  margin-top: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.hover\\:bg-gray-100:hover {
+  background-color: #f3f4f6;
+}
+
+/* Ensure proper spacing for all elements */
+* {
+  box-sizing: border-box;
+}
+
+/* Make sure form elements are properly contained */
+.profile-form * {
+  max-width: 100%;
+}
