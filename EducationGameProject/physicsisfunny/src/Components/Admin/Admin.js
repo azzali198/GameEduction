@@ -13,6 +13,7 @@ import Shapes from '../Chemistry/Shapes.js'; // Import Shapes component
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { getAllUsers } from '../../services/userService';
+import { countries } from '../../data/countries';
 
 const tabTitles = ['Physics', 'Chemistry', 'Users', 'Statistics'];
 const physicsTopics = [
@@ -23,6 +24,13 @@ const physicsTopics = [
   'Thermodynamics',
   'Relativity'
 ];
+
+// Function to get country name from country code
+const getCountryName = (countryCode) => {
+  if (!countryCode) return 'Unknown';
+  const country = countries.find(c => c.code === countryCode);
+  return country ? country.name : countryCode;
+};
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -882,12 +890,12 @@ const Admin = () => {
           id: user.IdUser, // DataGrid requires a unique 'id' field
           UserName: user.UserName,
           Email: user.Email,
-          Role: user.Role
+          Country: getCountryName(user.Country)
         }))}
         columns={[
           { field: 'UserName', headerName: 'User Name', flex: 1 },
           { field: 'Email', headerName: 'Email', flex: 1 },
-          { field: 'Role', headerName: 'Role', flex: 1 }
+          { field: 'Country', headerName: 'Country', flex: 1 }
         ]}
         pageSize={8}
         rowsPerPageOptions={[8]}
