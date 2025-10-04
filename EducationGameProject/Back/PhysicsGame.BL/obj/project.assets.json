@@ -3180,8 +3180,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.DAL\\PhysicsGame.DAL.csproj": {
-              "projectPath": "c:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.DAL\\PhysicsGame.DAL.csproj"
+            "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.DAL\\PhysicsGame.DAL.csproj": {
+              "projectPath": "C:\\Users\\azzali\\Documents\\EductionGameRepository\\GameEduction\\EducationGameProject\\Back\\PhysicsGame.DAL\\PhysicsGame.DAL.csproj"
             }
           }
         }

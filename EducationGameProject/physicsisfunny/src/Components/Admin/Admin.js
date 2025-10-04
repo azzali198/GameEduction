@@ -876,13 +876,24 @@ const Admin = () => {
       {activeTab === 2 && (
         <div>
           <h2 className="text-lg font-bold mb-2">Users List</h2>
-          <ul>
-            {users.map(user => (
-              <li key={user.IdUser }>
-                { user.UserName}
-              </li>
-            ))}
-          </ul>
+          <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={users.map(user => ({
+          id: user.IdUser, // DataGrid requires a unique 'id' field
+          UserName: user.UserName,
+          Email: user.Email,
+          Role: user.Role
+        }))}
+        columns={[
+          { field: 'UserName', headerName: 'User Name', flex: 1 },
+          { field: 'Email', headerName: 'Email', flex: 1 },
+          { field: 'Role', headerName: 'Role', flex: 1 }
+        ]}
+        pageSize={8}
+        rowsPerPageOptions={[8]}
+        disableSelectionOnClick
+      />
+    </div>
         </div>
       )}
       {activeTab === 3 && <div>Statistics admin content goes here.</div>}
