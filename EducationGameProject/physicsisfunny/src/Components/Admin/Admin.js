@@ -12,6 +12,7 @@ import notFoundImage from '../../images/404.png';
 import Shapes from '../Chemistry/Shapes.js'; // Import Shapes component
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { getAllUsers } from '../../services/userService';
 
 const tabTitles = ['Physics', 'Chemistry', 'Users', 'Statistics'];
 const physicsTopics = [
@@ -40,6 +41,7 @@ const Admin = () => {
   const [originalChemistryRow, setOriginalChemistryRow] = useState(null); // Add this state near your other states
   const [showShapesPopup, setShowShapesPopup] = useState(false);
   const [popupChemicalData, setPopupChemicalData] = useState([]);
+  const [users, setUsers] = useState([]);
 
   // Find the selected question object
   const selectedQuestion = questionsData.find(q => q.Identifier === selectedIdentifier) || {};
@@ -205,6 +207,25 @@ const Admin = () => {
       setOriginalChemistryRow(null);
     }
   }, [selectedIdentifier, questionChemistryData]);
+
+  useEffect(() => {
+    if (activeTab === 2) {
+      const fetchUsers = async () => {
+        try {
+          const response = await getAllUsers();
+          console.log(JSON.stringify(response));
+          setUsers(response);
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to retrieve users.',
+          });
+        }
+      };
+      fetchUsers();
+    }
+  }, [activeTab]);
 
   return (
     <div
@@ -658,26 +679,6 @@ const Admin = () => {
               columns={[
                 {
                   field: 'select',
-                  headerName: 'Select',
-                  width: 80,
-                  renderCell: (params) => (
-                    <input
-                      type="checkbox"
-                      checked={params.row.Id === selectedIdentifier}
-                      onChange={() =>
-                        setSelectedIdentifier(
-                          params.row.Id === selectedIdentifier ? null : params.row.Id
-                        )
-                      }
-                    />
-                  )
-                },
-                { field: 'Id', headerName: 'Identifier', width: 120 },
-                { field: 'Definition', headerName: 'Definition', flex: 2 },
-                { field: 'ChemicalData', headerName: 'Chemical Data', flex: 1 },
-                { field: 'RightResponse', headerName: 'Score', flex: 1 },
-                { field: 'ResponseText', headerName: 'Response Text', flex: 1 },
-                {
                   field: 'displayChemicalData',
                   headerName: '',
                   width: 60,
@@ -872,7 +873,18 @@ const Admin = () => {
     </fieldset>
   </>
 )}
-      {activeTab === 2 && <div>Users admin content goes here.</div>}
+      {activeTab === 2 && (
+        <div>
+          <h2 className="text-lg font-bold mb-2">Users List</h2>
+          <ul>
+            {users.map(user => (
+              <li key={user.IdUser }>
+                { user.UserName}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       {activeTab === 3 && <div>Statistics admin content goes here.</div>}
     </div>
     {imagePopup.open && (

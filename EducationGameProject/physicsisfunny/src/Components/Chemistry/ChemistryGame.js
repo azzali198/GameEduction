@@ -7,7 +7,7 @@ import Shapes from './Shapes.js'
 import Carousels from './Carousel.js'
 import ElementsTable from './ElementsTable.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { increment, selectScore, initialize, clearDropResults } from './ScoreSlice'
+import { increment, selectScore, initialize, clearDropResults, resetScore } from './ScoreSlice'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import congrats from '../../images/congratulations-7600.gif'
@@ -67,23 +67,26 @@ const ChemistryGame = () => {
     );
 
     // Fetch a chemistry question by index (example: index 0)
-    const fetchAndSetRandomQuestion = async () => {
+    const fetchAndSetRandomQuestion = async (currentQuestionsIndex) => {
+        Dispatch(resetScore());
 
         let randomIndex;
         const response = await getChemistryQuestionsCount();
         setQuestionsCount(response.data);
+
         do {
             randomIndex = Math.floor(Math.random() * response.data);
-        } while (questionsIndex.includes(randomIndex) && questionsIndex.length < response.data);
+        } while (currentQuestionsIndex.includes(randomIndex) && currentQuestionsIndex.length < response.data);
 
-        if (questionsIndex.length < response.data) {
-            setQuestionsIndex([...questionsIndex, randomIndex]);
+        if (currentQuestionsIndex.length < 3) {
+            setQuestionsIndex([...currentQuestionsIndex, randomIndex]);
             const response = await getChemistryQuestionByIndex(randomIndex);
             if (response.data) {
                 setQuestion(response.data.Definition || "");
                 var chemData = [];
                 response.data.ChemicalData.split(';').map(row => chemData.push(row.split(',')));
                 setResult(response.data.RightResponse || 0);
+
                 setChemicalData(chemData);
                 // Replace /sub with <sub> and sub/ with </sub> in ResponseText
                 const formattedResponseText = response.data.ResponseText
@@ -91,9 +94,7 @@ const ChemistryGame = () => {
                     .replace(/sub\//g, '</sub>');
                 setTitle(formattedResponseText || "");
             }
-        }
-
-        else {
+        } else {
             Swal.fire({
                 icon: 'info',
                 title: 'Game Over',
@@ -105,11 +106,13 @@ const ChemistryGame = () => {
                 if (result.isConfirmed) {
                     setQuestionsIndex([]);
                     setScoreTotal(0);
-                    fetchAndSetRandomQuestion();
                     setChrono(30);
                     setChronoActive(true);
+                    setTimeout(() => {
+                        fetchAndSetRandomQuestion([]); // Pass empty array after reset
+                    }, 0);
                 } else {
-                    window.location.href = '/'; // Navigate to home
+                    window.location.href = '/';
                 }
             });
             return;
@@ -132,12 +135,9 @@ const ChemistryGame = () => {
                             text: 'You did not answer in time.',
                             confirmButtonText: 'OK'
                         }).then(() => {
-                           // setQuestionsIndex(prev => prev.slice(0, -1));
-                            fetchAndSetRandomQuestion();
+                            fetchAndSetRandomQuestion(questionsIndex);
                             setChrono(30);         // Reinitialize to 30 seconds
                             setChronoActive(true); // Start chronometer
-                            // To remove the last element of questionsIndex:
-                            setResult(0);
 
                         });
                     }
@@ -161,7 +161,7 @@ const ChemistryGame = () => {
 
     React.useEffect(() => {
         if (score === 0) {
-            fetchAndSetRandomQuestion();
+            fetchAndSetRandomQuestion(questionsIndex);
         }
 
         if (score === result) {
@@ -196,7 +196,7 @@ const ChemistryGame = () => {
                 Dispatch(initialize())
                 Dispatch(clearDropResults());
                 setChemicalData([]);
-                fetchAndSetRandomQuestion();
+                fetchAndSetRandomQuestion(questionsIndex);
                 setChrono(30);         // Reinitialize to 30 seconds
                 setChronoActive(true); // Start chronometer
 

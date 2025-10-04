@@ -74,10 +74,7 @@ namespace PhysicsGame.BL.services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<User>> GetAllUsers()
-        {
-            throw new NotImplementedException();
-        }
+
 
         public Task<User> GetUserByEmail(string email)
         {
@@ -191,6 +188,18 @@ namespace PhysicsGame.BL.services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+
+
+        async Task<IEnumerable<User>> IUserService.GetAllUsersAsync()
+        {
+             return await _context.Users.ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+              return await _context.Users.ToListAsync();
         }
     }
 }

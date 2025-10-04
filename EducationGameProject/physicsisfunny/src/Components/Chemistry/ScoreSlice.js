@@ -37,4 +37,8 @@ export const fetchCurrentDropResults = () => (dispatch, getState) => {
     return dropResults;
 };
 
+export const resetScore = () => (dispatch) => {
+    dispatch(initialize());
+};
+
 export default scoreSlice.reducer;

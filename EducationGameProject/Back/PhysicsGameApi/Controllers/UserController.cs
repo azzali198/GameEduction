@@ -84,6 +84,20 @@ namespace PhysicsGameApi.Controllers
                 return StatusCode(500, "An error occurred while processing your request");
             }
         }
+
+        [HttpGet("get-all-users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await _userService.GetAllUsersAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 
     public class LoginRequest

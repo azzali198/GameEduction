@@ -76,3 +76,12 @@ export const loginUser = async (credentials) => {
         throw new Error(errorMessage);
     }
 };
+
+export const getAllUsers = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/User/get-all-users`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
