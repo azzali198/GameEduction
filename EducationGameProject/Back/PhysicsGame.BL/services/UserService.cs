@@ -240,5 +240,45 @@ namespace PhysicsGame.BL.services
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<User> GetUserByUserNameAsync(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("Username cannot be null or empty");
+            }
+
+            return await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        }
+
+        public async Task<User> UpdateUserAsync(User userInput)
+        {
+            if (userInput == null || string.IsNullOrWhiteSpace(userInput.UserName))
+            {
+                throw new ArgumentException("User and username cannot be null or empty");
+            }
+
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userInput.UserName);
+            
+            if (existingUser == null)
+            {
+                throw new InvalidOperationException("User not found");
+            }
+
+            // Update fields with new values
+            existingUser.Email = userInput.Email;
+            existingUser.Country = userInput.Country;
+            existingUser.Profession = userInput.Profession;
+            existingUser.DateOfBirth = userInput.DateOfBirth;;
+            
+            // Only update password if provided
+            if (!string.IsNullOrWhiteSpace(userInput.Password))
+            {
+                existingUser.Password = userInput.Password; // Consider hashing the password
+            }
+
+            await _context.SaveChangesAsync();
+            return existingUser;
+        }
     }
 }

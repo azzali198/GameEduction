@@ -75,8 +75,8 @@ const App = () => {
         ];
 
     return (
-      <nav className="nav-container flex items-center justify-between responsive-nav">
-        <div className="flex items-center space-x-4">
+      <nav className="nav-container">
+        <div className="nav-links-container">
           <NavLink 
             href="#" 
             text="Home" 
@@ -104,23 +104,22 @@ const App = () => {
             onClick={() => setCurrentPage('admin')}           
           />}
         </div>
-        <div className="flex items-center space-x-4 relative">
+        <div className="nav-avatar-container">
           {/* Avatar Combobox */}
           <div
-            className="flex items-center space-x-2 cursor-pointer select-none"
+            className="avatar-wrapper"
             onClick={() => setAvatarMenuOpen(open => !open)}
             tabIndex={0}
-            style={{ position: 'relative' }}
           >
             <img
               src={avatarUrl}
               alt="User Avatar"
               className="w-8 h-8 rounded-full border"
             />
-            <span className="text-white font-semibold">
+            <span className="text-white">
               {isAuthenticated ? `Welcome ${sessionStorage.getItem('userName')}` : 'Guest'}
             </span>
-            <span className="material-icons" style={{ color: 'white', fontSize: '20px' }}>
+            <span className="material-icons">
               arrow_drop_down
             </span>
           </div>

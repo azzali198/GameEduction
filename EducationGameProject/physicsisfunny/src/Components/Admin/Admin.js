@@ -783,6 +783,28 @@ const Admin = () => {
               getRowId={row => row.Id}
               columns={[
                 {
+                  field: 'id',
+                  headerName: 'Select',
+                  flex: 1,
+                  renderCell: (params) => (
+                    <input
+                      type="checkbox"
+                      checked={params.row.Id === selectedIdentifier}
+                      onChange={e => {
+                        // Toggle selection: deselect if already selected, select if not
+                        setSelectedIdentifier(
+                          params.row.Id === selectedIdentifier ? null : params.row.Id
+                        );
+                      }}
+                    />
+                  )
+                },
+                { field: 'Id', headerName: 'ID', flex: 1 },
+                { field: 'Definition', headerName: 'Definition', flex: 2 },
+                { field: 'ChemicalData', headerName: 'Chemical Data', flex: 2 },
+                { field: 'RightResponse', headerName: 'Right Response', flex: 1 },
+                { field: 'ResponseText', headerName: 'Response Text', flex: 2 },
+                {
                   field: 'select',
                   field: 'displayChemicalData',
                   headerName: '',

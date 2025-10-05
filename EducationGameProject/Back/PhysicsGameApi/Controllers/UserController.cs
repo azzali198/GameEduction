@@ -179,6 +179,94 @@ namespace PhysicsGameApi.Controllers
                 return StatusCode(500, "An error occurred while processing your request");
             }
         }
+
+        [HttpGet("get-user/{userName}")]
+        public async Task<IActionResult> GetUserByUserName(string userName)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(userName))
+                {
+                    return BadRequest("Username is required");
+                }
+
+                var user = await _userService.GetUserByUserNameAsync(userName);
+                
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                return Ok(new {
+                    id = user.IdUser,
+                    userName = user.UserName,
+                    email = user.Email,
+                    country = user.Country,
+                    profession = user.Profession,
+                    dateOfBirth = user.DateOfBirth,
+                    actif = user.Actif
+                    // Don't include sensitive data like password
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request");
+            }
+        }
+
+        [HttpPut("update-user")]
+        public async Task<IActionResult> UpdateUser([FromBody] User userInput)
+        {
+            try
+            {
+                if (userInput == null)
+                {
+                    return BadRequest("User data is required");
+                }
+
+                if (string.IsNullOrWhiteSpace(userInput.UserName))
+                {
+                    return BadRequest("Username is required");
+                }
+
+                var updatedUser = await _userService.UpdateUserAsync(userInput);
+                
+                if (updatedUser == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                return Ok(new {
+                    message = "User updated successfully",
+                    user = new {
+                        id = updatedUser.IdUser,
+                        userName = updatedUser.UserName,
+                        email = updatedUser.Email,
+                        country = updatedUser.Country,
+                        profession = updatedUser.Profession,
+                        dateOfBirth = updatedUser.DateOfBirth,
+                        actif = updatedUser.Actif
+                        // Don't include sensitive data like password
+                    }
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing your request");
+            }
+        }
     }
 
     public class LoginRequest
