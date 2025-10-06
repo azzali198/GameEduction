@@ -70,6 +70,9 @@ const CustomSelect = ({ value, onChange, countries }) => {
 };
 
 const Profile = () => {
+  // Sort countries alphabetically by name
+  const sortedCountries = [...countries].sort((a, b) => a.name.localeCompare(b.name));
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -247,14 +250,19 @@ const Profile = () => {
 
       <form className="profile-form">
         <div className="form-group">
-          <label className="form-label">Full Name</label>
+          <label className="form-label">Username</label>
           <input
             type="text"
             className="form-input"
             value={formData.UserName}
-            onChange={(e) => handleChange('UserName', e.target.value)}
-            disabled={!isEditing}
-            required
+            disabled={true}
+            readOnly
+            style={{ 
+              backgroundColor: '#f3f4f6', 
+              color: '#6b7280',
+              cursor: 'not-allowed'
+            }}
+            title="Username cannot be changed"
           />
         </div>
 
@@ -305,7 +313,7 @@ const Profile = () => {
             <CustomSelect 
               value={formData.Country}
               onChange={(value) => handleChange('Country', value)}
-              countries={countries}
+              countries={sortedCountries}
             />
           ) : (
             <div className="form-input disabled-input">
@@ -320,7 +328,7 @@ const Profile = () => {
                       marginRight: '8px'
                     }}
                   />
-                  {countries.find(c => c.code === formData.Country)?.name || formData.Country}
+                  {sortedCountries.find(c => c.code === formData.Country)?.name || formData.Country}
                 </div>
               ) : (
                 'No country selected'

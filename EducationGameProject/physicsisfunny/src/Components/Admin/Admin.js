@@ -14,6 +14,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { getAllUsers, activateUser, deactivateUser, deleteUser } from '../../services/userService';
 import { countries } from '../../data/countries';
+import { getConnectionsByDateRange, getConnectionsByCountry } from '../../services/statisticsService';
 
 const tabTitles = ['Physics', 'Chemistry', 'Users', 'Statistics'];
 const physicsTopics = [
@@ -43,13 +44,20 @@ const Admin = () => {
   const [showShapesPopup, setShowShapesPopup] = useState(false);
   const [popupChemicalData, setPopupChemicalData] = useState([]);
   const [users, setUsers] = useState([]);
+  
+  // Statistics state variables
+  const [selectedStatistic, setSelectedStatistic] = useState('visits-by-date');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [statisticsData, setStatisticsData] = useState([]);
+  const [isLoadingStats, setIsLoadingStats] = useState(false);
 
   // Function to get country name from country code
   const getCountryName = (countryCode) => {
-    if (!countryCode) return 'Unknown';
-    const country = countries.find(c => c.code === countryCode);
-    return country ? country.name : countryCode;
-  };
+  if (!countryCode) return 'Unknown';
+  const country = countries.find(c => c.code === countryCode);
+  return country ? country.name : countryCode;
+};
 
   // User action handlers
   const handleActivateUser = async (username) => {
@@ -1131,7 +1139,285 @@ const Admin = () => {
     </div>
         </div>
       )}
-      {activeTab === 3 && <div>Statistics admin content goes here.</div>}
+      {activeTab === 3 && (
+        <div className="flex h-full">
+          {/* Left Sidebar with Buttons */}
+          <div className="w-64 bg-gray-50 border-r border-gray-200 p-3 flex flex-col gap-2">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">Statistics</h3>
+            
+            {/* Statistics Buttons */}
+            <div className="flex flex-col gap-1">
+              <button
+                className={`p-2 rounded-lg text-left transition-colors duration-200 ${
+                  selectedStatistic === 'visits-by-date'
+                    ? 'bg-blue-500 text-white shadow-md'
+                    : 'bg-white text-gray-700 hover:bg-blue-50 border border-gray-200'
+                }`}
+                onClick={() => setSelectedStatistic('visits-by-date')}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="material-icons text-sm">date_range</span>
+                  <span className="font-medium text-sm">Visits by Date</span>
+                </div>
+              </button>
+              
+              <button
+                className={`p-2 rounded-lg text-left transition-colors duration-200 ${
+                  selectedStatistic === 'visits-by-country'
+                    ? 'bg-blue-500 text-white shadow-md'
+                    : 'bg-white text-gray-700 hover:bg-blue-50 border border-gray-200'
+                }`}
+                onClick={() => setSelectedStatistic('visits-by-country')}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="material-icons text-sm">public</span>
+                  <span className="font-medium text-sm">Visits by Country</span>
+                </div>
+              </button>
+            </div>
+            
+            {/* Statistics Selection Dropdown */}
+            <div className="mt-3">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Select Statistic</h4>
+              <select
+                value={selectedStatistic}
+                onChange={(e) => setSelectedStatistic(e.target.value)}
+                className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+              >
+                <option value="visits-by-date">📅 Visits by Date</option>
+                <option value="visits-by-country">🌍 Visits by Country</option>
+              </select>
+            </div>
+            
+            {/* Date Range Section */}
+            <div className="mt-3">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Date Range</h4>
+              <div className="flex flex-col gap-2">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    Start Date
+                  </label>
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    End Date
+                  </label>
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+                
+                {/* Generate Report Button */}
+                <button
+                  className="mt-2 w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-3 rounded-md transition-colors duration-200 flex items-center justify-center gap-2 text-sm"
+                  disabled={isLoadingStats}
+                  onClick={async () => {
+                    if (!startDate || !endDate) {
+                      Swal.fire({
+                        icon: 'warning',
+                        title: 'Missing Dates',
+                        text: 'Please select both start and end dates.',
+                      });
+                      return;
+                    }
+                    
+                    if (new Date(startDate) > new Date(endDate)) {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Date Range',
+                        text: 'Start date must be before end date.',
+                      });
+                      return;
+                    }
+                    
+                    try {
+                      setIsLoadingStats(true);
+                      
+                      let data;
+                      if (selectedStatistic === 'visits-by-date') {
+                        data = await getConnectionsByDateRange(startDate, endDate);
+                      } else if (selectedStatistic === 'visits-by-country') {
+                        data = await getConnectionsByCountry(startDate, endDate);
+                      }
+                      
+                      setStatisticsData(data || []);
+                      
+                      Swal.fire({
+                        icon: 'success',
+                        title: 'Report Generated',
+                        text: `Successfully loaded ${data?.length || 0} records`,
+                        timer: 2000,
+                        showConfirmButton: false
+                      });
+                    } catch (error) {
+                      console.error('Error generating report:', error);
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Error Loading Data',
+                        text: error.message || 'Failed to load statistics data',
+                      });
+                    } finally {
+                      setIsLoadingStats(false);
+                    }
+                  }}
+                >
+                  <span className="material-icons text-sm">
+                    {isLoadingStats ? 'hourglass_empty' : 'analytics'}
+                  </span>
+                  {isLoadingStats ? 'Loading...' : 'Generate Report'}
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Main Content Area */}
+          <div className="flex-1 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-full p-6 flex flex-col">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex-shrink-0">
+                {selectedStatistic === 'visits-by-date' ? 'Visits by Date' : 'Visits by Country'} Report
+              </h2>
+              
+              {startDate && endDate ? (
+                <div className="text-gray-600 flex flex-col flex-1">
+                  <div className="flex-shrink-0 mb-4">
+                    <p className="mb-2">
+                      <span className="font-medium">Date Range:</span> {startDate} to {endDate}
+                    </p>
+                    <p className="mb-4">
+                      <span className="font-medium">Report Type:</span> {selectedStatistic === 'visits-by-date' ? 'Visits by Date' : 'Visits by Country'}
+                    </p>
+                  </div>
+                  
+                  {/* Chart and Data Display */}
+                  <div className="flex-1 overflow-y-auto">
+                    {statisticsData && statisticsData.length > 0 ? (
+                      <div className="space-y-6">
+                      {/* Summary Card */}
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="text-lg font-medium text-blue-900">Total {selectedStatistic === 'visits-by-date' ? 'Visits' : 'Countries'}</h3>
+                            <p className="text-2xl font-bold text-blue-700">
+                              {selectedStatistic === 'visits-by-date' 
+                                ? statisticsData.reduce((sum, item) => sum + item.ConnectionsCount, 0)
+                                : statisticsData.length
+                              }
+                            </p>
+                          </div>
+                          <span className="material-icons text-blue-600 text-3xl">trending_up</span>
+                        </div>
+                      </div>
+
+                      {/* Bar Chart */}
+                      <div className="bg-gray-50 rounded-lg p-6">
+                        <h3 className="text-lg font-medium text-gray-800 mb-4">
+                          {selectedStatistic === 'visits-by-date' ? 'Daily Visits' : 'Visits by Country'}
+                        </h3>
+                        <div className="space-y-3" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                          {statisticsData.map((item, index) => {
+                            const maxValue = Math.max(...statisticsData.map(d => d.ConnectionsCount));
+                            const percentage = (item.ConnectionsCount / maxValue) * 100;
+
+                            return (
+                              <div key={index} className="flex items-center space-x-3">
+                                <div className="w-24 text-sm text-gray-600 font-medium">
+                                  {selectedStatistic === 'visits-by-date' ? item.Date : getCountryName(item.Country)}
+                                </div>
+                                <div className="flex-1 bg-gray-200 rounded-full h-6 relative">
+                                  <div 
+                                    className="bg-blue-500 h-6 rounded-full transition-all duration-300"
+                                    style={{ width: `${percentage}%` }}
+                                  />
+                                  <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-white">
+                                    {item.ConnectionsCount}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Data Table */}
+                      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
+                          <h3 className="text-lg font-medium text-gray-800">Detailed Data</h3>
+                        </div>
+                        <div className="overflow-x-auto">
+                          <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                              <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                  {selectedStatistic === 'visits-by-date' ? 'Date' : 'Country'}
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                  Visits
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                  Percentage
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                              {statisticsData.map((item, index) => {
+                                const totalVisits = statisticsData.reduce((sum, d) => sum + d.ConnectionsCount, 0);
+                                const percentage = ((item.ConnectionsCount / totalVisits) * 100).toFixed(1);
+                                
+                                return (
+                                  <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      {selectedStatistic === 'visits-by-date' ? item.Date : getCountryName(item.Country)}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                      {item.ConnectionsCount}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                      {percentage}%
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      </div>
+                    ) : isLoadingStats ? (
+                      <div className="border-2 border-dashed border-blue-300 rounded-lg p-8 text-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                        <p className="text-blue-600 font-medium">Generating Report...</p>
+                        <p className="text-sm text-gray-400 mt-2">Fetching statistics data</p>
+                      </div>
+                    ) : (
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                        <span className="material-icons text-gray-400 text-4xl mb-2">bar_chart</span>
+                        <p className="text-gray-500">Statistics chart will be displayed here</p>
+                        <p className="text-sm text-gray-400 mt-2">Click "Generate Report" to load data</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center text-gray-500 mt-12">
+                  <span className="material-icons text-gray-400 text-6xl mb-4">assessment</span>
+                  <p className="text-lg mb-2">Select Date Range</p>
+                  <p className="text-sm">Choose start and end dates from the sidebar to generate statistics</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
     {imagePopup.open && (
   <div

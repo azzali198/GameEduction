@@ -31,6 +31,7 @@ builder.Services.AddScoped<IChemistryImportService, ChemistryImportService>();
 builder.Services.AddScoped<IXmlImportService, XmlImportService>();
 builder.Services.AddScoped<IForumService, ForumService>();
 builder.Services.AddScoped<IConnectionService, ConnectionService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
