@@ -8,6 +8,7 @@ import PhysicsGame from './Components/Physics/PhysicsGame'
 import ChemistryGame from './Components/Chemistry/ChemistryGame'
 import SubscriptionPage from './Components/Subscription/SubscriptionPage'
 import Profile from './Components/Profile/Profile'
+import Contact from './Components/Contact/Contact'
 import LoginModal from './Components/Login/LoginModal'
 import { Provider } from 'react-redux'
 import { store } from '../src/Components/Chemistry/store'
@@ -97,6 +98,12 @@ const App = () => {
             href="#" 
             text="Forum" 
             onClick={() => setCurrentPage('forum')} 
+          />
+          <NavLink 
+            href="#" 
+            text="Contact" 
+             requiresAuth={false}
+            onClick={() => setCurrentPage('contact')} 
           />
           {isAdmin && <NavLink 
             href="#"
@@ -240,6 +247,8 @@ const App = () => {
         return <Admin />;
       case 'profile':
         return <Profile />;
+      case 'contact':
+        return <Contact />;
       default:
         return <Home />;
     }

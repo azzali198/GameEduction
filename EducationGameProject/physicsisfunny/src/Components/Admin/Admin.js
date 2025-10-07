@@ -1318,33 +1318,110 @@ const Admin = () => {
                         </div>
                       </div>
 
-                      {/* Bar Chart */}
-                      <div className="bg-gray-50 rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-gray-800 mb-4">
+                      {/* Pie Chart */}
+                      <div className="bg-gray-50 rounded-lg p-3" style={{ height: 'fit-content' }}>
+                        <h3 className="text-base font-medium text-gray-800 mb-2">
                           {selectedStatistic === 'visits-by-date' ? 'Daily Visits' : 'Visits by Country'}
                         </h3>
-                        <div className="space-y-3" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                          {statisticsData.map((item, index) => {
-                            const maxValue = Math.max(...statisticsData.map(d => d.ConnectionsCount));
-                            const percentage = (item.ConnectionsCount / maxValue) * 100;
-
-                            return (
-                              <div key={index} className="flex items-center space-x-3">
-                                <div className="w-24 text-sm text-gray-600 font-medium">
-                                  {selectedStatistic === 'visits-by-date' ? item.Date : getCountryName(item.Country)}
-                                </div>
-                                <div className="flex-1 bg-gray-200 rounded-full h-6 relative">
-                                  <div 
-                                    className="bg-blue-500 h-6 rounded-full transition-all duration-300"
-                                    style={{ width: `${percentage}%` }}
-                                  />
-                                  <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-white">
-                                    {item.ConnectionsCount}
+                        <div className="flex flex-col lg:flex-row gap-3 items-start">
+                          {/* Circular Chart */}
+                          <div className="flex-shrink-0 flex justify-center">
+                            <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64">
+                              <svg viewBox="0 0 200 200" className="w-full h-full transform -rotate-90 drop-shadow-lg">
+                                {(() => {
+                                  const totalVisits = statisticsData.reduce((sum, item) => sum + item.ConnectionsCount, 0);
+                                  const colors = [
+                                    '#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', 
+                                    '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1',
+                                    '#14B8A6', '#F43F5E', '#8B5CF6', '#22C55E', '#EAB308'
+                                  ];
+                                  let currentAngle = 0;
+                                  
+                                  return statisticsData.map((item, index) => {
+                                    const percentage = (item.ConnectionsCount / totalVisits) * 100;
+                                    const angle = (percentage / 100) * 360;
+                                    const startAngle = currentAngle;
+                                    const endAngle = currentAngle + angle;
+                                    currentAngle = endAngle;
+                                    
+                                    // Calculate arc path
+                                    const startAngleRad = (startAngle * Math.PI) / 180;
+                                    const endAngleRad = (endAngle * Math.PI) / 180;
+                                    const radius = 80;
+                                    const centerX = 100;
+                                    const centerY = 100;
+                                    
+                                    const x1 = centerX + radius * Math.cos(startAngleRad);
+                                    const y1 = centerY + radius * Math.sin(startAngleRad);
+                                    const x2 = centerX + radius * Math.cos(endAngleRad);
+                                    const y2 = centerY + radius * Math.sin(endAngleRad);
+                                    
+                                    const largeArcFlag = angle > 180 ? 1 : 0;
+                                    
+                                    const pathData = [
+                                      `M ${centerX} ${centerY}`,
+                                      `L ${x1} ${y1}`,
+                                      `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
+                                      'Z'
+                                    ].join(' ');
+                                    
+                                    return (
+                                      <path
+                                        key={index}
+                                        d={pathData}
+                                        fill={colors[index % colors.length]}
+                                        stroke="#ffffff"
+                                        strokeWidth="2"
+                                        className="hover:opacity-80 transition-opacity duration-200"
+                                      />
+                                    );
+                                  });
+                                })()}
+                              </svg>
+                              {/* Center circle with total */}
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="bg-white rounded-full w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex flex-col items-center justify-center shadow-lg border-2 border-gray-100">
+                                  <span className="text-sm sm:text-base md:text-lg font-bold text-gray-800">
+                                    {statisticsData.reduce((sum, item) => sum + item.ConnectionsCount, 0)}
                                   </span>
+                                  <span className="text-xs text-gray-500 font-medium">Total</span>
                                 </div>
                               </div>
-                            );
-                          })}
+                            </div>
+                          </div>
+                          
+                          {/* Legend */}
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-3">Legend</h4>
+                            <div className="space-y-2 pr-2">
+                              {statisticsData.map((item, index) => {
+                                const totalVisits = statisticsData.reduce((sum, d) => sum + d.ConnectionsCount, 0);
+                                const percentage = ((item.ConnectionsCount / totalVisits) * 100).toFixed(1);
+                                const colors = [
+                                  '#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', 
+                                  '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1',
+                                  '#14B8A6', '#F43F5E', '#8B5CF6', '#22C55E', '#EAB308'
+                                ];
+                                
+                                return (
+                                  <div key={index} className="flex items-center space-x-3 p-2 hover:bg-white rounded-md transition-colors">
+                                    <div 
+                                      className="w-4 h-4 rounded-sm flex-shrink-0"
+                                      style={{ backgroundColor: colors[index % colors.length] }}
+                                    ></div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="text-sm font-medium text-gray-900 truncate">
+                                        {selectedStatistic === 'visits-by-date' ? item.Date : getCountryName(item.Country)}
+                                      </div>
+                                      <div className="text-xs text-gray-500">
+                                        {item.ConnectionsCount} visits ({percentage}%)
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
                         </div>
                       </div>
 
