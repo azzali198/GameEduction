@@ -32,15 +32,17 @@ builder.Services.AddScoped<IXmlImportService, XmlImportService>();
 builder.Services.AddScoped<IForumService, ForumService>();
 builder.Services.AddScoped<IConnectionService, ConnectionService>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:3000")
+        policy.AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
 });
+
 // Add these lines before builder.Build()
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtSettings>>().Value);
@@ -63,6 +65,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
+app.UseCors();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -71,8 +75,6 @@ if (app.Environment.IsDevelopment())
 }
 
 // Add UseCors before UseHttpsRedirection
-app.UseCors();
-
 app.UseHttpsRedirection();
 
 // Serve /Files as static files

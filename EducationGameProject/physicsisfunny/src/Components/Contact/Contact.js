@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Contact.css';
 import Swal from 'sweetalert2';
+import { sendEmailWithValidation } from '../../services/contactService';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -72,8 +73,18 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call - replace with actual API endpoint
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Prepare email data for the service
+      const emailData = {
+        name: formData.name,
+        category: formData.category,
+        subject: formData.subject,
+        emailAddress: formData.email,
+        message: formData.message,
+        institution: formData.institution || 'Not specified'
+      };
+
+      // Send email using the contact service
+      await sendEmailWithValidation(emailData);
       
       // Success message
       Swal.fire({
@@ -97,11 +108,13 @@ const Contact = () => {
       });
 
     } catch (error) {
+      console.error('Contact form submission error:', error);
+      
       // Error message
       Swal.fire({
         icon: 'error',
         title: 'Oops! Something went wrong',
-        text: 'Please try again later or contact us directly.',
+        text: error.message || 'Please try again later or contact us directly.',
         confirmButtonColor: '#EF4444'
       });
     } finally {
