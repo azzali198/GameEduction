@@ -35,32 +35,11 @@ const ChemistryGame = () => {
     const chronoRef = React.useRef();
     const [chrono, setChrono] = React.useState(30); // Start from 30 seconds
     const [scoreTotal, setScoreTotal] = React.useState(0);
-
+    const paquetQuestion = 4;
     // chronometer display component
     const CartoonChrono = ({ seconds }) => (
-        <div
-            style={{
-                position: 'relative',
-
-                left: '10%',
-                transform: 'translateX(-50%)',
-                zIndex: 100,
-                background: '#ffe066',
-                border: '4px solid #ff9800',
-                borderRadius: '50px',
-                padding: '10px 32px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                fontFamily: 'Comic Sans MS, Comic Sans, cursive',
-                fontSize: '2rem',
-                color: '#ff5722',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                width: 'fit-content',
-                justifyContent: 'center'
-            }}
-        >
-            <span>
+        <div className="cartoon-chrono" role="timer" aria-live="polite">
+            <span className="cartoon-chrono-text">
                 {String(Math.floor(seconds / 3600)).padStart(2, '0')}:
                 {String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}:
                 {String(seconds % 60).padStart(2, '0')}
@@ -71,7 +50,8 @@ const ChemistryGame = () => {
     // Fetch a chemistry question by selecting a random unused index.
     // This function uses the component state for `questionsIndex` so callers should not pass a
     // stale array. To reset the seen questions, call `setQuestionsIndex([])` before calling this.
-    const fetchAndSetRandomQuestion = async () => {
+    // If forceResetSeen is true, treat the seen questions list as empty for this fetch
+    const fetchAndSetRandomQuestion = async (forceResetSeen = false) => {
         // prevent concurrent fetches which can cause duplicate state updates
         if (isFetchingQuestionRef.current) return;
         isFetchingQuestionRef.current = true;
@@ -82,8 +62,11 @@ const ChemistryGame = () => {
             const total = countResp.data;
             setQuestionsCount(total);
 
-        // If all questions have been used, show Game Over
-        if (questionsIndex.length >= total) {
+    // Determine the seen list for this run (can be forced empty)
+    const seenList = forceResetSeen ? [] : questionsIndex;
+
+    // If all questions have been used, show Game Over
+    if (seenList.length >= paquetQuestion) {
             Swal.fire({
                 icon: 'info',
                 title: 'Game Over',
@@ -93,15 +76,20 @@ const ChemistryGame = () => {
                 cancelButtonText: 'Exit to Home'
             }).then((res) => {
                 if (res.isConfirmed) {
+                    // ensure the modal is closed immediately
+                    try { Swal.close(); } catch (e) { /* ignore */ }
                     // reset seen questions and start over
                     setQuestionsIndex([]);
                     setScoreTotal(0);
                     setChrono(30);
                     setChronoActive(true);
+                    // give React a tick to update state, then fetch next question
                     setTimeout(() => {
-                        fetchAndSetRandomQuestion();
+                        fetchAndSetRandomQuestion(true);
                     }, 0);
                 } else {
+                    // close then navigate away
+                    try { Swal.close(); } catch (e) { /* ignore */ }
                     window.location.href = '/';
                 }
             });
@@ -115,10 +103,15 @@ const ChemistryGame = () => {
             randomIndex = Math.floor(Math.random() * total);
             attempts++;
             if (attempts > 1000) break; // safety in case something goes wrong
-        } while (questionsIndex.includes(randomIndex));
+        } while (seenList.includes(randomIndex));
 
         // Add to seen list using functional update to avoid stale state races
-        setQuestionsIndex(prev => [...prev, randomIndex]);
+        if (forceResetSeen) {
+            // overwrite with the fresh index
+            setQuestionsIndex([randomIndex]);
+        } else {
+            setQuestionsIndex(prev => [...prev, randomIndex]);
+        }
 
     const qResp = await getChemistryQuestionByIndex(randomIndex);
         if (qResp.data) {
@@ -270,15 +263,13 @@ const ChemistryGame = () => {
                 <Row>
                     <Col xs={12}>
                         <div className="question-container">
-                            <h4 className="question-text">{question}</h4>
+                            <div className="question-text-wrapper">
+                                <h4 className="question-text">{question}</h4>
+                            </div>
+                            <div className="question-chrono" aria-hidden={!chronoActive}>
+                                <CartoonChrono seconds={chrono} />
+                            </div>
                         </div>
-                    </Col>
-                </Row>
-                <Row>
-                    {/* Chronometer centered horizontally in the row */}
-                    <Col xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
-                        {/* Always display the chronometer UI. chronoActive controls whether it decrements. */}
-                        <CartoonChrono seconds={chrono} />
                     </Col>
                 </Row>
 
