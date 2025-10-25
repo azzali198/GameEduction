@@ -23,6 +23,8 @@ const ChemistryGame = () => {
     const Dispatch = useDispatch();
     const period = React.useMemo(() => { return Date.now() + 20000 }, [])
     const counterRef = React.useRef();
+    const congratsTimeoutRef = React.useRef(null);
+    const isFetchingQuestionRef = React.useRef(false);
     const [questionsCount, setQuestionsCount] = React.useState(0);
     const [question, setQuestion] = React.useState("");
     const [chemicalData, setChemicalData] = React.useState([]);
@@ -66,35 +68,22 @@ const ChemistryGame = () => {
         </div>
     );
 
-    // Fetch a chemistry question by index (example: index 0)
-    const fetchAndSetRandomQuestion = async (currentQuestionsIndex) => {
-        Dispatch(resetScore());
+    // Fetch a chemistry question by selecting a random unused index.
+    // This function uses the component state for `questionsIndex` so callers should not pass a
+    // stale array. To reset the seen questions, call `setQuestionsIndex([])` before calling this.
+    const fetchAndSetRandomQuestion = async () => {
+        // prevent concurrent fetches which can cause duplicate state updates
+        if (isFetchingQuestionRef.current) return;
+        isFetchingQuestionRef.current = true;
+        try {
+            Dispatch(resetScore());
 
-        let randomIndex;
-        const response = await getChemistryQuestionsCount();
-        setQuestionsCount(response.data);
+            const countResp = await getChemistryQuestionsCount();
+            const total = countResp.data;
+            setQuestionsCount(total);
 
-        do {
-            randomIndex = Math.floor(Math.random() * response.data);
-        } while (currentQuestionsIndex.includes(randomIndex) && currentQuestionsIndex.length < response.data);
-
-        if (currentQuestionsIndex.length < response.data) {
-            setQuestionsIndex([...currentQuestionsIndex, randomIndex]);
-            const response = await getChemistryQuestionByIndex(randomIndex);
-            if (response.data) {
-                setQuestion(response.data.Definition || "");
-                var chemData = [];
-                response.data.ChemicalData.split(';').map(row => chemData.push(row.split(',')));
-                setResult(response.data.RightResponse || 0);
-
-                setChemicalData(chemData);
-                // Replace /sub with <sub> and sub/ with </sub> in ResponseText
-                const formattedResponseText = response.data.ResponseText
-                    .replace(/\/sub/g, '<sub>')
-                    .replace(/sub\//g, '</sub>');
-                setTitle(formattedResponseText || "");
-            }
-        } else {
+        // If all questions have been used, show Game Over
+        if (questionsIndex.length >= total) {
             Swal.fire({
                 icon: 'info',
                 title: 'Game Over',
@@ -102,14 +91,15 @@ const ChemistryGame = () => {
                 showCancelButton: true,
                 confirmButtonText: 'Play Again',
                 cancelButtonText: 'Exit to Home'
-            }).then((result) => {
-                if (result.isConfirmed) {
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    // reset seen questions and start over
                     setQuestionsIndex([]);
                     setScoreTotal(0);
                     setChrono(30);
                     setChronoActive(true);
                     setTimeout(() => {
-                        fetchAndSetRandomQuestion([]); // Pass empty array after reset
+                        fetchAndSetRandomQuestion();
                     }, 0);
                 } else {
                     window.location.href = '/';
@@ -117,7 +107,40 @@ const ChemistryGame = () => {
             });
             return;
         }
+
+        // pick a random unused index
+        let randomIndex = null;
+        let attempts = 0;
+        do {
+            randomIndex = Math.floor(Math.random() * total);
+            attempts++;
+            if (attempts > 1000) break; // safety in case something goes wrong
+        } while (questionsIndex.includes(randomIndex));
+
+        // Add to seen list using functional update to avoid stale state races
+        setQuestionsIndex(prev => [...prev, randomIndex]);
+
+    const qResp = await getChemistryQuestionByIndex(randomIndex);
+        if (qResp.data) {
+            setQuestion(qResp.data.Definition || "");
+            const chemData = [];
+            (qResp.data.ChemicalData || '').split(';').forEach(row => {
+                if (row) chemData.push(row.split(','));
+            });
+            setResult(qResp.data.RightResponse || 0);
+            setChemicalData(chemData);
+            // Replace /sub with <sub> and sub/ with </sub> in ResponseText
+            const formattedResponseText = (qResp.data.ResponseText || '')
+                .replace(/\/sub/g, '<sub>')
+                .replace(/sub\//g, '</sub>');
+            setTitle(formattedResponseText || "");
+    }
+    } finally {
+            isFetchingQuestionRef.current = false;
+        }
     };
+
+    // (fetching flag is cleared at the end of the function; callers are also guarded)
 
     React.useEffect(() => {
         if (!chronoActive) return;
@@ -135,7 +158,7 @@ const ChemistryGame = () => {
                             text: 'You did not answer in time.',
                             confirmButtonText: 'OK'
                         }).then(() => {
-                            fetchAndSetRandomQuestion(questionsIndex);
+                            fetchAndSetRandomQuestion();
                             setChrono(30);         // Reinitialize to 30 seconds
                             setChronoActive(true); // Start chronometer
 
@@ -161,48 +184,73 @@ const ChemistryGame = () => {
 
     React.useEffect(() => {
         if (score === 0) {
-            fetchAndSetRandomQuestion(questionsIndex);
+            fetchAndSetRandomQuestion();
         }
 
         if (score === result) {
-            setScoreTotal(scoreTotal + 1);
+                // increment total score and record connection immediately (use functional update to avoid
+                // triggering this effect again due to scoreTotal change)
+                setScoreTotal(prev => prev + 1);
             addConnection(
                 sessionStorage.getItem('userName'),
                 "", // Use chronometer value instead of counter
                 String(scoreTotal + 1), // Set actual chemistry score if available
                 new Date().toISOString().slice(0, 10)
             );
-            Swal.fire({
-                title: 'Congratulations!',
-                showConfirmButton: false,
-                timer: 5000,
-                backdrop: `
-                            rgba(0,0,123,0.4)
-                            url(`+ congrats + `)
-                            center / cover
-                            no-repeat
-                            `,
-                html: `
-                        <div style="display:flex; flex-direction:column; align-items:center;">
-                        <img src="${einsteinImg}" alt="Einstein" style="width:120px; margin-bottom:16px;" />
-                        <div>${title}</div>
-                        </div>
-      `,
 
-                customClass: {
-                    popup: 'congrats-popup'
-                }
-            }).then(() => {
-                Dispatch(initialize())
-                Dispatch(clearDropResults());
-                setChemicalData([]);
-                fetchAndSetRandomQuestion(questionsIndex);
-                setChrono(30);         // Reinitialize to 30 seconds
-                setChronoActive(true); // Start chronometer
+            // Stop the chronometer so it stops decrementing when the user answers correctly
+            if (chronoRef.current) {
+                clearInterval(chronoRef.current);
+                chronoRef.current = null;
+            }
+            setChronoActive(false);
 
-            })
+            // Delay the congratulations popup by 10 seconds
+            // Use a ref to clear the timeout if component unmounts or score changes
+            if (!congratsTimeoutRef.current) {
+                // schedule the congratulations popup 10 seconds later
+                congratsTimeoutRef.current = setTimeout(() => {
+                    Swal.fire({
+                        title: 'Congratulations!',
+                        showConfirmButton: false,
+                        timer: 5000,
+                        backdrop: `
+                                    rgba(0,0,123,0.4)
+                                    url(${congrats})
+                                    center / cover
+                                    no-repeat
+                                    `,
+                        html: `
+                                <div style="display:flex; flex-direction:column; align-items:center;">
+                                <img src="${einsteinImg}" alt="Einstein" style="width:120px; margin-bottom:16px;" />
+                                <div>${title}</div>
+                                </div>
+                      `,
+                        customClass: {
+                            popup: 'congrats-popup'
+                        }
+                    }).then(() => {
+                        Dispatch(initialize())
+                        Dispatch(clearDropResults());
+                        setChemicalData([]);
+                        fetchAndSetRandomQuestion();
+                        setChrono(30);         // Reinitialize to 30 seconds
+                        setChronoActive(true); // Start chronometer
+
+                    });
+                    congratsTimeoutRef.current = null;
+                }, 2000);
+            }
         }
-    }, [score, scoreTotal])
+    
+        // cleanup for delayed congrats popup
+    return () => {
+        if (congratsTimeoutRef.current) {
+            clearTimeout(congratsTimeoutRef.current);
+            congratsTimeoutRef.current = null;
+        }
+    };
+    }, [score, result])
     const onCompletePeriod = () => { }
     const onTickCounter = () => { }
     const onStopCounter = () => { }
@@ -229,7 +277,8 @@ const ChemistryGame = () => {
                 <Row>
                     {/* Chronometer centered horizontally in the row */}
                     <Col xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
-                        {chronoActive && <CartoonChrono seconds={chrono} />}
+                        {/* Always display the chronometer UI. chronoActive controls whether it decrements. */}
+                        <CartoonChrono seconds={chrono} />
                     </Col>
                 </Row>
 
