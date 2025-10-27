@@ -6,10 +6,10 @@
 
 .question-text {
     color: #1565c0; /* Darker blue text */
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
     text-align: center;
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.15;
     font-weight: 500;
 }
 
@@ -75,7 +75,7 @@
 .question-container {
     background-color: #e3f2fd; /* Light blue background */
     border-radius: 8px;
-    padding: clamp(0.5rem, 1vw, 0.8rem);
+    padding: clamp(0.25rem, 0.8vw, 0.6rem);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 2; /* Ensure above navbar */
     position: relative;
@@ -86,7 +86,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between; /* place chrono to the right */
-    gap: 0.5rem;
+    gap: 0.25rem;
     word-break: break-word;
     overflow: hidden;
     /* let the question container size to its content */
@@ -111,24 +111,22 @@
 /* Responsive adjustments for navbar height */
 @media screen and (max-width: 768px) {
     .question-container {
-        padding: 0.75rem;
-        margin-top: 6px;
+        padding: 0.5rem;
         font-size: 1rem;
         flex-direction: column;
         align-items: stretch;
         justify-content: center;
-        gap: 0.5rem;
+        gap: 0.25rem;
     }
 }
 
 @media screen and (max-width: 480px) {
     .question-container {
-        padding: 0.5rem;
-        margin-top: 6px;
+        padding: 0.4rem;
         font-size: 0.95rem;
         flex-direction: column;
         align-items: stretch;
-        gap: 0.4rem;
+        gap: 0.2rem;
     }
 }
 
@@ -399,6 +397,40 @@
     .question-text {
         font-size: 1rem;
     }
+}
+
+/* SweetAlert2 - congratulation modal tweaks (larger image and text) */
+.swal2-popup .swal2-image {
+    /* make the image larger but responsive */
+    width: clamp(140px, 22vw, 260px) !important;
+    height: auto !important;
+    max-height: 45vh !important;
+    margin-bottom: 0.5rem;
+}
+
+.swal2-popup .swal2-title {
+    /* bigger, responsive title */
+    font-size: clamp(1.4rem, 3.5vw, 2.4rem) !important;
+    line-height: 1.08;
+    font-weight: 700;
+    color: #155fa0;
+    margin-bottom: 0.25rem;
+}
+
+.swal2-popup .swal2-html-container {
+    /* larger message text */
+    font-size: clamp(1.05rem, 2.2vw, 1.4rem) !important;
+    color: #333333;
+}
+
+.swal2-popup .swal2-actions button {
+    font-size: clamp(0.95rem, 1.6vw, 1.1rem) !important;
+    padding: 0.5rem 1rem !important;
+}
+
+/* Slightly increase overall popup padding so larger image fits comfortably */
+.swal2-popup {
+    padding: clamp(1rem, 2.5vw, 1.6rem) !important;
 }
 
 @media screen and (max-width: 480px) {
