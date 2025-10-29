@@ -1,162 +1,301 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
-
-/* Body styles */
-.body {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
+:root {
+  --physics-night: #050b1a;
+  --physics-deep-blue: #0b1f4b;
+  --physics-sky: #38bdf8;
+  --physics-magenta: #a855f7;
+  --physics-card: rgba(7, 24, 56, 0.82);
+  --physics-card-border: rgba(56, 189, 248, 0.32);
+  --physics-text: #e7f4ff;
+  --physics-muted: rgba(231, 244, 255, 0.7);
+  --physics-cell-size: clamp(2.2rem, 9vw, 3.4rem);
+  --physics-cell-gap: clamp(0.28rem, 1.4vw, 0.6rem);
 }
 
-.buttonGame {
-   padding: '0px' ;
-   border :'2px solid  blue';
 
-}
 
-/* Container styles */
-.container {
+.physics-game-wrapper {
+  position: relative;
   width: 100%;
-  height : 70vh;
-  padding: 20px;
-  margin: 0 auto;
+  min-height: 100%;
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  color: var(--physics-text);
+  background:
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.26) 0%, transparent 55%),
+    radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.23) 0%, transparent 60%),
+    linear-gradient(145deg, var(--physics-night), var(--physics-deep-blue) 58%, #020617 100%);
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
-/* Row styles */
-.row {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 0;
-  border-top: 1px solid #4285f4;
-}
-
-.row:first-child {
-  border-top: none;
-}
-
-/* Cell styles */
-.game-cell,
-.col {
-  aspect-ratio: 2.7;
-  position: relative;
-  border-right: 1px solid #4285f4;
-  padding: 0 !important;
-}
-
-.game-cell:first-child,
-.col:first-child {
-  border-left: 1px solid #4285f4;
-}
-
-/* 3D Cell styles */
-.game-cell {
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.3s ease, border-width 0.3s ease;
-  border: 2px solid #4285f4;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Hover effects with finger animation */
-.game-cell-active {
-  border: 3px solid #34a853;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
-  cursor: pointer;
-}
-
-/* Game cell active styles with larger finger */
-.game-cell-active::after {
-  content: '👇';
+.physics-game-wrapper::before,
+.physics-game-wrapper::after {
+  content: '';
   position: absolute;
-  top: -30px;  /* Adjusted to accommodate larger size */
-  left: 50%;
-  transform: translateX(-50%) rotate(0deg);
-  font-size: 32px;  /* Increased from 20px to 32px */
-  animation: fingerTapDown 1s infinite;
-  z-index: 1001;
+  inset: -22%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.13;
+  background-repeat: no-repeat;
 }
 
-/* Remove the hover-specific animation */
-.game-cell-active:hover::after {
-  display: none;
+.physics-game-wrapper::before {
+  background-image:
+    radial-gradient(circle at 26% 18%, rgba(56, 189, 248, 0.4) 0, transparent 55%),
+    radial-gradient(circle at 80% 72%, rgba(168, 85, 247, 0.32) 0, transparent 52%);
 }
 
-/* Active state for 3D press effect */
-.game-cell:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.physics-game-wrapper::after {
+  background-image:
+    linear-gradient(120deg, rgba(56, 189, 248, 0.2) 0, transparent 55%),
+    linear-gradient(300deg, rgba(168, 85, 247, 0.18) 0, transparent 60%);
+  filter: blur(48px);
+
 }
 
-/* Finger tap animation - modified for larger finger */
-@keyframes fingerTapDown {
-  0% {
-    transform: translateX(-50%) translateY(-15px);  /* Adjusted animation distance */
-    opacity: 0;
-  }
-  50% {
-    transform: translateX(-50%) translateY(0px);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(-50%) translateY(-15px);
-    opacity: 0;
-  }
+.physics-chrono-wrapper {
+ 
+  z-index: 30;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+ position: sticky;
+  top: clamp(0.30rem, 1.6vw, 0.75rem);
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+  width: fit-content;
+  margin: 0 clamp(0.35rem, 1.6vw, 0.9rem) clamp(0.6rem, 2vw, 1.25rem) auto;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(5, 11, 26, 0.72);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 28px rgba(5, 11, 26, 0.45);
 }
 
-/* Empty cell style */
-.col:empty {
+.physics-chrono {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 1.1rem;
+  gap: 0.45rem;
+  font-size: clamp(0.95rem, 2.1vw, 1.35rem);
+
+  border-radius: 999px;
+  background: rgba(8, 24, 58, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.55);
+  box-shadow: 0 20px 45px rgba(8, 24, 58, 0.45);
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  letter-spacing: 0.08em;
+  color: var(--physics-text);
+  backdrop-filter: blur(18px);
+}
+
+.physics-board-stage {
+  position: relative;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  z-index: 1;
+  border-radius: 28px;
+}
+
+.physics-board {
+  width: 100%;
+  padding: clamp(1.25rem, 4vw, 2.2rem);
+  border-radius: 28px;
+  background: var(--physics-card);
+  border: 1px solid var(--physics-card-border);
+  box-shadow: 0 40px 110px rgba(2, 10, 30, 0.65);
+  backdrop-filter: blur(26px);
+  overflow: visible;
+}
+
+.physics-board::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(231, 244, 255, 0.08) 0, transparent 65%);
+  pointer-events: none;
+}
+
+.physics-board .row {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(var(--physics-cell-size), 1fr));
+  gap: var(--physics-cell-gap);
+  margin: 0;
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+}
+
+.physics-board .row + .row {
+  margin-top: var(--physics-cell-gap);
+}
+
+.physics-board .col {
+  position: relative;
+  padding: 0 !important;
+  border-radius: 18px;
+  background: rgba(5, 20, 56, 0.55);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  aspect-ratio: 1;
+  overflow: visible;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.physics-board .col:empty {
   background: transparent;
   border: none;
   box-shadow: none;
+  pointer-events: none;
 }
 
-/* Button styles */
-.game-button {
-  width: 100% !important;
-  height: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  background-color: transparent !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.3s ease;
-  transform: translateZ(1px);
-}
-
-/* Preserve 3D effect for button content */
-.game-button img,
-.game-button svg {
+.physics-board .col .game-cell {
+  position: relative;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  border-radius: inherit;
+  border: 1px solid rgba(56, 189, 248, 0.2) !important;
+  background: linear-gradient(140deg, rgba(12, 31, 74, 0.82), rgba(9, 21, 58, 0.74));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 6%;
+  color: var(--physics-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  background-clip: padding-box;
+}
+
+.physics-board .col .game-cell img,
+.physics-board .col .game-cell svg {
+  width: 100%;
+  height: 100%;
   display: block;
-  backface-visibility: hidden;
-  transform: translateZ(0);
+  object-fit: contain;
+  border-radius: 14px;
+  pointer-events: none;
 }
 
-/* Hover effect - only border color change */
-.game-cell:hover {
-  border-color: #34a853;
+.physics-board .col .game-cell:disabled {
+  opacity: 0.88;
+  cursor: default;
 }
 
-/* Spinning wheel overlay */
-.wheel-overlay {
+.physics-board .col .game-button {
+  border-color: rgba(56, 189, 248, 0.12) !important;
+  background: rgba(6, 20, 50, 0.62) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.physics-board .col .game-cell:hover:not(:disabled) {
+  border-color: rgba(56, 189, 248, 0.42) !important;
+  box-shadow: 0 14px 32px rgba(56, 189, 248, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.physics-board .col .game-cell-active {
+  border-color: rgba(56, 189, 248, 0.68) !important;
+  transform: translateY(-2px);
+  box-shadow:
+    0 22px 50px rgba(56, 189, 248, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.physics-board .col .game-cell-active::after {
+  content: '👇';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.1rem;
+  color: rgba(56, 189, 248, 0.9);
+  text-shadow: 0 10px 20px rgba(8, 24, 58, 0.65);
+  animation: physics-pointer 1s infinite;
+  pointer-events: none;
+}
+
+@keyframes physics-pointer {
+  0% {
+    transform: translateX(-50%) translateY(-18px);
+    opacity: 0;
+  }
+  45% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(-18px);
+    opacity: 0;
+  }
+}
+
+.wheel-overlay {
+  position: fixed;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.3); /* Decreased opacity from 0.5 to 0.3 */
-  z-index: 1000;
+  background: rgba(4, 12, 30, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 40;
 }
 
+@media (max-width: 900px) {
+  .physics-board {
+    padding: 1.8rem;
+  }
+
+  .physics-board .row {
+    grid-template-columns: repeat(9, minmax(2.75rem, 1fr));
+    gap: 0.45rem;
+  }
+
+  .physics-board .row + .row {
+    margin-top: 0.45rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .physics-game-wrapper {
+    padding: 2.75rem 1rem 2.25rem;
+  }
+
+  .physics-board {
+    padding: 1.5rem;
+  }
+
+  .physics-board .row {
+    grid-template-columns: repeat(9, minmax(2.2rem, 1fr));
+    gap: 0.35rem;
+  }
+
+  .physics-board .row + .row {
+    margin-top: 0.35rem;
+  }
+
+  .physics-board .col {
+    border-radius: 14px;
+  }
+
+  .physics-board .col .game-cell-active::after {
+    top: -24px;
+    font-size: 1.1rem;
+  }
+}
+@media (max-width: 540px) {
+  .physics-board-stage {
+    width: 100%;
+    padding-inline: clamp(0.4rem, 3vw, 0.9rem);
+    overflow-x: auto;
+  }
+
+  .physics-board {
+    min-width: 420px; /* preserves the 9-column layout */
+  }
+}
 

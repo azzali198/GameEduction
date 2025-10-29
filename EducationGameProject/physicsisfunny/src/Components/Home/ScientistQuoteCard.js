@@ -1,8 +1,8 @@
 import React from 'react';
 import './ScientistQuoteCard.css';
 
-const ScientistQuoteCard = ({ image, quote, name }) => (
-  <div className="scientist-card">
+const ScientistQuoteCard = ({ image, quote, name, className = '' }) => (
+  <div className={`scientist-card ${className}`.trim()}>
     <img className="card-image" src={image} alt={name} />
     <div className="card-content">
       <p className="quote">"{quote}"</p>

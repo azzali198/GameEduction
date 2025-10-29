@@ -21,28 +21,7 @@ import congrats from '../../images/congratulations-7600.gif'
 import { addConnection } from '../../services/score';
 
 const CartoonChrono = ({ seconds }) => (
-  <div
-    style={{
-      position: 'absolute',
-      top: '120px', // Move chrono down from the very top
-      left: '50%',
-      transform: 'translateX(-50%)',
-      zIndex: 100,
-      background: '#ffe066',
-      border: '4px solid #ff9800',
-      borderRadius: '50px',
-      padding: '10px 32px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-      fontFamily: 'Comic Sans MS, Comic Sans, cursive',
-      fontSize: '2rem',
-      color: '#ff5722',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      width: 'fit-content',
-      justifyContent: 'center'
-    }}
-  >
+  <div className="physics-chrono">
     <span>
       {String(Math.floor(seconds / 3600)).padStart(2, '0')}:
       {String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}:
@@ -270,11 +249,9 @@ const Physics = () => {
   };
   return (
     <div className="physics-game-wrapper">
-      {/* Chronometer centered horizontally at the top */}
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <div className="physics-chrono-wrapper">
         {chronoActive && <CartoonChrono seconds={chrono} />}
       </div>
-      <br /><br /><br /><br />
       {showIntro && (
         <GameIntroPopup
           onClose={() => {
@@ -283,8 +260,8 @@ const Physics = () => {
           }}
         />
       )}
-      <div style={{ position: 'relative' }}>
-        <Container style={{ paddingTop: '3px', paddingBottom: '3px' }}>
+      <div className="physics-board-stage">
+        <Container className="physics-board">
           <Row>
             {renderGameCell('start.png', counter === 0)}
             {renderGameCell('2.png', counter === 1)}

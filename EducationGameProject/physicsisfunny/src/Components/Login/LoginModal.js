@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { loginUser } from '../../services/userService';
 import { useUser } from '../../context/UserContext'; // Import context
 
-const MODAL_OVERLAY = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center';
+const MODAL_OVERLAY = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
 const MODAL_CONTENT = 'bg-white p-8 rounded-lg shadow-xl max-w-md w-full';
 
 const LoginModal = ({ isOpen, onClose, onLogin }) => {

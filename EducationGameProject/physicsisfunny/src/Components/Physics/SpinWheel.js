@@ -38,7 +38,7 @@ const SpinningWheel = ({isDisplayed, onFinishing}) => {
       };
     
       return (
-        <div className={modalStyles} style={{paddingLeft:'20%'}}>
+        <div className={modalStyles} style={{paddingLeft:'20%',background: 'rgba(255, 255, 255, 0.28)',backdropFilter: 'blur(4px)'}}>
             <WheelComponent 
                   segments={segments}
                   segColors={segColors}
