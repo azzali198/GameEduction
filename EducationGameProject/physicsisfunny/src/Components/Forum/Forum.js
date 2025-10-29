@@ -75,41 +75,59 @@ const Opinions = () => {
 
   return (
     <div className="forum-container responsive-forum">
-      <h2 className="text-2xl font-bold mb-4 text-blue-700 text-center">
-        Tell Us What You Think!
-        <span className="block text-lg font-normal text-gray-700 mt-1">
-          Your feedback helps us make Physics Is Funny even better.
-        </span>
-      </h2>
-      <div>
-        <h3 className="text-xl font-semibold mb-2 text-center">Visitor Opinions</h3>
+    <section className="forum-hero">
+      <div className="forum-hero__text">
+        <span className="forum-hero__kicker">Physics Is Funny Feedback Hub</span>
+        <h2 className="forum-hero__title">Tell us how the science games are working for you</h2>
+        <p className="forum-hero__subtitle">
+          Share the moments you loved, the parts that felt tricky, and the ideas that would make learning physics even better.
+        </p>
+        <div className="forum-hero__badges">
+          <span className="badge badge--experiment">Favorite Moments</span>
+          <span className="badge badge--wave">Learning Wins</span>
+          <span className="badge badge--gravity">Feature Ideas</span>
+        </div>
+      </div>
+    </section>
+
+    <div className="forum-grid">
+      <section className="forum-opinion-panel">
+        <header className="section-header">
+          <h3>Community Signals</h3>
+          <p className="section-subtitle">
+            Latest reflections from learners and educators across the Physics Is Funny universe.
+          </p>
+        </header>
+
         {paginatedOpinions.length === 0 ? (
-          <p className="text-center">No opinions yet.</p>
+          <p className="empty-state">No opinions yet—be the first to spark a conversation!</p>
         ) : (
-          <ul className="space-y-4">
+          <ul className="opinion-list">
             {paginatedOpinions.map(opinion => (
-              <li key={opinion.id} className="bg-white p-4 rounded shadow flex items-start gap-4 responsive-opinion">
+              <li key={opinion.id} className="opinion-card responsive-opinion">
                 <img
-                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(opinion.author)}`}
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(opinion.author)}&background=2563eb&color=fff`}
                   alt={opinion.author}
-                  className="w-10 h-10 rounded-full border flex-shrink-0"
+                  className="opinion-avatar"
                 />
-                <div style={{ flex: 1 }}>
-                  <div className="mt-1 break-words">{opinion.content}</div>
-                  <div className="text-sm text-gray-500 mt-2">
-                    By {opinion.author} on {opinion.date}
+                <div className="opinion-content">
+                  <div className="opinion-text">{opinion.content}</div>
+                  <div className="opinion-meta">
+                    <span className="meta-author">{opinion.author}</span>
+                    <span className="meta-dot" />
+                    <span className="meta-date">{opinion.date}</span>
                   </div>
                 </div>
               </li>
             ))}
           </ul>
         )}
+
         {totalPages > 1 && (
-          <div className="flex flex-wrap justify-center mt-6 gap-2">
+          <nav className="pagination">
             <button
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
             >
               Prev
             </button>
@@ -117,7 +135,7 @@ const Opinions = () => {
               <button
                 key={idx + 1}
                 onClick={() => setCurrentPage(idx + 1)}
-                className={`px-3 py-1 rounded ${currentPage === idx + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                className={currentPage === idx + 1 ? 'is-active' : ''}
               >
                 {idx + 1}
               </button>
@@ -125,36 +143,38 @@ const Opinions = () => {
             <button
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
             >
               Next
             </button>
-          </div>
+          </nav>
         )}
-      </div>
-      <br/>
-      <form onSubmit={handleSubmit} className="mt-8 mb-8 bg-gray-50 p-4 rounded shadow responsive-form">
-        <div className="mb-3">
-          <label className="block font-semibold mb-1">Your Opinion</label>
-          <textarea
-            className="w-full border rounded p-2"
-            placeholder="Write your opinion or feedback about the website..."
-            value={content}
-            onChange={e => setContent(e.target.value)}
-            rows={4}
-            required
-            style={{ resize: 'vertical', minHeight: '80px', maxHeight: '200px' }}
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto"
-        >
-          Publish
-        </button>
-      </form>
+      </section>
     </div>
-  );
-};
+<br />
+    <form onSubmit={handleSubmit} className="forum-form responsive-form">
+      <header className="section-header">
+        <h3>Publish Your Feedback</h3>
+        <p className="section-subtitle">
+          Tell us how the app helps, where we can improve, or pitch your dream feature.
+        </p>
+      </header>
+
+      <label htmlFor="forum-opinion">Your Opinion</label>
+      <textarea
+        id="forum-opinion"
+        placeholder="Write your opinion or feedback about the website..."
+        value={content}
+        onChange={e => setContent(e.target.value)}
+        rows={4}
+        required
+      />
+      <div className="form-actions">
+        <button type="submit">Publish</button>
+        <span className="privacy-note">Comments are visible to the whole community.</span>
+      </div>
+    </form>
+  </div>
+)};
+
 
 export default Opinions;
