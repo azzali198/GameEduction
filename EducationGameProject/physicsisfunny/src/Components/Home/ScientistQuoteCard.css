@@ -1,60 +1,80 @@
 .scientist-card {
-  width: 80vw;                /* 80% of the viewport width */
-  max-width: 900px;           /* Optional: limit max width for large screens */
-  min-height: 100px;      /* Decreased from 160px */
-  height: 110px;          /* Add a fixed height for consistency */
-  margin: 1rem auto;   /* Less vertical space between cards */
-  background: #fff;
-  border-radius: 1.2rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  transition: box-shadow 0.2s;
-  position: relative; /* Add this */
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1.35rem;
+  padding: 1.5rem;
+  border-radius: 20px;
+  background: var(--home-card-bg, rgba(7, 24, 56, 0.72));
+  border: 1px solid var(--home-card-border, rgba(56, 189, 248, 0.28));
+  box-shadow: 0 22px 55px rgba(2, 8, 26, 0.45);
   overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
+
+.scientist-card::after {
+  content: '';
+  position: absolute;
+  inset: -120% 60% auto -40%;
+  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.35), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
 .scientist-card:hover {
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  transform: translateY(-4px);
+  box-shadow: 0 28px 65px rgba(8, 24, 58, 0.55);
 }
+
+.scientist-card:hover::after {
+  opacity: 1;
+}
+
 .card-image {
-  height: 100%;
-  width: auto;                /* Let width scale naturally */
-  max-width: 35%;             /* Prevent it from being too wide */
-  object-fit: contain;        /* Show the whole image */
-  border-radius: 1.2rem 0 0 1.2rem;
-  display: block;
-  background: #f3f4f6;
+  width: 82px;
+  height: 82px;
+  border-radius: 999px;
+  border: 2px solid rgba(56, 189, 248, 0.6);
+  background: rgba(10, 26, 60, 0.85);
+  object-fit: cover;
+  box-shadow: 0 12px 25px rgba(3, 12, 34, 0.6);
 }
+
 .card-content {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0.8rem 1rem 0.8rem 1rem; /* Reduced padding */
-  position: relative;
+  gap: 0.75rem;
+  color: var(--home-text, #e0f1ff);
 }
+
 .scientist-card .quote {
-  font-style: italic;
-  color: #374151;
-  text-align: center;           /* Center the text */
   font-size: 1.05rem;
-  margin-bottom: 1.5rem;
-  margin-top: 0.5rem;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;      /* Center horizontally in the row */
-}
-.scientist-card .name {
-  color: #374151;         /* Same color as the quote */
+  line-height: 1.55;
+  color: var(--home-text, #e0f1ff);
   font-style: italic;
-  font-weight: bold;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-  text-align: right;
-  position: absolute;
-  right: 1.5rem;
-  bottom: 1.2rem;
+}
+
+.scientist-card .name {
+  font-weight: 600;
+  color: var(--home-accent, #38bdf8);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .scientist-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 1.35rem;
+  }
+
+  .card-image {
+    margin: 0 auto;
+  }
+
+  .card-content {
+    align-items: center;
+  }
 }
