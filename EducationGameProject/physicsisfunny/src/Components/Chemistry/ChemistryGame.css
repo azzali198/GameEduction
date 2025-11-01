@@ -1,148 +1,363 @@
+
+:root {
+    --chem-midnight: #050b1a;
+    --chem-deep-blue: #0b1f3c;
+    --chem-glow-blue: #38bdf8;
+    --chem-glow-purple: #7c3aed;
+    --chem-panel: rgba(7, 24, 56, 0.82);
+    --chem-panel-alt: rgba(11, 36, 68, 0.72);
+    --chem-border: rgba(56, 189, 248, 0.22);
+    --chem-shadow-soft: 0 24px 60px rgba(2, 12, 32, 0.45);
+    --chem-shadow-hard: 0 36px 120px rgba(0, 0, 0, 0.55);
+    --chem-radius-lg: 26px;
+    --chem-radius-md: 18px;
+    --chem-radius-sm: 12px;
+    --chem-text-strong: #e7f4ff;
+    --chem-text-soft: rgba(231, 244, 255, 0.78);
+    --chem-gutter: clamp(0.75rem, 2.1vw, 1.4rem);
+}
+
 #header {
     width: 99%;
     height: auto;
-    border: 3px solid rgb(207, 201, 201);
-}
-
-.question-text {
-    color: #1565c0; /* Darker blue text */
-    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
-    text-align: center;
-    margin: 0;
-    line-height: 1.15;
-    font-weight: 500;
-}
-
-/* Cartoon chronometer (responsive) */
-.cartoon-chrono {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffe066;
-    border: clamp(2px, 0.6vw, 6px) solid #ff9800;
-    border-radius: 999px;
-    padding: clamp(6px, 1.2vw, 12px) clamp(10px, 3vw, 28px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-    color: #ff5722;
-    width: fit-content;
-    max-width: 90vw;
-}
-
-.cartoon-chrono-text {
-    font-size: clamp(1rem, 3.5vw, 2rem);
-    line-height: 1;
-    letter-spacing: 0.5px;
-    display: block;
-    text-align: center;
-}
-
-/* Make sure the parent column centers the chrono - keep it responsive */
-.chemistry-game-container .row > .col > .cartoon-chrono,
-.chemistry-game-container .row > .col > .cartoon-chrono * {
-    box-sizing: border-box;
-}
-
-/* Container styles without borders */
-.chemistry-game-container {
-    width: 100%;
-    /* Use viewport-height based layout so inner sections can be sized to fit without vertical scroll */
-    height: calc(100vh - var(--navbar-height, 0px));
-    padding-top: clamp(6px, 1.2vh, 12px);
-    margin: 0 auto;
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    border: none;
-}
-
-/* Component containers without borders */
-.question-container,
-.shapes-container,
-.carousel-container {
-    width: 100%;
-    border: none !important;
-    margin: 0;
+    padding: clamp(0.9rem, 2.4vw, 1.6rem) clamp(1.4rem, 4vw, 2.6rem);
+    border-radius: var(--chem-radius-lg);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    background:
+        radial-gradient(circle at 18% 20%, rgba(56, 189, 248, 0.32) 0%, transparent 55%),
+        radial-gradient(circle at 82% 70%, rgba(124, 58, 237, 0.28) 0%, transparent 58%),
+        linear-gradient(135deg, rgba(3, 10, 26, 0.95), rgba(11, 31, 60, 0.88));
+    color: var(--chem-text-strong);
+    box-shadow: 0 30px 80px rgba(4, 12, 30, 0.55);
 }
 
 .question-row {
-    margin-bottom: 1rem; /* Reduced from 2rem */
+    margin-bottom: clamp(0.75rem, 2vh, 1.5rem);
     position: relative;
     z-index: 1;
 }
 
-.question-container {
-    background-color: #e3f2fd; /* Light blue background */
-    border-radius: 8px;
-    padding: clamp(0.25rem, 0.8vw, 0.6rem);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 2; /* Ensure above navbar */
-    position: relative;
-    border-left: 4px solid #2196f3; /* Blue accent border */
+.chemistry-game-container {
+     position: relative;
     width: 100%;
-    max-width: 100vw;
-    box-sizing: border-box;
+    min-height: calc(100vh - var(--navbar-height, 0px));
+    height: auto;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: clamp(1rem, 2.8vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 2vh, 1.75rem);
+    justify-content: flex-start;
+    color: var(--chem-text-strong);
+    background:
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.16) 0%, transparent 60%),
+        radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.14) 0%, transparent 58%),
+        linear-gradient(150deg, var(--chem-midnight), var(--chem-deep-blue) 58%, #020617 100%);
+    border-radius: var(--chem-radius-lg);
+    box-shadow: var(--chem-shadow-hard);
+    overflow: visible; /* allow carousel to extend and enable normal page scroll */
+    backdrop-filter: blur(12px);
+}
+
+.chemistry-game-container::before,
+.chemistry-game-container::after {
+    content: '';
+    position: absolute;
+    inset: -18%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.14;
+    background-repeat: no-repeat;
+    filter: blur(38px);
+}
+
+.chemistry-game-container::before {
+    background-image:
+        radial-gradient(circle at 25% 22%, rgba(56, 189, 248, 0.45) 0, transparent 55%),
+        radial-gradient(circle at 78% 74%, rgba(124, 58, 237, 0.42) 0, transparent 52%);
+}
+
+.chemistry-game-container::after {
+    background-image:
+        linear-gradient(120deg, rgba(56, 189, 248, 0.28) 0, transparent 55%),
+        linear-gradient(300deg, rgba(124, 58, 237, 0.24) 0, transparent 60%);
+}
+
+.chemistry-game-container > .row {
+    width: 100%;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.chemistry-game-container .col {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.question-container {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* place chrono to the right */
-    gap: 0.25rem;
+    justify-content: space-between;
+    gap: clamp(0.75rem, 1.6vw, 1.5rem);
+    padding: clamp(0.9rem, 2.6vw, 1.65rem);
+    background: var(--chem-panel);
+    border-radius: var(--chem-radius-md);
+    border: 1px solid var(--chem-border);
+    box-shadow: var(--chem-shadow-soft);
+    min-height: clamp(4rem, 12vh, 6.5rem);
+    width: 100%;
+    max-width: 100%;
     word-break: break-word;
     overflow: hidden;
-    /* let the question container size to its content */
-    flex: 0 0 auto;
+    backdrop-filter: blur(18px);
+}
+
+.question-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(124, 58, 237, 0.18));
+    opacity: 0.35;
+    pointer-events: none;
 }
 
 .question-text-wrapper {
     flex: 1 1 auto;
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* align left to leave space for chrono */
+}
+
+.question-text {
+    margin: 0;
+    color: var(--chem-text-strong);
+    font-size: clamp(1.02rem, 2.35vw, 1.35rem);
+    line-height: 1.38;
+    font-weight: 600;
+    letter-spacing: 0.015em;
 }
 
 .question-chrono {
     flex: 0 0 auto;
-    margin-left: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Responsive adjustments for navbar height */
-@media screen and (max-width: 768px) {
-    .question-container {
-        padding: 0.5rem;
-        font-size: 1rem;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: center;
-        gap: 0.25rem;
-    }
+.cartoon-chrono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.45rem, 1.8vw, 0.95rem) clamp(1rem, 3.75vw, 2rem);
+    border-radius: 999px;
+    background: rgba(8, 24, 58, 0.9);
+    border: 1px solid rgba(56, 189, 248, 0.6);
+    font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+    color: var(--chem-text-strong);
+    box-shadow: 0 22px 48px rgba(8, 24, 58, 0.55);
+    min-width: clamp(120px, 25vw, 200px);
+    letter-spacing: 0.08em;
+    backdrop-filter: blur(18px);
 }
 
-@media screen and (max-width: 480px) {
-    .question-container {
-        padding: 0.4rem;
-        font-size: 0.95rem;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.2rem;
-    }
+.cartoon-chrono-text {
+    font-size: clamp(1rem, 3.5vw, 1.9rem);
+    line-height: 1;
+    text-align: center;
 }
 
-.shapes-container {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 0.5rem;
+.chemistry-game-container > .row > .col > .shapes-container {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* take remaining space by default */
-    flex: 1 1 auto;
-    overflow: auto; /* allow internal scrolling if content overflows */
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: var(--chem-panel-alt);
+    border-radius: var(--chem-radius-md);
+    border: 1px solid var(--chem-border);
+    box-shadow: var(--chem-shadow-soft);
+    min-height: clamp(16rem, 48vh, 26rem);
+    overflow: hidden;
+    backdrop-filter: blur(14px);
 }
 
+.chemistry-game-container > .row > .col > .shapes-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 62%);
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.chemistry-game-container > .row > .col > .shapes-container > .shapes-container {
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.shape {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.shape:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(56, 189, 248, 0.25);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+    margin-top: 1rem !important;
+}
+
+.swal2-popup {
+    border-radius: var(--chem-radius-md) !important;
+    padding: clamp(1rem, 2.5vw, 1.6rem) !important;
+    background: rgba(7, 24, 56, 0.92) !important;
+    border: 1px solid rgba(56, 189, 248, 0.25) !important;
+    box-shadow: 0 26px 60px rgba(4, 12, 30, 0.55) !important;
+    color: var(--chem-text-strong) !important;
+}
+
+.swal2-popup .swal2-image {
+    width: clamp(140px, 22vw, 260px) !important;
+    height: auto !important;
+    max-height: 45vh !important;
+    margin-bottom: 0.5rem;
+}
+
+.swal2-popup .swal2-title {
+    font-size: clamp(1.4rem, 3.5vw, 2.4rem) !important;
+    line-height: 1.08;
+    font-weight: 700;
+    color: var(--chem-glow-blue) !important;
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.04em;
+}
+
+.swal2-popup .swal2-html-container {
+    font-size: clamp(1.05rem, 2.2vw, 1.4rem) !important;
+    color: var(--chem-text-soft) !important;
+}
+
+.swal2-popup .swal2-actions button {
+    font-size: clamp(0.95rem, 1.6vw, 1.1rem) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--chem-radius-sm) !important;
+    background: linear-gradient(135deg, var(--chem-glow-blue), var(--chem-glow-purple)) !important;
+    color: #0b1729 !important;
+    border: none !important;
+    box-shadow: 0 14px 32px rgba(56, 189, 248, 0.35) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.swal2-popup .swal2-actions button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 20px 40px rgba(56, 189, 248, 0.42) !important;
+}
+
+@media (max-width: 992px) {
+    .chemistry-game-container {
+        padding: clamp(0.9rem, 2.2vw, 1.7rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .question-container {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .question-chrono {
+        width: 100%;
+    }
+
+    .cartoon-chrono {
+        width: 100%;
+        max-width: 320px;
+        align-self: center;
+    }
+
+    .chemistry-game-container > .row > .col > .shapes-container {
+        padding: clamp(0.85rem, 2.8vw, 1.5rem);
+        min-height: clamp(14rem, 52vh, 24rem);
+        overflow-x: auto;
+    }
+
+   
+}
+
+@media (max-width: 576px) {
+    .chemistry-game-container {
+        padding: clamp(0.75rem, 2.6vw, 1.25rem);
+    }
+
+    .question-container {
+        padding: clamp(0.75rem, 3vw, 1.2rem);
+        min-height: clamp(3.5rem, 14vh, 5.5rem);
+    }
+
+    .question-text {
+        font-size: clamp(0.95rem, 3.6vw, 1.1rem);
+    }
+
+    .cartoon-chrono {
+        padding: clamp(0.45rem, 2.8vw, 0.85rem) clamp(0.85rem, 5vw, 1.5rem);
+        min-width: clamp(110px, 56vw, 200px);
+    }
+
+    .chemistry-game-container > .row > .col > .shapes-container {
+        padding: clamp(0.65rem, 3vw, 1.25rem);
+        min-height: clamp(13rem, 54vh, 22rem);
+    }
+
+ 
+
+    
+}
+
+@media (max-width: 420px) {
+    .cartoon-chrono-text {
+        font-size: clamp(0.95rem, 5vw, 1.4rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cartoon-chrono {
+        animation: none;
+    }
+}
+.carousel-container {
+    width: 100%;
+    border: none !important;
+    margin: 0;
+}
 .carousel-container {
     width: 100%;
     background-color: #ffffff;
@@ -218,26 +433,8 @@
     padding: clamp(0.25rem, 1vw, 0.5rem);
 }
 
-/* Reset Bootstrap row and column styles */
-.row {
-    --bs-gutter-x: 0 !important;
-    --bs-gutter-y: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-}
 
-.col,
-.col-12 {
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    flex: 1;
-    min-width: 0;
-}
+
 
 /* Remove bootstrap default borders */
 .carousel-container .row,
@@ -247,136 +444,9 @@
     border: none;
 }
 
-/* Remove any remaining bootstrap gutters */
-[class^="container"] {
-    --bs-gutter-x: 0 !important;
-    --bs-gutter-y: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-}
-
-/* Remove any Bootstrap grid gutters */
-.row {
-    --bs-gutter-x: 0;
-    --bs-gutter-y: 0;
-    margin: 0;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.col {
-    padding: 0;
-    flex: 1;
-    min-width: 0; /* Prevents flex items from overflowing */
-}
-
-.shape {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    transition: transform 0.2s ease-in-out;
-}
-
-.shape:hover {
-    transform: scale(1.05);
-}
-
-/* Maintain aspect ratio for chemical structure */
-.shape svg {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-}
-
-#questionText {
-    vertical-align: middle;
-    height: 200px;
-    text-justify: auto;
-    line-height: normal;
-    text-align: center;
-    border-right: 3px solid rgb(207, 201, 201);
-    border-left: 3px solid rgb(207, 201, 201);
-    border-bottom: 3px solid rgb(207, 201, 201);
-    font-style: italic;
-    font-size: auto;
-    display: flex;
-    justify-content: center; /* Align horizontal */
-    align-items: center;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-#imageCol {
-    border-right: 3px solid rgb(207, 201, 201);
-    border-bottom: 3px solid rgb(207, 201, 201);
-    vertical-align: middle;
-    text-align: center;
-    height: 100px;
-}
-
-#CounterCol {
-    border-left: 3px solid rgb(207, 201, 201);
-    border-bottom: 3px solid rgb(207, 201, 201);
-    vertical-align: middle;
-    text-align: center;
-    font-style: italic;
-    font-size: auto;
-    height: 200px;
-    display: flex;
-    justify-content: center; /* Align horizontal */
-    align-items: center;
-}
-
-.img {
-    width: 100%;
-    height: auto;
-}
-
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-}
-
-.App-link {
-    color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 /* Media queries for different screen sizes */
 @media screen and (max-width: 768px) {
-    .chemistry-game-container {
-        padding-top: 12px;
-    }
-
-    .shapes-container {
-        transform: none;
-    }
+  
 
     .carousel-container {
         padding: 0.5rem;
@@ -387,75 +457,126 @@
         width: 30px;
         height: 30px;
     }
+}
+.chemistry-carousel .carousel-inner {
+    border-radius: var(--chem-radius-md);
+    background:
+        linear-gradient(145deg, rgba(7, 24, 56, 0.88), rgba(11, 36, 68, 0.82));
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    box-shadow: 0 24px 60px rgba(2, 12, 32, 0.45);
+    backdrop-filter: blur(14px);
+    overflow: hidden;
+}
 
-    .question-container {
-        padding: 0.75rem;
-        margin-top: 90px; /* Increased to avoid navbar overlap on tablets */
-        font-size: 1rem;
+.chemistry-carousel .carousel-item .row {
+    margin: 0 !important;
+    justify-content: center;
+    gap: clamp(0.4rem, 1vw, 0.7rem);
+}
+
+.chemistry-carousel .carousel-item .col > div:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px rgba(56, 189, 248, 0.28);
+}
+
+.chemistry-carousel .carousel-caption {
+    position: static;
+    padding-top: clamp(0.6rem, 1.4vw, 0.9rem);
+    color: var(--chem-glow-blue);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}   
+.chemistry-carousel .carousel-control-prev,
+.chemistry-carousel .carousel-control-next {
+    width: clamp(38px, 4vw, 48px);
+    height: clamp(38px, 4vw, 48px);
+    border-radius: 50%;
+    background: rgba(5, 13, 32, 0.62);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    box-shadow: 0 12px 32px rgba(2, 12, 40, 0.55);
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 8;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.chemistry-carousel .carousel-control-prev:hover,
+.chemistry-carousel .carousel-control-next:hover {
+    background: rgba(56, 189, 248, 0.5);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 18px 36px rgba(56, 189, 248, 0.35);
+}
+
+.chemistry-carousel .carousel-control-prev-icon,
+.chemistry-carousel .carousel-control-next-icon {
+    filter: invert(1) drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+}
+
+.chemistry-carousel .carousel-indicators {
+    bottom: clamp(0.5rem, 1.6vw, 0.9rem);
+}
+.chemistry-carousel .carousel-indicators [data-bs-target] {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: rgba(56, 189, 248, 0.26);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.chemistry-carousel .carousel-indicators .active {
+    background-color: var(--chem-glow-blue);
+    transform: scale(1.08);
+}
+
+@media (max-width: 640px) {
+    .chemistry-carousel .carousel-item {
+        min-height: clamp(220px, 56vh, 320px);
     }
 
-    .question-text {
-        font-size: 1rem;
+    .chemistry-carousel .carousel-control-prev,
+    .chemistry-carousel .carousel-control-next {
+        width: 34px;
+        height: 34px;
     }
 }
-
-/* SweetAlert2 - congratulation modal tweaks (larger image and text) */
-.swal2-popup .swal2-image {
-    /* make the image larger but responsive */
-    width: clamp(140px, 22vw, 260px) !important;
-    height: auto !important;
-    max-height: 45vh !important;
-    margin-bottom: 0.5rem;
+.chemistry-carousel {
+    position: relative;
+    width: 100%;
+    isolation: isolate;
+}
+.chemistry-carousel .carousel-item .col > div {
+    width: clamp(2.6rem, 4.2vw, 3rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    background: rgba(2, 10, 30, 0.62);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 14px 32px rgba(2, 10, 30, 0.38);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.swal2-popup .swal2-title {
-    /* bigger, responsive title */
-    font-size: clamp(1.4rem, 3.5vw, 2.4rem) !important;
-    line-height: 1.08;
-    font-weight: 700;
-    color: #155fa0;
-    margin-bottom: 0.25rem;
+.chemistry-carousel .carousel-item {
+    padding: clamp(1rem, 2.4vw, 1.8rem);
+
+
+    gap: clamp(0.75rem, 1.6vw, 1.1rem);
+    min-height: clamp(220px, 38vh, 285px);
+    color: var(--chem-text-strong);
 }
 
-.swal2-popup .swal2-html-container {
-    /* larger message text */
-    font-size: clamp(1.05rem, 2.2vw, 1.4rem) !important;
-    color: #333333;
+/* make carousel item content wider */
+.chemistry-carousel .carousel-item > div {
+    width: min(960px, 95%);   /* grow to 95% of the container but cap at 960px */
+    margin-inline: auto;      /* keep it centered */
 }
 
-.swal2-popup .swal2-actions button {
-    font-size: clamp(0.95rem, 1.6vw, 1.1rem) !important;
-    padding: 0.5rem 1rem !important;
-}
-
-/* Slightly increase overall popup padding so larger image fits comfortably */
-.swal2-popup {
-    padding: clamp(1rem, 2.5vw, 1.6rem) !important;
-}
-
-@media screen and (max-width: 480px) {
-    .chemistry-game-container {
-        padding-top: 20px;
-    }
-
-    .shapes-container {
-        transform: none;
-    }
-
-    .question-container {
-        padding: 0.5rem;
-         min-height: 3.5rem;
-        margin-top: 110px; /* Further increased for mobile navbar */
-        font-size: 0.95rem;
-    }
-
-    .question-text {
-        font-size: 0.95rem;
-    }
-}
-
-/* Add margin to Row components */
-.mb-3 {
-    margin-bottom: 1rem !important;
-    margin-top: 1rem !important;
+/* Global tweak for react-tooltip bubbles */
+.react-tooltip {
+    min-width: clamp(90px, 30vw, 280px);
+    max-width: clamp(120px, 45vw, 360px);
+    padding: 0.6rem 0.9rem;
 }
