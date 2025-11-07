@@ -4,17 +4,14 @@ import { countries } from '../../data/countries';
 import { subscribeUser } from '../../services/userService';
 import ReactCountryFlag from 'react-country-flag';
 import Swal from 'sweetalert2';
+import './SubscriptionPage.css';
 
 const CountryOption = ({ country }) => (
-  <div className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer">
-    <ReactCountryFlag 
+  <div className="subscription-country-option">
+    <ReactCountryFlag
       countryCode={country.code}
       svg
-      style={{
-        width: '1.2em',
-        height: '1.2em',
-        marginRight: '8px'
-      }}
+      style={{ width: '1.2em', height: '1.2em', marginRight: '8px' }}
     />
     <span>{country.name}</span>
   </div>
@@ -25,30 +22,30 @@ const CustomSelect = ({ value, onChange, countries }) => {
   const selectedCountry = countries.find(c => c.code === value);
 
   return (
-    <div className="relative">
-      <div 
-        className="w-full border rounded p-2 pl-8 flex items-center cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
+    <div className="subscription-custom-select">
+      <button
+        type="button"
+        className="subscription-select-display"
+        onClick={() => setIsOpen(prev => !prev)}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
       >
         {value ? (
           <>
-            <ReactCountryFlag 
+            <ReactCountryFlag
               countryCode={value}
               svg
-              style={{
-                width: '1.2em',
-                height: '1.2em',
-                marginRight: '8px'
-              }}
+              style={{ width: '1.2em', height: '1.2em', marginRight: '8px' }}
             />
             {selectedCountry?.name}
           </>
         ) : (
           'Select your nationality'
         )}
-      </div>
+        <span className="subscription-select-caret" aria-hidden="true">v</span>
+      </button>
       {isOpen && (
-        <div className="absolute w-full bg-white border rounded mt-1 max-h-60 overflow-y-auto z-50">
+        <div className="subscription-select-dropdown" role="listbox">
           {countries.map(country => (
             <div 
               key={country.code}
@@ -122,107 +119,114 @@ const SubscriptionPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full mx-auto space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Subscribe to PhysicsIsFunny
-          </h2>
+    <div className="subscription-page">
+      <div className="subscription-card">
+        <div className="subscription-header">
+          <p className="subscription-eyebrow">Physics & Chemistry Pass</p>
+          <h2>Unlock every interactive science adventure</h2>
+          <p className="subscription-lede">
+            Dive into the complete library of physics and chemistry challenges, story-driven missions, and live learning events.
+          </p>
         </div>
-        <div className="mt-8 bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Username</label>
-              <input
-                type="text"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                value={formData.userName}
-                onChange={(e) => handleChange('userName', e.target.value)}
-                required
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="subscription-form">
+          <label className="subscription-field">
+            <span>Username</span>
+            <input
+              type="text"
+              className="subscription-input"
+              value={formData.userName}
+              onChange={(e) => handleChange('userName', e.target.value)}
+              required
+            />
+          </label>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
-              <input
-                type="email"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                value={formData.email}
-                onChange={(e) => handleChange('email', e.target.value)}
-                required
-              />
-            </div>
+          <label className="subscription-field">
+            <span>Email</span>
+            <input
+              type="email"
+              className="subscription-input"
+              value={formData.email}
+              onChange={(e) => handleChange('email', e.target.value)}
+              required
+            />
+          </label>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
-              <input
-                type="date"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                value={formData.dateOfBirth}
-                onChange={(e) => handleChange('dateOfBirth', e.target.value)}
-                required
-              />
-            </div>
+          <label className="subscription-field">
+            <span>Date of birth</span>
+            <input
+              type="date"
+              className="subscription-input"
+              value={formData.dateOfBirth}
+              onChange={(e) => handleChange('dateOfBirth', e.target.value)}
+              required
+            />
+          </label>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
-              <input
-                type="password"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                value={formData.password}
-                onChange={(e) => handleChange('password', e.target.value)}
-                required
-                minLength="8"
-              />
-            </div>
+          <label className="subscription-field">
+            <span>Password</span>
+            <input
+              type="password"
+              className="subscription-input"
+              value={formData.password}
+              onChange={(e) => handleChange('password', e.target.value)}
+              required
+              minLength="8"
+            />
+          </label>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-              <input
-                type="password"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                value={formData.confirmPassword}
-                onChange={(e) => handleChange('confirmPassword', e.target.value)}
-                required
-                minLength="8"
-              />
-            </div>
+          <label className="subscription-field">
+            <span>Confirm password</span>
+            <input
+              type="password"
+              className="subscription-input"
+              value={formData.confirmPassword}
+              onChange={(e) => handleChange('confirmPassword', e.target.value)}
+              required
+              minLength="8"
+            />
+          </label>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Profession</label>
-              <select
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                value={formData.profession}
-                onChange={(e) => handleChange('profession', e.target.value)}
-                required
-              >
-                <option value="">Select your profession</option>
-                <option value="student">Student</option>
-                <option value="teacher">Teacher</option>
-                <option value="professional">Professional</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
+          <label className="subscription-field">
+            <span>Profession</span>
+            <select
+              className="subscription-input"
+              value={formData.profession}
+              onChange={(e) => handleChange('profession', e.target.value)}
+              required
+            >
+              <option value="">Select your profession</option>
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="professional">Professional</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Country</label>
-              <CustomSelect 
-                value={formData.country}
-                onChange={(value) => handleChange('country', value)}
-                countries={countries}
-              />
-            </div>
+          <label className="subscription-field">
+            <span>Country</span>
+            <CustomSelect 
+              value={formData.country}
+              onChange={(value) => handleChange('country', value)}
+              countries={countries}
+            />
+          </label>
 
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Subscribe
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="subscription-actions">
+            <button
+              type="submit"
+              className="subscription-btn subscription-btn-primary"
+            >
+              Subscribe
+            </button>
+            <button
+              type="button"
+              className="subscription-btn subscription-btn-ghost"
+              onClick={() => navigate('/')}
+            >
+              Maybe later
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

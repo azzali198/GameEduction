@@ -35,7 +35,6 @@ const App = () => {
 
   // This function will be called by LoginModal with true (success) or false (fail)
   const handleLoginResult = (response) => {
-    alert(JSON.stringify(response));
     const authenticated = response?.user.userName !== null && response?.token !== null;
     setIsAuthenticated(authenticated);
     setIsAdmin(response?.isAdmin);

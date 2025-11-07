@@ -673,6 +673,6 @@ const Carousels = () => {
   );
 }
 
-export default Carousels;-
+export default Carousels;
 
 
