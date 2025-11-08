@@ -150,7 +150,6 @@ const Opinions = () => {
         )}
       </section>
     </div>
-<br />
     <form onSubmit={handleSubmit} className="forum-form responsive-form">
       <header className="section-header">
         <h3>Publish Your Feedback</h3>

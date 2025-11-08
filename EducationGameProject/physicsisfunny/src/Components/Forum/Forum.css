@@ -17,16 +17,15 @@
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
-  padding: 3rem 1.5rem 2rem;
-  gap: 3rem;
+  min-height: auto;
+  padding: 1.8rem 1rem 1rem;
+  gap: 1.75rem;
   background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.28) 0%, transparent 55%),
               radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.24) 0%, transparent 60%),
               linear-gradient(145deg, var(--forum-night), var(--forum-deep-blue) 55%, #020617 100%);
   color: var(--forum-text);
   box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: visible;
 }
 
 .forum-container::before,
@@ -59,9 +58,10 @@
   align-items: center;
   justify-content: center;
   justify-items: center;
-  gap: 2.5rem;
+  gap: 1.8rem;
   width: min(900px, 100%);
   margin-inline: auto;
+  margin-bottom: 0.5rem;
   position: relative;
   z-index: 1;
 }
@@ -159,8 +159,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   justify-content: center;
-  gap: 2.5rem;
-  width: min(960px, 100%);
+  gap: 1.6rem;
+  width: min(900px, 100%);
   margin-inline: auto;
   position: relative;
   z-index: 1;
@@ -334,10 +334,10 @@
 }
 
 .forum-form {
-  width: min(1100px, 100%);
+  width: min(960px, 100%);
   margin-inline: auto;
   display: grid;
-  gap: 1.35rem;
+  gap: 1rem;
 }
 
 .forum-form textarea {

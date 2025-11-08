@@ -130,14 +130,12 @@ const App = () => {
             </span>
           </div>
           {avatarMenuOpen && (
-            <div
-              className="absolute right-0 mt-2 w-40 bg-white rounded shadow z-50"
-              style={{ top: '100%' }}
-            >
+            <div className="nav-dropdown" role="menu">
               {menuItems.map(item => (
                 <button
                   key={item.key}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  type="button"
+                  className="nav-dropdown-item"
                   onClick={() => {
                     setAvatarMenuOpen(false);
                     item.action();
