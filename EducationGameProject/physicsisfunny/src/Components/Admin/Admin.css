@@ -6,6 +6,11 @@ html, body {
   overflow-y: auto;
 }
 
+.admin-page,
+.admin-page * {
+  color: #000;
+}
+
 /* Admin Tabs */
 .admin-page .admin-tabs {
   display: flex;

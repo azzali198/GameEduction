@@ -1,25 +1,22 @@
 import React from 'react';
+import './Quiz.css';
 
-
-
-const modalOverlayClasses = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'
-const modalContentClasses = 'bg-white w-full max-w-md p-6 rounded-lg shadow-lg'
-const buttonClasses = 'bg-blue-500 text-white p-4 rounded-lg border border-primary hover:bg-blue-500/80'
-const rightResponseClass = 'bg-green-500 text-white p-4 rounded-lg border border-green-500'
-const wrongResponseClass = 'bg-red-500 text-white p-4 rounded-lg border border-red-500'
+const baseButtonClass = 'quiz-answer_btn';
+const correctClass = 'quiz-answer_btn correct';
+const wrongClass = 'quiz-answer_btn incorrect';
 
 const QuizModal = (props) => {
-    const [firstButtonClassCss, setFirstButtonClassCss] = React.useState(buttonClasses);
-    const [secondButtonClassCss, setSecondButtonClassCss] = React.useState(buttonClasses);
-    const [thirdButtonClassCss, setThirdButtonClassCss] = React.useState(buttonClasses);
+    const [firstButtonClassCss, setFirstButtonClassCss] = React.useState(baseButtonClass);
+    const [secondButtonClassCss, setSecondButtonClassCss] = React.useState(baseButtonClass);
+    const [thirdButtonClassCss, setThirdButtonClassCss] = React.useState(baseButtonClass);
     const [disableButton, setDisableButton] = React.useState(false);
     const [rightResponse, setRightResponse] = React.useState(false);
 
     const handleButtonClick = (index) => {
         const isCorrect = props.items[index] === props.response;
-        if (index === 0) setFirstButtonClassCss(isCorrect ? rightResponseClass : wrongResponseClass);
-        if (index === 1) setSecondButtonClassCss(isCorrect ? rightResponseClass : wrongResponseClass);
-        if (index === 2) setThirdButtonClassCss(isCorrect ? rightResponseClass : wrongResponseClass);
+        if (index === 0) setFirstButtonClassCss(isCorrect ? correctClass : wrongClass);
+        if (index === 1) setSecondButtonClassCss(isCorrect ? correctClass : wrongClass);
+        if (index === 2) setThirdButtonClassCss(isCorrect ? correctClass : wrongClass);
         setDisableButton(true);
         setRightResponse(isCorrect);
         props.onClickButton();
@@ -30,28 +27,28 @@ const QuizModal = (props) => {
     };
 
     return (
-        <div className={modalOverlayClasses} >
-            <div className={modalContentClasses}>
-                <img src={props.image} alt="quiz-question" className="mb-4 rounded-lg" />
-                <h3 className="text-2xl font-bold text-center mb-4">{props.question}</h3>
-                <div className="grid grid-cols-1 gap-4">
-                    <button 
-                        className={firstButtonClassCss} 
-                        onClick={() => handleButtonClick(0)} 
+        <div className="quiz-modal_overlay">
+            <div className="quiz-modal_panel">
+                <img src={props.image} alt="quiz-question" className="quiz-modal_image" />
+                <h3>{props.question}</h3>
+                <div className="grid grid-cols-1 gap-3">
+                    <button
+                        className={firstButtonClassCss}
+                        onClick={() => handleButtonClick(0)}
                         disabled={disableButton}
                     >
                         {props.items[0]}
                     </button>
-                    <button 
-                        className={secondButtonClassCss} 
-                        onClick={() => handleButtonClick(1)} 
+                    <button
+                        className={secondButtonClassCss}
+                        onClick={() => handleButtonClick(1)}
                         disabled={disableButton}
                     >
                         {props.items[1]}
                     </button>
-                    <button 
-                        className={thirdButtonClassCss} 
-                        onClick={() => handleButtonClick(2)} 
+                    <button
+                        className={thirdButtonClassCss}
+                        onClick={() => handleButtonClick(2)}
                         disabled={disableButton}
                     >
                         {props.items[2]}
