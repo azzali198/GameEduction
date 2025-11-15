@@ -266,6 +266,10 @@ const App = () => {
             isOpen={isLoginModalOpen}
             onClose={() => setIsLoginModalOpen(false)}
             onLogin={handleLoginResult}
+            onNavigateToSubscription={() => {
+              setCurrentPage('subscription');
+              setIsLoginModalOpen(false);
+            }}
           />
         )}
       </div>

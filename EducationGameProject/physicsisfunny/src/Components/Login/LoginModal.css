@@ -53,6 +53,10 @@
     font-size: 1rem;
     cursor: pointer;
     transition: transform 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
 
 .login-modal-close:hover {
@@ -157,6 +161,46 @@
 .login-modal-btn--ghost:hover {
     border-color: rgba(56, 189, 248, 0.7);
     transform: translateY(-1px);
+}
+
+.login-modal-subscription {
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--login-text-soft);
+    font-size: 0.95rem;
+}
+
+.login-modal-subscription button {
+    color: #38bdf8;
+    margin-left: 0.35rem;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.login-modal-subscription button:hover {
+    color: #7c3aed;
+}
+
+.login-modal-forgot-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.login-modal-forgot {
+    background: none;
+    border: none;
+    color: var(--login-text-soft);
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 0.9rem;
+    padding: 0;
+}
+
+.login-modal-forgot:hover {
+    color: var(--login-text-strong);
 }
 
 @media (max-width: 520px) {

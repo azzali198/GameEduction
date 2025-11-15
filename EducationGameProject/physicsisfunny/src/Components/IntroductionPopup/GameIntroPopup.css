@@ -96,6 +96,18 @@
     transform: translateY(-1px);
 }
 
+.prev-button--active {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.55);
+    color: var(--intro-text-strong);
+    box-shadow: 0 12px 28px rgba(56, 189, 248, 0.25);
+}
+
+.prev-button--active:hover {
+    background: rgba(56, 189, 248, 0.2);
+    transform: translateY(-2px);
+}
+
 .next-button {
     background: linear-gradient(120deg, #38bdf8, #7c3aed);
     color: #050c1e;

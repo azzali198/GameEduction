@@ -77,6 +77,45 @@ export const loginUser = async (credentials) => {
     }
 };
 
+export const resetForgottenPassword = async (payload) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        const response = await axios.post(
+            `${API_URL}/User/forgot-password`,
+            payload,
+            config
+        );
+
+        if (response.status !== 200) {
+            throw new Error(response.data?.message || 'Password reset failed');
+        }
+
+        return response.data;
+    } catch (error) {
+        let errorMessage = 'An unexpected error occurred';
+
+        if (error.response) {
+            if (error.response.status === 404) {
+                errorMessage = 'No user found with that email.';
+            } else if (error.response.status === 400) {
+                errorMessage = error.response.data?.message || 'Invalid password reset request.';
+            } else {
+                errorMessage = error.response.data?.message || 'Password reset failed';
+            }
+        } else if (error.request) {
+            errorMessage = 'No response from server. Please check your connection.';
+        }
+
+        throw new Error(errorMessage);
+    }
+};
+
 export const getAllUsers = async () => {
     try {
         const response = await axios.get(`${API_URL}/User/get-all-users`);

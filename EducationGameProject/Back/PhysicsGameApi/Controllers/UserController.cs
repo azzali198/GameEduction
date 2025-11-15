@@ -85,6 +85,33 @@ namespace PhysicsGameApi.Controllers
             }
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest("Request body is required");
+                }
+
+                await _userService.ResetForgottenPasswordAsync(request.Email, request.NewPassword);
+                return Ok(new { message = "Password updated successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing your request");
+            }
+        }
+
         [HttpGet("get-all-users")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -273,5 +300,11 @@ namespace PhysicsGameApi.Controllers
     {
         public required string UserName { get; set; }
         public required string Password { get; set; }
+    }
+
+    public class ForgotPasswordRequest
+    {
+        public required string Email { get; set; }
+        public required string NewPassword { get; set; }
     }
 }

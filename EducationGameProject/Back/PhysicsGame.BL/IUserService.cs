@@ -21,5 +21,6 @@ namespace PhysicsGame.BL
         Task ActivateUserAsync(string userId);
         Task DeactivateUserAsync(string userId);
         Task DeleteUserAsync(string userId);
+        Task ResetForgottenPasswordAsync(string email, string newPassword);
     }
 }

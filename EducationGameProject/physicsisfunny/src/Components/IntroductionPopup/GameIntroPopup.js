@@ -53,7 +53,7 @@ const GameIntroPopup = ({ onClose }) => {
                 <div className="popup-buttons">
                     {currentStep > 0 && (
                         <button 
-                            className="popup-button prev-button"
+                            className={`popup-button prev-button ${currentStep > 0 ? 'prev-button--active' : ''}`}
                             onClick={handlePrev}
                         >
                             Previous

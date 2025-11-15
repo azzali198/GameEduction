@@ -241,6 +241,39 @@ namespace PhysicsGame.BL.services
             await _context.SaveChangesAsync();
         }
 
+        public async Task ResetForgottenPasswordAsync(string email, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentException("Email is required", nameof(email));
+            }
+
+            if (!IsEmailValid(email))
+            {
+                throw new ArgumentException("Invalid email format", nameof(email));
+            }
+
+            if (string.IsNullOrWhiteSpace(newPassword))
+            {
+                throw new ArgumentException("New password is required", nameof(newPassword));
+            }
+
+            if (!IsPasswordValid(newPassword))
+            {
+                throw new ArgumentException("Password must be at least 8 characters long and contain at least one uppercase letter, one number, and one special character", nameof(newPassword));
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found");
+            }
+
+            user.Password = HashPassword(newPassword);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<User> GetUserByUserNameAsync(string userName)
         {
             if (string.IsNullOrWhiteSpace(userName))
