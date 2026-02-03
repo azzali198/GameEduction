@@ -2,10 +2,10 @@ import React from 'react';
 import './Home.css';
 import ScientistQuoteCard from './ScientistQuoteCard';
 import einstein from '../../assets/images/cards/einstein.png';
-import marie from '../../assets/images/cards/marie_curie.png';
-import feynmann from '../../assets/images/cards/Feynmann.png';
-import newton from '../../assets/images/cards/newton.png';
-import galelei from '../../assets/images/cards/galilei.png';
+import marie from '../../assets/images/cards/curie.png';
+import newton from '../../assets/images/cards/tesla.png';
+import feynmann  from '../../assets/images/cards/newton.png';
+import galelei from '../../assets/images/cards/galileo.png';
 
 const scientists = [
   {
