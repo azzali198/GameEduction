@@ -193,27 +193,27 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="Rf-tooltip" data-tooltip-content="Rutherfordium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Rf' type='Rf' /></center></div>
+                <div data-tooltip-id="Rf-tooltip" data-tooltip-content="Rutherfordium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Rf' type='Rf' /></center></div>
                 <Tooltip id="Rf-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Db-tooltip" data-tooltip-content="Dubnium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Db' type='Db' /></center></div>
+                <div data-tooltip-id="Db-tooltip" data-tooltip-content="Dubnium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Db' type='Db' /></center></div>
                 <Tooltip id="Db-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Sg-tooltip" data-tooltip-content="Seaborgium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Sg' type='Sg' /></center></div>
+                <div data-tooltip-id="Sg-tooltip" data-tooltip-content="Seaborgium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Sg' type='Sg' /></center></div>
                 <Tooltip id="Sg-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Bh-tooltip" data-tooltip-content="Bohrium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Bh' type='Bh' /></center></div>
+                <div data-tooltip-id="Bh-tooltip" data-tooltip-content="Bohrium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Bh' type='Bh' /></center></div>
                 <Tooltip id="Bh-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Hs-tooltip" data-tooltip-content="Hassium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Hs' type='Hs' /></center></div>
+                <div data-tooltip-id="Hs-tooltip" data-tooltip-content="Hassium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Hs' type='Hs' /></center></div>
                 <Tooltip id="Hs-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Rg-tooltip" data-tooltip-content="Roentgenium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Rg' type='Rg' /></center></div>
+                <div data-tooltip-id="Rg-tooltip" data-tooltip-content="Roentgenium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Rg' type='Rg' /></center></div>
                 <Tooltip id="Rg-tooltip" />
               </Col>
               <Col>
@@ -280,31 +280,31 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="B-tooltip" data-tooltip-content="Boron" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='B' type='B' /></center></div>
+                <div data-tooltip-id="B-tooltip" data-tooltip-content="Boron" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='B' type='B' /></center></div>
                 <Tooltip id="B-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Si-tooltip" data-tooltip-content="Silicon" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Si' type='Si' /></center></div>
+                <div data-tooltip-id="Si-tooltip" data-tooltip-content="Silicon" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Si' type='Si' /></center></div>
                 <Tooltip id="Si-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Ge-tooltip" data-tooltip-content="Germanium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ge' type='Ge' /></center></div>
+                <div data-tooltip-id="Ge-tooltip" data-tooltip-content="Germanium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ge' type='Ge' /></center></div>
                 <Tooltip id="Ge-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="As-tooltip" data-tooltip-content="Arsenic" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='As' type='As' /></center></div>
+                <div data-tooltip-id="As-tooltip" data-tooltip-content="Arsenic" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='As' type='As' /></center></div>
                 <Tooltip id="As-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Te-tooltip" data-tooltip-content="Tellurium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Te' type='Te' /></center></div>
+                <div data-tooltip-id="Te-tooltip" data-tooltip-content="Tellurium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Te' type='Te' /></center></div>
                 <Tooltip id="Te-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Sb-tooltip" data-tooltip-content="Antimony" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Sb' type='Sb' /></center></div>
+                <div data-tooltip-id="Sb-tooltip" data-tooltip-content="Antimony" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Sb' type='Sb' /></center></div>
                 <Tooltip id="Sb-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Po-tooltip" data-tooltip-content="Polonium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Po' type='Po' /></center></div>
+                <div data-tooltip-id="Po-tooltip" data-tooltip-content="Polonium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Po' type='Po' /></center></div>
                 <Tooltip id="Po-tooltip" />
               </Col>
               <Col>
@@ -323,31 +323,31 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="C-tooltip" data-tooltip-content="Carbon" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='C' type='C' /></center></div>
+                <div data-tooltip-id="C-tooltip" data-tooltip-content="Carbon" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='C' type='C' /></center></div>
                 <Tooltip id="C-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="N-tooltip" data-tooltip-content="Nitrogen" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='N' type='N' /></center></div>
+                <div data-tooltip-id="N-tooltip" data-tooltip-content="Nitrogen" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='N' type='N' /></center></div>
                 <Tooltip id="N-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="O-tooltip" data-tooltip-content="Oxygen" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='O' type='O' /></center></div>
+                <div data-tooltip-id="O-tooltip" data-tooltip-content="Oxygen" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='O' type='O' /></center></div>
                 <Tooltip id="O-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="P-tooltip" data-tooltip-content="Phosphorus" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='P' type='P' /></center></div>
+                <div data-tooltip-id="P-tooltip" data-tooltip-content="Phosphorus" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='P' type='P' /></center></div>
                 <Tooltip id="P-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="S-tooltip" data-tooltip-content="Sulfur" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='S' type='S' /></center></div>
+                <div data-tooltip-id="S-tooltip" data-tooltip-content="Sulfur" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='S' type='S' /></center></div>
                 <Tooltip id="S-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Se-tooltip" data-tooltip-content="Selenium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Se' type='Se' /></center></div>
+                <div data-tooltip-id="Se-tooltip" data-tooltip-content="Selenium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Se' type='Se' /></center></div>
                 <Tooltip id="Se-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="H-tooltip" data-tooltip-content="Hydrogen" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='H' type='H' /></center></div>
+                <div data-tooltip-id="H-tooltip" data-tooltip-content="Hydrogen" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='H' type='H' /></center></div>
                 <Tooltip id="H-tooltip" />
               </Col>
               <Col>
@@ -366,27 +366,27 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="Be-tooltip" data-tooltip-content="Beryllium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Be' type='Be' /></center></div>
+                <div data-tooltip-id="Be-tooltip" data-tooltip-content="Beryllium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Be' type='Be' /></center></div>
                 <Tooltip id="Be-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Mg-tooltip" data-tooltip-content="Magnesium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Mg' type='Mg' /></center></div>
+                <div data-tooltip-id="Mg-tooltip" data-tooltip-content="Magnesium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Mg' type='Mg' /></center></div>
                 <Tooltip id="Mg-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Ca-tooltip" data-tooltip-content="Calcium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ca' type='Ca' /></center></div>
+                <div data-tooltip-id="Ca-tooltip" data-tooltip-content="Calcium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ca' type='Ca' /></center></div>
                 <Tooltip id="Ca-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Sr-tooltip" data-tooltip-content="Strontium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Sr' type='Sr' /></center></div>
+                <div data-tooltip-id="Sr-tooltip" data-tooltip-content="Strontium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Sr' type='Sr' /></center></div>
                 <Tooltip id="Sr-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Ba-tooltip" data-tooltip-content="Barium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ba' type='Ba' /></center></div>
+                <div data-tooltip-id="Ba-tooltip" data-tooltip-content="Barium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ba' type='Ba' /></center></div>
                 <Tooltip id="Ba-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Ra-tooltip" data-tooltip-content="Radium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ra' type='Ra' /></center></div>
+                <div data-tooltip-id="Ra-tooltip" data-tooltip-content="Radium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ra' type='Ra' /></center></div>
                 <Tooltip id="Ra-tooltip" />
               </Col>
               <Col></Col>
@@ -404,31 +404,31 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="He-tooltip" data-tooltip-content="Helium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='He' type='He' /></center></div>
+                <div data-tooltip-id="He-tooltip" data-tooltip-content="Helium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='He' type='He' /></center></div>
                 <Tooltip id="He-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Ne-tooltip" data-tooltip-content="Neon" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ne' type='Ne' /></center></div>
+                <div data-tooltip-id="Ne-tooltip" data-tooltip-content="Neon" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ne' type='Ne' /></center></div>
                 <Tooltip id="Ne-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Ar-tooltip" data-tooltip-content="Argon" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ar' type='Ar' /></center></div>
+                <div data-tooltip-id="Ar-tooltip" data-tooltip-content="Argon" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ar' type='Ar' /></center></div>
                 <Tooltip id="Ar-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Kr-tooltip" data-tooltip-content="Krypton" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Kr' type='Kr' /></center></div>
+                <div data-tooltip-id="Kr-tooltip" data-tooltip-content="Krypton" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Kr' type='Kr' /></center></div>
                 <Tooltip id="Kr-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Xe-tooltip" data-tooltip-content="Xenon" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Xe' type='Xe' /></center></div>
+                <div data-tooltip-id="Xe-tooltip" data-tooltip-content="Xenon" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Xe' type='Xe' /></center></div>
                 <Tooltip id="Xe-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Rn-tooltip" data-tooltip-content="Radon" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Rn' type='Rn' /></center></div>
+                <div data-tooltip-id="Rn-tooltip" data-tooltip-content="Radon" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Rn' type='Rn' /></center></div>
                 <Tooltip id="Rn-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Og-tooltip" data-tooltip-content="Organesson" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Og' type='Og' /></center></div>
+                <div data-tooltip-id="Og-tooltip" data-tooltip-content="Organesson" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Og' type='Og' /></center></div>
                 <Tooltip id="Og-tooltip" />
               </Col>
               <Col></Col>
@@ -446,31 +446,31 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="F-tooltip" data-tooltip-content="Fluorine" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='F' type='F' /></center></div>
+                <div data-tooltip-id="F-tooltip" data-tooltip-content="Fluorine" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='F' type='F' /></center></div>
                 <Tooltip id="F-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Cl-tooltip" data-tooltip-content="Chlorine" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Cl' type='Cl' /></center></div>
+                <div data-tooltip-id="Cl-tooltip" data-tooltip-content="Chlorine" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Cl' type='Cl' /></center></div>
                 <Tooltip id="Cl-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Br-tooltip" data-tooltip-content="Bromine" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Br' type='Br' /></center></div>
+                <div data-tooltip-id="Br-tooltip" data-tooltip-content="Bromine" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Br' type='Br' /></center></div>
                 <Tooltip id="Br-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Kr-tooltip" data-tooltip-content="Krypton" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Kr' type='Kr' /></center></div>
+                <div data-tooltip-id="Kr-tooltip" data-tooltip-content="Krypton" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Kr' type='Kr' /></center></div>
                 <Tooltip id="Kr-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="I-tooltip" data-tooltip-content="Iodine" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='I' type='I' /></center></div>
+                <div data-tooltip-id="I-tooltip" data-tooltip-content="Iodine" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='I' type='I' /></center></div>
                 <Tooltip id="I-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="At-tooltip" data-tooltip-content="Astatine" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='At' type='At' /></center></div>
+                <div data-tooltip-id="At-tooltip" data-tooltip-content="Astatine" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='At' type='At' /></center></div>
                 <Tooltip id="At-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Ts-tooltip" data-tooltip-content="Tennessine" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ts' type='Ts' /></center></div>
+                <div data-tooltip-id="Ts-tooltip" data-tooltip-content="Tennessine" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ts' type='Ts' /></center></div>
                 <Tooltip id="Ts-tooltip" />
               </Col>
               <Col></Col>
@@ -488,27 +488,27 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="Li-tooltip" data-tooltip-content="Lithium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Li' type='Li' /></center></div>
+                <div data-tooltip-id="Li-tooltip" data-tooltip-content="Lithium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Li' type='Li' /></center></div>
                 <Tooltip id="Li-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Na-tooltip" data-tooltip-content="Sodium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Na' type='Na' /></center></div>
+                <div data-tooltip-id="Na-tooltip" data-tooltip-content="Sodium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Na' type='Na' /></center></div>
                 <Tooltip id="Na-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="K-tooltip" data-tooltip-content="Potassium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='K' type='K' /></center></div>
+                <div data-tooltip-id="K-tooltip" data-tooltip-content="Potassium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='K' type='K' /></center></div>
                 <Tooltip id="K-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Rb-tooltip" data-tooltip-content="Rubidium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Rb' type='Rb' /></center></div>
+                <div data-tooltip-id="Rb-tooltip" data-tooltip-content="Rubidium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Rb' type='Rb' /></center></div>
                 <Tooltip id="Rb-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Cs-tooltip" data-tooltip-content="Cesium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Cs' type='Cs' /></center></div>
+                <div data-tooltip-id="Cs-tooltip" data-tooltip-content="Cesium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Cs' type='Cs' /></center></div>
                 <Tooltip id="Cs-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Fr-tooltip" data-tooltip-content="Francium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Fr' type='Fr' /></center></div>
+                <div data-tooltip-id="Fr-tooltip" data-tooltip-content="Francium" data-tooltip-place="bottom" style={{ width: '70%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Fr' type='Fr' /></center></div>
                 <Tooltip id="Fr-tooltip" />
               </Col>
               <Col></Col>
@@ -526,31 +526,31 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="Ac-tooltip" data-tooltip-content="Actinium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ac' type='Ac' /></center></div>
+                <div data-tooltip-id="Ac-tooltip" data-tooltip-content="Actinium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ac' type='Ac' /></center></div>
                 <Tooltip id="Ac-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Th-tooltip" data-tooltip-content="Thorium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Th' type='Th' /></center></div>
+                <div data-tooltip-id="Th-tooltip" data-tooltip-content="Thorium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Th' type='Th' /></center></div>
                 <Tooltip id="Th-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Pa-tooltip" data-tooltip-content="Protactinium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Pa' type='Pa' /></center></div>
+                <div data-tooltip-id="Pa-tooltip" data-tooltip-content="Protactinium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Pa' type='Pa' /></center></div>
                 <Tooltip id="Pa-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="U-tooltip" data-tooltip-content="Uranium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='U' type='U' /></center></div>
+                <div data-tooltip-id="U-tooltip" data-tooltip-content="Uranium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='U' type='U' /></center></div>
                 <Tooltip id="U-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Np-tooltip" data-tooltip-content="Neptunium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Np' type='Np' /></center></div>
+                <div data-tooltip-id="Np-tooltip" data-tooltip-content="Neptunium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Np' type='Np' /></center></div>
                 <Tooltip id="Np-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Pu-tooltip" data-tooltip-content="Plutonium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Pu' type='Pu' /></center></div>
+                <div data-tooltip-id="Pu-tooltip" data-tooltip-content="Plutonium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Pu' type='Pu' /></center></div>
                 <Tooltip id="Pu-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Am-tooltip" data-tooltip-content="Americium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Am' type='Am' /></center></div>
+                <div data-tooltip-id="Am-tooltip" data-tooltip-content="Americium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Am' type='Am' /></center></div>
                 <Tooltip id="Am-tooltip" />
               </Col>
               <Col></Col>
@@ -559,31 +559,31 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="Cm-tooltip" data-tooltip-content="Curium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Cm' type='Cm' /></center></div>
+                <div data-tooltip-id="Cm-tooltip" data-tooltip-content="Curium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Cm' type='Cm' /></center></div>
                 <Tooltip id="Cm-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Bk-tooltip" data-tooltip-content="Berkelium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Bk' type='Bk' /></center></div>
+                <div data-tooltip-id="Bk-tooltip" data-tooltip-content="Berkelium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Bk' type='Bk' /></center></div>
                 <Tooltip id="Bk-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Cf-tooltip" data-tooltip-content="Californium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Cf' type='Cf' /></center></div>
+                <div data-tooltip-id="Cf-tooltip" data-tooltip-content="Californium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Cf' type='Cf' /></center></div>
                 <Tooltip id="Cf-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Es-tooltip" data-tooltip-content="Einsteinium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Es' type='Es' /></center></div>
+                <div data-tooltip-id="Es-tooltip" data-tooltip-content="Einsteinium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Es' type='Es' /></center></div>
                 <Tooltip id="Es-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Fm-tooltip" data-tooltip-content="Fermium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Fm' type='Fm' /></center></div>
+                <div data-tooltip-id="Fm-tooltip" data-tooltip-content="Fermium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Fm' type='Fm' /></center></div>
                 <Tooltip id="Fm-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Md-tooltip" data-tooltip-content="Mendelevium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Md' type='Md' /></center></div>
+                <div data-tooltip-id="Md-tooltip" data-tooltip-content="Mendelevium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Md' type='Md' /></center></div>
                 <Tooltip id="Md-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="No-tooltip" data-tooltip-content="Nobelium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='No' type='No' /></center></div>
+                <div data-tooltip-id="No-tooltip" data-tooltip-content="Nobelium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='No' type='No' /></center></div>
                 <Tooltip id="No-tooltip" />
               </Col>
               <Col></Col>
@@ -601,31 +601,31 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="Ln-tooltip" data-tooltip-content="Lanthanum" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ln' type='Ln' /></center></div>
+                <div data-tooltip-id="Ln-tooltip" data-tooltip-content="Lanthanum" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ln' type='Ln' /></center></div>
                 <Tooltip id="Ln-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Ce-tooltip" data-tooltip-content="Cerium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ce' type='Ce' /></center></div>
+                <div data-tooltip-id="Ce-tooltip" data-tooltip-content="Cerium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ce' type='Ce' /></center></div>
                 <Tooltip id="Ce-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Pr-tooltip" data-tooltip-content="Praseodymium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Pr' type='Pr' /></center></div>
+                <div data-tooltip-id="Pr-tooltip" data-tooltip-content="Praseodymium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Pr' type='Pr' /></center></div>
                 <Tooltip id="Pr-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Nd-tooltip" data-tooltip-content="Neodymium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Nd' type='Nd' /></center></div>
+                <div data-tooltip-id="Nd-tooltip" data-tooltip-content="Neodymium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Nd' type='Nd' /></center></div>
                 <Tooltip id="Nd-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Pm-tooltip" data-tooltip-content="Promethium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Pm' type='Pm' /></center></div>
+                <div data-tooltip-id="Pm-tooltip" data-tooltip-content="Promethium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Pm' type='Pm' /></center></div>
                 <Tooltip id="Pm-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Sm-tooltip" data-tooltip-content="Samarium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Sm' type='Sm' /></center></div>
+                <div data-tooltip-id="Sm-tooltip" data-tooltip-content="Samarium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Sm' type='Sm' /></center></div>
                 <Tooltip id="Sm-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Eu-tooltip" data-tooltip-content="Europium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Eu' type='Eu' /></center></div>
+                <div data-tooltip-id="Eu-tooltip" data-tooltip-content="Europium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Eu' type='Eu' /></center></div>
                 <Tooltip id="Eu-tooltip" />
               </Col>
               <Col></Col>
@@ -634,31 +634,31 @@ const Carousels = () => {
               <Col>
               </Col>
               <Col>
-                <div data-tooltip-id="Gd-tooltip" data-tooltip-content="Gadolinium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Gd' type='Gd' /></center></div>
+                <div data-tooltip-id="Gd-tooltip" data-tooltip-content="Gadolinium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Gd' type='Gd' /></center></div>
                 <Tooltip id="Gd-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Tb-tooltip" data-tooltip-content="Terbium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Tb' type='Tb' /></center></div>
+                <div data-tooltip-id="Tb-tooltip" data-tooltip-content="Terbium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Tb' type='Tb' /></center></div>
                 <Tooltip id="Tb-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Dy-tooltip" data-tooltip-content="Dysprosium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Dy' type='Dy' /></center></div>
+                <div data-tooltip-id="Dy-tooltip" data-tooltip-content="Dysprosium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Dy' type='Dy' /></center></div>
                 <Tooltip id="Dy-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Ho-tooltip" data-tooltip-content="Holmium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ho' type='Ho' /></center></div>
+                <div data-tooltip-id="Ho-tooltip" data-tooltip-content="Holmium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Ho' type='Ho' /></center></div>
                 <Tooltip id="Ho-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Er-tooltip" data-tooltip-content="Erbium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Er' type='Er' /></center></div>
+                <div data-tooltip-id="Er-tooltip" data-tooltip-content="Erbium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Er' type='Er' /></center></div>
                 <Tooltip id="Er-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Tm-tooltip" data-tooltip-content="Thulium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Tm' type='Tm' /></center></div>
+                <div data-tooltip-id="Tm-tooltip" data-tooltip-content="Thulium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Tm' type='Tm' /></center></div>
                 <Tooltip id="Tm-tooltip" />
               </Col>
               <Col>
-                <div data-tooltip-id="Yb-tooltip" data-tooltip-content="Ytterbium" data-tooltip-place="bottom" style={{ width: '85%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Yb' type='Yb' /></center></div>
+                <div data-tooltip-id="Yb-tooltip" data-tooltip-content="Ytterbium" data-tooltip-place="bottom" style={{ width: '75%', border: '0.5px solid gray', padding: '2px' }}><center><Box name='Yb' type='Yb' /></center></div>
                 <Tooltip id="Yb-tooltip" />
               </Col>
               <Col></Col>

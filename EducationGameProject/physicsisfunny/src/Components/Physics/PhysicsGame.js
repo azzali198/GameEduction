@@ -179,11 +179,20 @@ const Physics = () => {
   }, [displayWheel, chos, displayQuiz]);
   useEffect(() => {
     if (counter > 58) {
+      const now = new Date();
+      const datetime = new Date(Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate()
+      ))
+        .toISOString()
+        .replace('.000Z', 'Z'); // e.g. "2026-02-05T00:00:00Z"
+
       addConnection(
         sessionStorage.getItem('userName'),
         String(chrono), // Use chronometer value instead of counter
-        null, // Set actual chemistry score if available
-        new Date().toISOString().slice(0, 10)
+        "", // Set actual chemistry score if available
+        datetime
       );
       Swal.fire({
         title: 'Congratulations!',
@@ -234,6 +243,11 @@ const Physics = () => {
     }
   }, [counter])
   useEffect(() => {
+    if (counter > 58) {
+      clearInterval(chronoRef.current);
+      return;
+    }
+
     chronoRef.current = setInterval(() => {
       setChrono((prev) => prev + 1);
     }, 1000);

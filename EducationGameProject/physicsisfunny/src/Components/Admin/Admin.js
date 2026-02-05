@@ -343,7 +343,7 @@ const Admin = () => {
   return (
     <div
       className="admin-page w-full flex flex-col pt-0"
-      style={{ minHeight: '70vh', maxHeight: '70vh', justifyContent: 'flex-start' }}
+      style={{ minHeight: '100vh', justifyContent: 'flex-start' }}
     >
       <div className="admin-tabs flex w-full mt-1">
         {tabTitles.map((title, idx) => (
@@ -359,15 +359,15 @@ const Admin = () => {
         ))}
       </div>
       <div
-        className="w-full bg-white rounded shadow p-6"
+        className="w-full bg-white rounded shadow p-6 flex flex-col"
         style={{ flex: 1, minHeight: 0, overflowY: 'auto' }}
       >
         {activeTab === 0 && (
-          <>
+          <div className="admin-tab-content">
             {/* First fieldset: Insertion Quiz Data */}
             <fieldset
-              className="border rounded-lg p-2 mb-4 bg-gray-50 w-full"
-              style={{ maxHeight: 'none', overflowY: 'visible' }}
+              className="border rounded-lg p-2 mb-4 bg-gray-50 w-full admin-fieldset--grow"
+              style={{ maxHeight: 'none', overflowY: 'auto' }}
             >
               <legend
                 className="font-semibold text-base mb-1 flex items-center cursor-pointer select-none"
@@ -489,7 +489,7 @@ const Admin = () => {
             </fieldset>
 
         {/* Second fieldset: Edition Quiz Data */}
-        <fieldset className="border rounded-lg p-2 mb-4 bg-gray-50 w-full" style={{ maxHeight: 'none', overflowY: 'visible' }}>
+        <fieldset className="border rounded-lg p-2 mb-4 bg-gray-50 w-full admin-fieldset--grow" style={{ maxHeight: 'none', overflowY: 'visible' }}>
           <legend
             className="font-semibold text-base mb-1 flex items-center cursor-pointer select-none"
             onClick={() => setEditionFieldsetOpen(open => !open)}
@@ -516,6 +516,7 @@ const Admin = () => {
                     params.row.id === selectedIdentifier ? 'bg-indigo-100' : ''
                   }
                   sx={{
+                    height: '100%',
                     '& .MuiDataGrid-row.Mui-selected': {
                       backgroundColor: '#e0e7ff !important',
                     }
@@ -678,14 +679,14 @@ const Admin = () => {
             </div>
           )}
         </fieldset>
-      </>
+          </div>
         )}
       {activeTab === 1 && (
-  <>
+  <div className="admin-tab-content">
     {/* First fieldset: Insertion Quiz Data */}
     <fieldset
       className="border rounded-lg p-2 mb-4 bg-gray-50 w-full"
-      style={{ maxHeight: 'none', overflowY: 'visible' }}
+      style={{ maxHeight: 'none', overflowY: 'auto' }}
     >
       <legend
         className="font-semibold text-base mb-1 flex items-center cursor-pointer select-none"
@@ -770,8 +771,8 @@ const Admin = () => {
 
     {/* Second fieldset: Edition Quiz Data */}
     <fieldset
-      className="border rounded-lg p-2 mb-4 bg-gray-50 w-full"
-      style={{ maxHeight: 'none', overflowY: 'visible' }}
+      className="border rounded-lg p-2 mb-4 bg-gray-50 w-full admin-fieldset--grow"
+      style={{ maxHeight: 'none', overflowY: 'auto' }}
     >
       <legend
         className="font-semibold text-base mb-1 flex items-center cursor-pointer select-none"
@@ -865,6 +866,7 @@ const Admin = () => {
                 params.row.Id === selectedIdentifier ? 'bg-indigo-100' : ''
               }
               sx={{
+                height: '100%',
                 '& .MuiDataGrid-row.Mui-selected': {
                   backgroundColor: '#e0e7ff !important',
                 }
@@ -1006,12 +1008,12 @@ const Admin = () => {
         </div>
       )}
     </fieldset>
-  </>
-)}
+  </div>
+        )}
       {activeTab === 2 && (
-        <div>
+        <div className="admin-tab-content">
           <h2 className="text-lg font-bold mb-2">Users List</h2>
-          <div style={{ height: 400, width: '100%' }}>
+          <div className="admin-datagrid-wrapper admin-datagrid-wrapper--full">
       <DataGrid
         rows={users.map(user => ({
           id: user.IdUser, // DataGrid requires a unique 'id' field
@@ -1135,12 +1137,13 @@ const Admin = () => {
         pageSize={8}
         rowsPerPageOptions={[8]}
         disableSelectionOnClick
+        sx={{ height: '100%' }}
       />
     </div>
         </div>
       )}
       {activeTab === 3 && (
-        <div className="flex h-full">
+        <div className="admin-tab-content flex h-full">
           {/* Left Sidebar with Buttons */}
           <div className="w-64 bg-gray-50 border-r border-gray-200 p-3 flex flex-col gap-2">
             <h3 className="text-lg font-semibold text-gray-800 mb-2">Statistics</h3>

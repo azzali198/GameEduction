@@ -17,7 +17,7 @@
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  min-height: auto;
+  min-height: 100vh;
   padding: 1rem 0.75rem 0;
   gap: 1rem;
   background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.28) 0%, transparent 55%),
@@ -337,6 +337,7 @@
 .forum-form {
   width: min(880px, 100%);
   margin-inline: auto;
+  margin-top: auto;
   display: grid;
   gap: 0.85rem;
   margin-bottom: 0px;
