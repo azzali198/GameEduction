@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = process.env.REACT_APP_API_URL || 'https://localhost:5001/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://192.168.59.179/PhysicsGameApi';
 /**
  * Retrieves questions for a given topic using GET /api/get-questions?topic=...
  * @param {string} topic - The topic to retrieve questions for.

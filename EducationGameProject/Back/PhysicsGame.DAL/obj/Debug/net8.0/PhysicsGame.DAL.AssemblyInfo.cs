@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhysicsGame.DAL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6c345613c50864d4a786210635dd896001d479ef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1ae2a2b5574cadcee1aa30a79634a5fafd8af95e")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhysicsGame.DAL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhysicsGame.DAL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

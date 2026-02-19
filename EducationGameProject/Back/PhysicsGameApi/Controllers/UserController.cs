@@ -49,6 +49,7 @@ namespace PhysicsGameApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
+            System.Diagnostics.Debugger.Launch(); // This will trigger the debugger to open when this endpoint is hit
             try
             {
                 if (request == null || string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))

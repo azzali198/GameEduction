@@ -24,7 +24,11 @@ builder.Services.AddControllers() .AddJsonOptions(options =>
     });
 
 builder.Services.AddDbContext<PhysicsGameContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+    sqlOptions => sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null) ));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddScoped<IChemistryImportService, ChemistryImportService>();
@@ -68,15 +72,17 @@ var app = builder.Build();
 app.UseCors();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/PhysicsGameApi/swagger/v1/swagger.json", "API v1");
+});
+
 
 // Add UseCors before UseHttpsRedirection
 app.UseHttpsRedirection();
-
+app.UsePathBase("/PhysicsGameApi");
 // Serve /Files as static files
 app.UseStaticFiles(new StaticFileOptions
 {
