@@ -5,7 +5,7 @@
         <xs:element name="Data" maxOccurs="unbounded" minOccurs="1">
           <xs:complexType>
             <xs:sequence>
-              <xs:element type="xs:short" name="Id"/>
+              <xs:element type="xs:int" name="Id"/>
               <xs:element type="xs:string" name="Definition"/>
               <xs:element type="xs:string" name="ChemicalData"/>
               <xs:element type="xs:byte" name="RightResponse"/>

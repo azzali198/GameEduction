@@ -46,7 +46,7 @@ namespace PhysicsGameApi.Controllers
         public DateTime ConnectionDate { get; set; }
         // Add other properties as needed
 
-        public string PhysicsScore { get; set; }
+        public string PhysicsScore { get; set; } 
         public string ChemistryScore { get; set; }
     }
 }
