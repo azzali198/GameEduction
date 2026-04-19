@@ -35,7 +35,7 @@ const ChemistryGame = () => {
     const chronoRef = React.useRef();
     const [chrono, setChrono] = React.useState(30); // Start from 30 seconds
     const [scoreTotal, setScoreTotal] = React.useState(0);
-    const paquetQuestion = 4;
+    const paquetQuestion = 10; // Number of questions per game session before showing Game Over
     // chronometer display component
     const CartoonChrono = ({ seconds }) => (
         <div className="cartoon-chrono" role="timer" aria-live="polite">
@@ -70,7 +70,7 @@ const ChemistryGame = () => {
             Swal.fire({
                 icon: 'info',
                 title: 'Game Over',
-                text: 'All questions have been answered!',
+                text: 'Quiz complete! Ready for more?',
                 showCancelButton: true,
                 confirmButtonText: 'Play Again',
                 cancelButtonText: 'Exit to Home'

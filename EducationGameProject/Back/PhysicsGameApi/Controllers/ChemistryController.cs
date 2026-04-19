@@ -21,7 +21,7 @@ namespace PhysicsGameApi.Controllers
     {
        
         [FromForm]
-        public IFormFile XmlFile { get; set; }
+        public IFormFile? XmlFile { get; set; }
     }
         [HttpGet("get-questions")]
         public async Task<IActionResult> GetQuestions()

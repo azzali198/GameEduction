@@ -1,15 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Net.Http.Headers;
 using PhysicsGame.BL.Models;
 using PhysicsGame.BL.Services;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
-using System.IO;
-using System.Text.Json;
-using System.IO.Compression;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace PhysicsGameApi.Controllers
 {
@@ -46,6 +50,7 @@ namespace PhysicsGameApi.Controllers
         [HttpPost("import-xml")]
         public async Task<IActionResult> ImportXml([FromBody] XmlInput request)
         {
+
             if (request == null || string.IsNullOrWhiteSpace(request.Xml))
                 return BadRequest("XML string is missing.");
 
@@ -129,38 +134,80 @@ namespace PhysicsGameApi.Controllers
             }
         }
 
+
+        // Remplacez la méthode UploadImagesZip par ce code (nécessite using Microsoft.Net.Http.Headers; using Microsoft.AspNetCore.WebUtilities;)
+        [DisableRequestSizeLimit]
         [HttpPost("upload-images-zip")]
-        public async Task<IActionResult> UploadImagesZip([FromForm] UploadImagesZipInput input)
+        public async Task<IActionResult> UploadImagesZip()
         {
-            var zipFile = input.ZipFile;
-            var topic = input.Topic;
+            // Vérifie content-type multipart
+            if (!Request.ContentType?.StartsWith("multipart/", StringComparison.OrdinalIgnoreCase) ?? true)
+                return BadRequest("Content-Type must be multipart/form-data.");
 
-            if (zipFile == null || zipFile.Length == 0)
-                return BadRequest("Zip file is missing.");
-            if (string.IsNullOrWhiteSpace(topic))
-                return BadRequest("Topic is missing.");
+            // Récupère la boundary
+            var mediaType = MediaTypeHeaderValue.Parse(Request.ContentType);
+            var boundary = HeaderUtilities.RemoveQuotes(mediaType.Boundary).Value;
+            if (string.IsNullOrWhiteSpace(boundary))
+                return BadRequest("Missing multipart boundary.");
 
-            // Create topic folder if not exists
-            var topicFolder = Path.Combine(Directory.GetCurrentDirectory(), "Files", topic);
-            if (!Directory.Exists(topicFolder))
-                Directory.CreateDirectory(topicFolder);
+            var reader = new MultipartReader(boundary, HttpContext.Request.Body);
+            var section = await reader.ReadNextSectionAsync();
 
-            // Save zip to temp location
-            var tempZipPath = Path.GetTempFileName();
-            using (var stream = new FileStream(tempZipPath, FileMode.Create))
-            {
-                await zipFile.CopyToAsync(stream);
-            }
+            string topic = null;
+            string tempZipPath = null;
 
-            // Unzip and validate files
             try
             {
+                while (section != null)
+                {
+                    if (ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition))
+                    {
+                        // Form field (topic)
+                        if (contentDisposition.DispositionType.Equals("form-data") && string.IsNullOrEmpty(contentDisposition.FileName.Value))
+                        {
+                            var name = HeaderUtilities.RemoveQuotes(contentDisposition.Name).Value;
+                            using var sr = new StreamReader(section.Body);
+                            var value = await sr.ReadToEndAsync();
+                            if (string.Equals(name, "Topic", StringComparison.OrdinalIgnoreCase) ||
+                                string.Equals(name, "topic", StringComparison.OrdinalIgnoreCase))
+                            {
+                                topic = value?.Trim();
+                            }
+                        }
+                        // File field
+                        else if (!string.IsNullOrEmpty(contentDisposition.FileName.Value) || !string.IsNullOrEmpty(contentDisposition.FileNameStar.Value))
+                        {
+                            var fileName = HeaderUtilities.RemoveQuotes(contentDisposition.FileName).Value ?? HeaderUtilities.RemoveQuotes(contentDisposition.FileNameStar).Value;
+                            if (!fileName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+                                return BadRequest("Only ZIP archive is accepted.");
+
+                            // Sauvegarde stream vers fichier temporaire (streaming)
+                            tempZipPath = Path.GetTempFileName();
+                            using var targetStream = System.IO.File.Create(tempZipPath);
+                            await section.Body.CopyToAsync(targetStream);
+                        }
+                    }
+
+                    section = await reader.ReadNextSectionAsync();
+                }
+
+                if (string.IsNullOrWhiteSpace(topic))
+                    return BadRequest("Topic is missing.");
+                if (string.IsNullOrEmpty(tempZipPath) || !System.IO.File.Exists(tempZipPath))
+                    return BadRequest("Zip file is missing.");
+
+                // Dossier topic
+                var topicFolder = Path.Combine(Directory.GetCurrentDirectory(), "Files", topic);
+                if (!Directory.Exists(topicFolder))
+                    Directory.CreateDirectory(topicFolder);
+
+                // Extraction et validation
                 using (var archive = ZipFile.OpenRead(tempZipPath))
                 {
                     foreach (var entry in archive.Entries)
                     {
                         if (string.IsNullOrWhiteSpace(entry.Name))
-                            continue; // Skip folders
+                            continue; // skip folders
 
                         if (!entry.Name.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
                             return BadRequest($"File '{entry.Name}' is not a PNG image.");
@@ -169,13 +216,16 @@ namespace PhysicsGameApi.Controllers
                         entry.ExtractToFile(destinationPath, overwrite: true);
                     }
                 }
-                System.IO.File.Delete(tempZipPath);
+
                 return Ok(new { message = "Images uploaded and extracted successfully." });
             }
             catch (Exception ex)
             {
-                System.IO.File.Delete(tempZipPath);
                 return BadRequest($"Error processing zip file: {ex.Message}");
+            }
+            finally
+            {
+                try { if (!string.IsNullOrEmpty(tempZipPath) && System.IO.File.Exists(tempZipPath)) System.IO.File.Delete(tempZipPath); } catch { }
             }
         }
 

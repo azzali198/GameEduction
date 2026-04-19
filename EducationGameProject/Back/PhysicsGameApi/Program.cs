@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using PhysicsGame.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using PhysicsGame.BL;
@@ -17,18 +18,30 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers() .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-        options.JsonSerializerOptions.PropertyNamingPolicy = null; // Accept PascalCase
-    });
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    options.JsonSerializerOptions.PropertyNamingPolicy = null; // Accept PascalCase
+});
+
+// Increase multipart/form limits (100 MB)
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 100L * 1024 * 1024; // 100 MB
+});
+
+// Configure Kestrel max request body size (100 MB)
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize = 100L * 1024 * 1024; // 100 MB
+});
 
 builder.Services.AddDbContext<PhysicsGameContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
     sqlOptions => sqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(10),
-            errorNumbersToAdd: null) ));
+            errorNumbersToAdd: null)));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddScoped<IChemistryImportService, ChemistryImportService>();
@@ -72,17 +85,16 @@ var app = builder.Build();
 app.UseCors();
 
 // Configure the HTTP request pipeline.
+app.UsePathBase("/PhysicsGameApi");
 
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/PhysicsGameApi/swagger/v1/swagger.json", "API v1");
+    c.SwaggerEndpoint("v1/swagger.json", "API v1");
 });
-
 
 // Add UseCors before UseHttpsRedirection
 app.UseHttpsRedirection();
-app.UsePathBase("/PhysicsGameApi");
 // Serve /Files as static files
 app.UseStaticFiles(new StaticFileOptions
 {

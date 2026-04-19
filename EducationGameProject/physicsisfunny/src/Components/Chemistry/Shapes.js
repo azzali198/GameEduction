@@ -91,20 +91,20 @@ const Shapes = ({ Data }) => {
                         }
                         else if (col === 'LV1') {
                             return (
-                                <Col key={`col-${rowIndex}-${colIndex}`} className="shape-cell">
+                                <Col key={`col-${rowIndex}-${colIndex}`}  style={{ display: 'flex', flexDirection: 'column' }} className="shape-cell">
                                     <ResponsiveLine orientation="vertical" count={1} fills={[ 'gray' ]} className="vertical-line" />
                                 </Col>
                             );
                         }
                         else if (col === 'LV2') {
                             return (
-                                <Col key={`col-${rowIndex}-${colIndex}`} className="shape-cell">
+                                <Col key={`col-${rowIndex}-${colIndex}`}  style={{ display: 'flex', flexDirection: 'column' }} className="shape-cell">
                                     <ResponsiveLine orientation="vertical" count={3} fills={[ 'gray', 'white', 'gray' ]} className="vertical-line" />
                                 </Col>
                             );
                         } else if (col) {
                             return (
-                                <Col key={`col-${rowIndex}-${colIndex}-${col}`} className="shape-cell">
+                                <Col key={`col-${rowIndex}-${colIndex}-${col}`}  style={{ display: 'flex', flexDirection: 'column' }} className="shape-cell">
                                     <Containers
                                         name=""
                                         accept={col}
@@ -113,7 +113,7 @@ const Shapes = ({ Data }) => {
                                 </Col>
                             );
                         }
-                        return <Col key={`col-${rowIndex}-${colIndex}`} className="shape-cell" />;
+                        return <Col key={`col-${rowIndex}-${colIndex}`}  style={{ display: 'flex', flexDirection: 'column' }} className="shape-cell" />;
                     })}
                 </Row>
             ))}

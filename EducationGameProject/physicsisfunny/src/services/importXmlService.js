@@ -6,7 +6,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'https://localhost:5001/api';
  * @param {string} topic - The selected topic value from the dropdown.
  * @returns {Promise} Axios response promise.
  */
-async function importXml(xmlString, topic) {
+const importXml = (xmlString, topic) => {
   // Send as JSON payload with 'request' field
   return axios.post(`${API_URL}/Physics/import-xml`, {
     Xml: xmlString.trim(),
@@ -18,4 +18,4 @@ async function importXml(xmlString, topic) {
 });
 }
 
-export default importXml;
+export  {importXml};

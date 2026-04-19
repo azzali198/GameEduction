@@ -385,7 +385,7 @@ namespace PhysicsGame.BL.Services
                             Image = q.Image
                         }).ToList();
 
-                case "modernphysics":
+                case "modern physics":
                     var mp = await _context.ModernPhysics.FirstOrDefaultAsync(q => q.Identifier == identifier);
                     if (mp == null) return null;
                     _context.ModernPhysics.Remove(mp);

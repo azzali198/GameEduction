@@ -42,11 +42,11 @@ namespace PhysicsGameApi.Controllers
 
     public class ConnectionInput
     {
-        public string UserName { get; set; }
+        public required string UserName { get; set; }
         public DateTime ConnectionDate { get; set; }
         // Add other properties as needed
 
-        public string PhysicsScore { get; set; } 
-        public string ChemistryScore { get; set; }
+        public string? PhysicsScore { get; set; } 
+        public string? ChemistryScore { get; set; }
     }
 }

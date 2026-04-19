@@ -8,6 +8,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'https://localhost:5001/api';
  * @returns {Promise} Axios response promise
  */
 const uploadImagesZip = async (zipFile, topic) => {
+  debugger;
   const formData = new FormData();
   formData.append('zipFile', zipFile);
   formData.append('topic', topic);

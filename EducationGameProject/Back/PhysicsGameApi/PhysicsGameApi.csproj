@@ -27,4 +27,10 @@
     <ProjectReference Include="..\PhysicsGame.BL\PhysicsGame.BL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Files\PhysicsModel.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

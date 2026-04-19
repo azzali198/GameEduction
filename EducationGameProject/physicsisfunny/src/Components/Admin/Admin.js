@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import './Admin.css';
 import Swal from 'sweetalert2';
-import importXml from '../../services/importXmlService';
+import {importXml} from '../../services/importXmlService.js';
 import deleteQuestion from '../../services/deleteQuestionService';
 import {getQuestions} from '../../services/getQuestionsService'; // Add this import
 import updateQuestions from '../../services/updateQuestionsService';
