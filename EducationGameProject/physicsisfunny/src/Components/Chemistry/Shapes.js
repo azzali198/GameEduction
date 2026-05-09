@@ -1,10 +1,22 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Rectangle } from 'react-shapes';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Containers from './Container.js';
 import './Shapes.css';
+
+// Simple Rectangle component to replace react-shapes dependency
+const Rectangle = ({ width, height, fill, className }) => (
+    <div
+        className={className}
+        style={{
+            width: `${width}px`,
+            height: `${height}px`,
+            backgroundColor: fill?.color || 'gray',
+            display: 'block'
+        }}
+    />
+);
 
 // ResponsiveLine must be declared before Shapes so it's available at render time.
 export const ResponsiveLine = ({ orientation = 'horizontal', count = 1, fills = ['gray'], className = '' }) => {
