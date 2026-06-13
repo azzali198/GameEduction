@@ -48,6 +48,7 @@ const Physics = () => {
   const [winner, setWinner] = useState(false);
   const [question, setQuestion] = useState('');
   const API_URL = (process.env.REACT_APP_API_URL || 'https://localhost:5001').replace(/\/api$/, '');
+  const IMAGES_URL = (process.env.REACT_APP_IMAGES_URL || 'https://res.cloudinary.com/dywn11pt9/image/upload').replace(/\/$/, '');
   const [quizQuestions, setQuizQuestions] = useState([]);
   const buttonGame = {
     padding: '0px',
@@ -155,7 +156,7 @@ const Physics = () => {
             const response = await getQuestionByBranchAndIndex(branchs[chos]?.replace(/\s+/g, ''), randomIndex);
             setPropositions([response.data.ResponseAEn, response.data.ResponseBEn, response.data.ResponseCEn]);
             setRightResponse(response.data.RightResponseEn);
-            setImage(API_URL + '/Files/' + branchs[chos] + '/' + response.data.Image + '.png');
+            setImage(IMAGES_URL + '/' + response.data.Image + '.png');
 
             // Do something with response.data (e.g., setQuestion, setOptions, etc.)
             setQuestion(response.data.QuestionEn);
