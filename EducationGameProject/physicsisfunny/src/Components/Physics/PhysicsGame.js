@@ -156,7 +156,7 @@ const Physics = () => {
             const response = await getQuestionByBranchAndIndex(branchs[chos]?.replace(/\s+/g, ''), randomIndex);
             setPropositions([response.data.ResponseAEn, response.data.ResponseBEn, response.data.ResponseCEn]);
             setRightResponse(response.data.RightResponseEn);
-            setImage(IMAGES_URL + '/' + response.data.Image + '.png');
+            setImage(process.env.PUBLIC_URL + '/images/' + response.data.Image + '.png');
 
             // Do something with response.data (e.g., setQuestion, setOptions, etc.)
             setQuestion(response.data.QuestionEn);
