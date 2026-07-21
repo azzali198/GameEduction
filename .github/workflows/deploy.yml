@@ -26,14 +26,14 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: physicsisfunny/package-lock.json
+          cache-dependency-path: EducationGameProject/physicsisfunny/package-lock.json
 
       - name: Install frontend dependencies
-        working-directory: physicsisfunny
+        working-directory: EducationGameProject/physicsisfunny
         run: npm ci
 
       - name: Build frontend
-        working-directory: physicsisfunny
+        working-directory: EducationGameProject/physicsisfunny
         run: npm run build
 
       # ---------- Backend (.NET Web API) ----------
@@ -43,7 +43,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Publish backend
-        run: dotnet publish Back/PhysicsGameApi/PhysicsGameApi.csproj -c Release -o Back/publish
+        run: dotnet publish EducationGameProject/Back/PhysicsGameApi/PhysicsGameApi.csproj -c Release -o EducationGameProject/Back/publish
 
       # ---------- Deploy ----------
       - name: Add SSH key
@@ -59,14 +59,14 @@ jobs:
       - name: Deploy frontend build
         run: |
           rsync -avz --delete \
-            physicsisfunny/build/ \
+            EducationGameProject/physicsisfunny/build/ \
             ${{ secrets.SSH_USER }}@${{ env.VPS_HOST }}:${{ env.FRONTEND_REMOTE_PATH }}/
 
       - name: Deploy backend build
         run: |
           rsync -avz --delete \
             --exclude 'appsettings.Production.json' \
-            Back/publish/ \
+            EducationGameProject/Back/publish/ \
             ${{ secrets.SSH_USER }}@${{ env.VPS_HOST }}:${{ env.BACKEND_REMOTE_PATH }}/
 
       - name: Restart backend service & reload nginx
