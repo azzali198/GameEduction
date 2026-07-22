@@ -10,7 +10,7 @@ env:
   VPS_HOST: 157.180.72.95
   FRONTEND_REMOTE_PATH: /var/www/PhysicsGame
   BACKEND_REMOTE_PATH: /var/www/MyApi
-  BACKEND_SERVICE_NAME: PhysicsGameApi
+  BACKEND_SERVICE_NAME: physicsgameapi
 
 jobs:
   deploy:
