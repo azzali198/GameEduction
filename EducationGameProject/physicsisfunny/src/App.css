@@ -21,12 +21,13 @@ body {
   font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
   background: var(--app-bg);
   color: var(--text-strong);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 #root,
-.flex-col {
-  height: 100vh;
+.app-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
   background: transparent;
   display: flex;
   flex-direction: column;
@@ -106,6 +107,26 @@ body {
   flex-wrap: wrap;
 }
 
+.nav-menu-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  padding: 0.65rem;
+  border: 1px solid rgba(231, 244, 255, 0.35);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+}
+
+.nav-menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin: 4px 0;
+  border-radius: 2px;
+  background: var(--text-strong);
+}
+
 .nav-container a {
   color: var(--text-strong);
   text-decoration: none;
@@ -129,6 +150,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  position: relative;
 }
 
 .avatar-wrapper {
@@ -248,30 +270,70 @@ body {
 
 /* Responsive tweaks */
 @media (max-width: 768px) {
+  .header {
+    padding-inline: 0.75rem;
+  }
+
+  .header-container,
   .nav-container {
-    flex-wrap: wrap;
-    border-radius: 24px;
+    width: 100%;
+  }
+
+  .nav-container {
+    width: calc(100% - 1.5rem);
+    margin-bottom: 0.6rem;
+    padding: 0.6rem;
+    border-radius: 18px;
     position: static;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .nav-menu-toggle {
+    display: block;
+    flex: 0 0 auto;
   }
 
   .nav-links-container {
+    display: none;
+    order: 3;
     width: 100%;
-    justify-content: center;
+    padding-top: 0.4rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.3rem;
+  }
+
+  .nav-links-container.is-open {
+    display: flex;
+  }
+
+  .nav-container a {
+    display: block;
+    padding: 0.7rem 0.85rem;
   }
 
   .nav-avatar-container {
-    width: 100%;
-    justify-content: center;
+    width: auto;
+    margin-left: auto;
   }
 
-  .header-container {
-    width: 100%;
+  .avatar-wrapper {
+    padding: 0.3rem 0.55rem;
+  }
+
+  .avatar-wrapper span.text-white {
+    display: none;
+  }
+
+  .nav-dropdown {
+    min-width: 165px;
   }
 }
 
 @media (max-width: 480px) {
   .header {
-    padding: 1.25rem 0.5rem 1rem;
+    padding: 0.5rem;
   }
 
   .hero-actions {
@@ -279,10 +341,15 @@ body {
   }
 
   .nav-container {
-    padding: 0.75rem;
+    width: calc(100% - 1rem);
   }
 
   .nav-container a {
     font-size: 0.85rem;
+  }
+
+  .footer {
+    font-size: 0.78rem;
+    padding: 0.55rem 0.4rem;
   }
 }

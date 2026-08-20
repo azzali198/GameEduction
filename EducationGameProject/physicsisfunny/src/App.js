@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import  "./App.css";
-import banner from './images/banner.png'
 import Home from './Components/Home/Home'
 import Forum from './Components/Forum/Forum'
 import PhysicsGame from './Components/Physics/PhysicsGame'
@@ -48,6 +47,12 @@ const App = () => {
 
   const Navbar = () => {
     const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    const navigateTo = (page) => {
+      setCurrentPage(page);
+      setMobileMenuOpen(false);
+    };
 
     const avatarUrl = isAuthenticated
       ? `https://ui-avatars.com/api/?name=${encodeURIComponent(userName || 'User')}`
@@ -56,8 +61,8 @@ const App = () => {
     // Dynamic combobox items based on authentication state
     const menuItems = isAuthenticated
       ? [
-          { key: 'profile', label: 'Profile', action: () => setCurrentPage('profile') },
-          { key: 'subscription', label: 'Subscription', action: () => setCurrentPage('subscription') },
+          { key: 'profile', label: 'Profile', action: () => navigateTo('profile') },
+          { key: 'subscription', label: 'Subscription', action: () => navigateTo('subscription') },
           { key: 'logout', label: 'Logout', action: () => {
               setIsAuthenticated(false);
               setIsAdmin(false);
@@ -65,49 +70,68 @@ const App = () => {
               sessionStorage.removeItem('isAuthenticated');
               sessionStorage.removeItem('isAdmin');
               sessionStorage.removeItem('userName');
-              setCurrentPage('home');
+              navigateTo('home');
             }
           }
         ]
       : [
           { key: 'login', label: 'Login', action: () => setIsLoginModalOpen(true) },
-          { key: 'subscription', label: 'Subscription', action: () => setCurrentPage('subscription') }
+          { key: 'subscription', label: 'Subscription', action: () => navigateTo('subscription') }
         ];
 
     return (
       <nav className="nav-container">
-        <div className="nav-links-container">
+        <button
+          type="button"
+          className="nav-menu-toggle"
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
+          aria-controls="primary-navigation"
+          onClick={() => setMobileMenuOpen(open => !open)}
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <div
+          id="primary-navigation"
+          className={`nav-links-container ${mobileMenuOpen ? 'is-open' : ''}`}
+        >
           <NavLink 
             href="#" 
             text="Home" 
-            onClick={() => setCurrentPage('home')} 
+            onClick={() => navigateTo('home')} 
             requiresAuth={false}
+            onAuthRequired={() => setMobileMenuOpen(false)}
           />
           <NavLink 
             href="#" 
             text="Physics" 
-            onClick={() => setCurrentPage('physics')} 
+            onClick={() => navigateTo('physics')} 
+            onAuthRequired={() => setMobileMenuOpen(false)}
           />
           <NavLink 
             href="#" 
             text="Chemistry" 
-            onClick={() => setCurrentPage('chemistry')} 
+            onClick={() => navigateTo('chemistry')} 
+            onAuthRequired={() => setMobileMenuOpen(false)}
           />
           <NavLink 
             href="#" 
             text="Forum" 
-            onClick={() => setCurrentPage('forum')} 
+            onClick={() => navigateTo('forum')} 
+            onAuthRequired={() => setMobileMenuOpen(false)}
           />
           <NavLink 
             href="#" 
             text="Contact" 
              requiresAuth={false}
-            onClick={() => setCurrentPage('contact')} 
+            onClick={() => navigateTo('contact')} 
+            onAuthRequired={() => setMobileMenuOpen(false)}
           />
           {isAdmin && <NavLink 
             href="#"
             text="Admin"
-            onClick={() => setCurrentPage('admin')}           
+            onClick={() => navigateTo('admin')}           
+            onAuthRequired={() => setMobileMenuOpen(false)}
           />}
         </div>
         <div className="nav-avatar-container">
@@ -116,6 +140,15 @@ const App = () => {
             className="avatar-wrapper"
             onClick={() => setAvatarMenuOpen(open => !open)}
             tabIndex={0}
+            role="button"
+            aria-haspopup="menu"
+            aria-expanded={avatarMenuOpen}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                setAvatarMenuOpen(open => !open);
+              }
+            }}
           >
             <img
               src={avatarUrl}
@@ -151,10 +184,11 @@ const App = () => {
     );
   };
 
-  const NavLink = ({ href, text, onClick, requiresAuth = true }) => {
+  const NavLink = ({ href, text, onClick, requiresAuth = true, onAuthRequired }) => {
     const handleClick = async (e) => {
       if (requiresAuth && !isAuthenticated) {
         e.preventDefault();
+        onAuthRequired?.();
         setIsLoginModalOpen(true);
         return;
       }
@@ -253,7 +287,7 @@ const App = () => {
 
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
+      <div className="app-shell flex flex-col min-h-screen">
         <Header />
         <Navbar />
         <main className="main-content flex-1">
