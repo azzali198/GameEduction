@@ -9,6 +9,7 @@ import updateQuestions from '../../services/updateQuestionsService';
 import uploadImagesZip from '../../services/uploadImagesZipService'; // Add this import
 import { importChemistryXml, getChemistryQuestions, updateChemistryQuestions, deleteChemistryQuestion } from '../../services/importChemistryXmlService'; // Update import
 import notFoundImage from '../../images/404.png';
+import { physicsImageUrl } from '../../services/physicsImageUrl';
 import Shapes from '../Chemistry/Shapes.js'; // Import Shapes component
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -191,11 +192,11 @@ const Admin = () => {
       renderCell: (params) =>
         params.value ? (
           <a
-            href="#"
+            href={physicsImageUrl(params.value)}
             style={{ color: '#2563eb', textDecoration: 'underline', cursor: 'pointer' }}
             onClick={e => {
               e.preventDefault();
-              const imageUrl = `${process.env.REACT_APP_SERVER_URL}/files/${selectedTopic}/${params.value}.png`;
+              const imageUrl = physicsImageUrl(params.value);
               setImagePopup({ open: true, src: imageUrl });
             }}
           >
@@ -1521,6 +1522,7 @@ const Admin = () => {
       onClick={e => e.stopPropagation()}
     >
       <img
+        key={imagePopup.src}
         src={imagePopup.src}
         alt="Question"
         style={{ maxWidth: '80vw', maxHeight: '80vh', display: 'block', margin: '0 auto' }}
