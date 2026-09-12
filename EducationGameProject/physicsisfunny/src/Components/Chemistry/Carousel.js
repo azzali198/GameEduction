@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { useDragLayer } from 'react-dnd';
 import Carousel from 'react-bootstrap/Carousel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,12 +9,13 @@ import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
 
 const Carousels = () => {
+  const isDragging = useDragLayer(monitor => monitor.isDragging());
   const [key, setKey] = useState('home');
   const elementClass = 'bg-primary text-primary-foreground p-4 rounded-lg'
   const containerClass = 'bg-white p-4'
   const textClass = 'text-black'
   return (
-    <Carousel className="chemistry-carousel">
+    <Carousel className="chemistry-carousel" touch={false} interval={isDragging ? null : 5000}>
       <Carousel.Item>
         <div className={containerClass} style={{ height: '250px' }}>
           <center>

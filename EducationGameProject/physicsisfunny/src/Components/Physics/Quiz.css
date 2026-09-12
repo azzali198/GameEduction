@@ -15,7 +15,8 @@
   align-items: center;
   justify-content: center;
   z-index: 3000;
-  padding: 1rem;
+  padding: 1rem 1rem calc(5.5rem + env(safe-area-inset-bottom));
+  overflow-y: auto;
 }
 
 .quiz-modal_panel {
@@ -28,6 +29,8 @@
   color: var(--quiz-text);
   display: grid;
   gap: 1rem;
+  max-height: calc(100dvh - 6.5rem);
+  overflow-y: auto;
 }
 
 .quiz-modal_panel h3 {

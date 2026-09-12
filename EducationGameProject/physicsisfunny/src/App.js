@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import  "./App.css";
 import Home from './Components/Home/Home'
 import Forum from './Components/Forum/Forum'
@@ -15,8 +15,11 @@ import Admin from './Components/Admin/Admin'
 import { useUser } from './context/UserContext'; // Add this import
 import Swal from 'sweetalert2';
 
-const App = () => {
-  const [currentPage, setCurrentPage] = useState('home');
+const AppContent = () => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const currentPage = pathname.replace(/^\/|\/$/g, '') || 'home';
+  const setCurrentPage = (page) => navigate(page === 'home' ? '/' : `/${page}`);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return sessionStorage.getItem('isAuthenticated') === 'true';
@@ -96,39 +99,39 @@ const App = () => {
           className={`nav-links-container ${mobileMenuOpen ? 'is-open' : ''}`}
         >
           <NavLink 
-            href="#" 
+            href="/"
             text="Home" 
             onClick={() => navigateTo('home')} 
             requiresAuth={false}
             onAuthRequired={() => setMobileMenuOpen(false)}
           />
           <NavLink 
-            href="#" 
+            href="/physics"
             text="Physics" 
             onClick={() => navigateTo('physics')} 
             onAuthRequired={() => setMobileMenuOpen(false)}
           />
           <NavLink 
-            href="#" 
+            href="/chemistry"
             text="Chemistry" 
             onClick={() => navigateTo('chemistry')} 
             onAuthRequired={() => setMobileMenuOpen(false)}
           />
           <NavLink 
-            href="#" 
+            href="/forum"
             text="Forum" 
             onClick={() => navigateTo('forum')} 
             onAuthRequired={() => setMobileMenuOpen(false)}
           />
           <NavLink 
-            href="#" 
+            href="/contact"
             text="Contact" 
              requiresAuth={false}
             onClick={() => navigateTo('contact')} 
             onAuthRequired={() => setMobileMenuOpen(false)}
           />
           {isAdmin && <NavLink 
-            href="#"
+            href="/admin"
             text="Admin"
             onClick={() => navigateTo('admin')}           
             onAuthRequired={() => setMobileMenuOpen(false)}
@@ -192,6 +195,8 @@ const App = () => {
         setIsLoginModalOpen(true);
         return;
       }
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
       // Intercept leaving physics or chemistry page
       const isLeavingPhysics = currentPage === 'physics' && text.toLowerCase() !== 'physics';
       const isLeavingChemistry = currentPage === 'chemistry' && text.toLowerCase() !== 'chemistry';
@@ -218,8 +223,8 @@ const App = () => {
     };
 
     return (
-      <a 
-        href={href} 
+      <Link
+        to={href}
         className={`text-white hover:text-white/80 ${requiresAuth && !isAuthenticated ? 'opacity-50' : ''}`} 
         onClick={handleClick}
       >
@@ -227,7 +232,7 @@ const App = () => {
         {requiresAuth && !isAuthenticated && (
           <span className="ml-1 text-xs">🔒</span>
         )}
-      </a>
+      </Link>
     );
   };
 
@@ -263,6 +268,10 @@ const App = () => {
   );
 
   const renderPage = () => {
+    if ((!isAuthenticated && ['physics', 'chemistry', 'forum', 'profile', 'admin'].includes(currentPage)) ||
+        (currentPage === 'admin' && !isAdmin)) {
+      return <Navigate to="/" replace />;
+    }
     switch (currentPage) {
       case 'home':
         return <Home />;
@@ -286,7 +295,6 @@ const App = () => {
   };
 
   return (
-    <Router>
       <div className="app-shell flex flex-col min-h-screen">
         <Header />
         <Navbar />
@@ -307,8 +315,9 @@ const App = () => {
           />
         )}
       </div>
-    </Router>
   );
 };
+
+const App = () => <Router><AppContent /></Router>;
 
 export default App;

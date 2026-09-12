@@ -19,6 +19,7 @@
     "react-country-flag": "^3.1.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
+    "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "^18.0.0",
     "react-flag-icons": "^1.0.6",
     "react-image-button": "^1.0.6",
@@ -38,6 +39,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-dnd|react-dnd-touch-backend|dnd-core|@react-dnd)/)"
+    ]
   },
   "eslintConfig": {
     "extends": [

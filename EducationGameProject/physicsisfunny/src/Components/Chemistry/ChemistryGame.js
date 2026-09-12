@@ -2,7 +2,8 @@ import React from 'react'
 import './ChemistryGame.css';
 
 import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import { TouchBackend } from 'react-dnd-touch-backend'
+import ElementDragPreview from './ElementDragPreview'
 import Shapes from './Shapes.js'
 import Carousels from './Carousel.js'
 import ElementsTable from './ElementsTable.js'
@@ -16,6 +17,8 @@ import { getChemistryQuestionsCount, getChemistryQuestionByIndex } from '../../s
 import ChemistryGameIntroPopup from '../IntroductionChemistryPopup/ChemistryGameIntroPopup';
 import einsteinImg from '../../assets/images/BtnDemoImgs/einsteinCongratulate.png';
 import { addConnection } from '../../services/score';
+
+const dndOptions = { enableMouseEvents: true, enableTouchEvents: true };
 
 const ChemistryGame = () => {
     const score = useSelector(selectScore)
@@ -249,7 +252,8 @@ const ChemistryGame = () => {
     const onStopCounter = () => { }
 
     return (
-        <DndProvider backend={HTML5Backend}>
+        <DndProvider backend={TouchBackend} options={dndOptions}>
+            <ElementDragPreview />
             <div className="chemistry-game-container">
                 {showIntro && (
                     <ChemistryGameIntroPopup

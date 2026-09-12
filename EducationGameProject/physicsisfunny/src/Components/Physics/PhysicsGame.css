@@ -57,17 +57,14 @@
 }
 
 .physics-chrono-wrapper {
- 
-  z-index: 30;
-  margin-top: 0;
-  margin-bottom: 0.75rem;
- position: sticky;
-  top: clamp(0.30rem, 1.6vw, 0.75rem);
-  z-index: 30;
+  position: fixed;
+  left: 50%;
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  z-index: 3100;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   width: fit-content;
-  margin: 0 clamp(0.35rem, 1.6vw, 0.9rem) clamp(0.6rem, 2vw, 1.25rem) auto;
   padding: 0.28rem 0.75rem;
   border-radius: 999px;
   background: rgba(5, 11, 26, 0.72);
@@ -96,7 +93,6 @@
   position: relative;
   width: min(1120px, 100%);
   margin: 0 auto;
-  z-index: 1;
   border-radius: 28px;
 }
 
@@ -249,7 +245,7 @@
   align-items: center;
   background: rgba(4, 12, 30, 0.6);
   backdrop-filter: blur(6px);
-  z-index: 40;
+  z-index: 3000;
 }
 
 @media (max-width: 900px) {

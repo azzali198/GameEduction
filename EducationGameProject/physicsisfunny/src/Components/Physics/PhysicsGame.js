@@ -264,9 +264,11 @@ const Physics = () => {
   };
   return (
     <div className="physics-game-wrapper">
-      <div className="physics-chrono-wrapper">
-        {chronoActive && <CartoonChrono seconds={chrono} />}
-      </div>
+      {chronoActive && (
+        <div className="physics-chrono-wrapper">
+          <CartoonChrono seconds={chrono} />
+        </div>
+      )}
       {showIntro && (
         <GameIntroPopup
           onClose={() => {

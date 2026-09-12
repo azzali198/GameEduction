@@ -17,7 +17,6 @@ export const scoreSlice = createSlice({
             state.dropResults = [];
         },
         addDropResult: (state, action) => {
-            debugger;
             state.dropResults.push(action.payload);
         },
         clearDropResults: state => {
