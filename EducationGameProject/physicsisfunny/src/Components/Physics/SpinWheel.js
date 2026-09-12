@@ -24,8 +24,8 @@ const fitFontSize = (context, text, preferredSize, maxWidth) => {
   let fontSize = preferredSize;
   context.font = `700 ${fontSize}px Arial`;
 
-  while (fontSize > 9 && context.measureText(text).width > maxWidth) {
-    fontSize -= 1;
+  while (fontSize > 1 && context.measureText(text).width > maxWidth) {
+    fontSize = Math.max(1, fontSize - 0.5);
     context.font = `700 ${fontSize}px Arial`;
   }
 
@@ -56,7 +56,13 @@ const SpinningWheel = ({ onFinishing }) => {
 
     const segmentAngle = twoPi / segments.length;
     const center = wheelSize;
-    const labelRadius = wheelSize * 0.64;
+    const hubRadius = Math.max(28, wheelSize * 0.22);
+    const preferredFontSize = Math.max(10, wheelSize * 0.095);
+    // Reserve space for the text height, shadow, and both circular borders.
+    const outerLabelEdge = Math.sqrt((wheelSize - 12) ** 2 - preferredFontSize ** 2);
+    const innerLabelEdge = hubRadius + 8;
+    const labelRadius = (innerLabelEdge + outerLabelEdge) / 2;
+    const labelWidth = outerLabelEdge - innerLabelEdge;
     const startAngle = -Math.PI / 2;
 
     segments.forEach((label, index) => {
@@ -85,14 +91,14 @@ const SpinningWheel = ({ onFinishing }) => {
       context.fillStyle = '#ffffff';
       context.shadowColor = 'rgba(0, 0, 0, 0.45)';
       context.shadowBlur = 2;
-      const fontSize = fitFontSize(context, label, Math.max(10, wheelSize * 0.095), wheelSize * 0.72);
+      const fontSize = fitFontSize(context, label, preferredFontSize, labelWidth);
       context.font = `700 ${fontSize}px Arial`;
-      context.fillText(label, 0, 0);
+      context.fillText(label, 0, 0, labelWidth);
       context.restore();
     });
 
     context.beginPath();
-    context.arc(center, center, Math.max(28, wheelSize * 0.22), 0, twoPi);
+    context.arc(center, center, hubRadius, 0, twoPi);
     context.fillStyle = '#050b1a';
     context.fill();
     context.lineWidth = 5;
