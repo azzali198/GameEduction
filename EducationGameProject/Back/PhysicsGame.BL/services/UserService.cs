@@ -131,6 +131,8 @@ namespace PhysicsGame.BL.services
             // Hash the password before saving
             user.Password = HashPassword(user.Password);
 
+            user.Actif = true;
+
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
